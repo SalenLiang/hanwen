@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.adminUserRegion.mapper.AdminUserRegionMapper">
+
+    <insert id="save" parameterType="com.fahai.cc.service.adminUserRegion.entity.AdminUserRegion">
+      INSERT INTO service_manager.adminuserregion(adminUserId,regionCode)
+      VALUES (#{adminUserId},#{regionCode})
+    </insert>
+
+    <update id="updateByAdminUserId" parameterType="com.fahai.cc.service.adminUserRegion.entity.AdminUserRegion">
+        UPDATE service_manager.adminuserregion SET regionCode=#{regionCode} WHERE adminUserId=#{adminUserId}
+    </update>
+
+    <update id="updateByRegionCode" parameterType="com.fahai.cc.service.adminUserRegion.entity.AdminUserRegion">
+        UPDATE service_manager.adminuserregion SET adminUserId=#{adminUserId} WHERE regionCode=#{regionCode}
+    </update>
+
+    <delete id="deleteByAdminUserId" parameterType="java.lang.Integer">
+        DELETE FROM service_manager.adminuserregion where adminUserId=#{adminUserId}
+    </delete>
+
+    <delete id="deleteByRegionCode" >
+        DELETE FROM service_manager.adminuserregion where regionCode=#{regionCode} and adminUserId=#{adminUserId}
+    </delete>
+	<insert id="saveAdminUserRegionLog" parameterType="com.fahai.cc.service.adminUserRegion.entity.AdminUserRegion">
+      INSERT INTO service_manager.adminuserregionLog(logId,adminUserId,regionCode,actionType,actionUserId,createDate)
+      VALUES (#{logId},#{adminUserId},#{regionCode},#{actionType},#{actionUserId},#{createDate})
+    </insert>
+    
+    <select id="findRegionByAdminUserId" parameterType="java.lang.Integer" resultType="com.fahai.cc.service.region.entity.Region">
+    	select adminUserRegionId,adminUserId,regionCode from adminuserregion where adminUserId = #{adminUserId}
+    </select>
+</mapper>

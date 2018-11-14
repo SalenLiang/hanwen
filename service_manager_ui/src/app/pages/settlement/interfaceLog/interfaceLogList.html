@@ -1,0 +1,116 @@
+<div class="widgets" ng-controller="interfaceLogCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="日志列表" ba-panel-class="with-scroll">
+                <div class="row">
+                    <div class="col-md-10">
+                        <div class="col-md-2">
+                            <div class="add-row-editable-table align-left input-group">
+                                <input type="text" class="form-control with-warning-addon" placeholder="请输入搜索企业名称" name="" value="" ng-model="$parent.$parent.$parent.companyName" aria-describedby="basic-addon2">
+ 								<span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.$parent.companyName=''">
+ 									<span class="glyphicon glyphicon-trash"></span>
+ 								</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" style="overflow:scroll;"
+                                    ng-model="$parent.$parent.ettType" ng-options="item.code as item.value for item in logType">
+                                <option value="">【全部】</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select class="form-control" style="overflow:scroll;"
+                                    ng-model="$parent.$parent.interfaceCode" ng-options="item.interfaceCode as item.interfaceName for item in interfaceType">
+                                <option value="">【全部】</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="input-group input-daterange">
+                                <input type='text'    ng-required="true" name="beginDate" id="beginDate"
+                                       ng-model="$parent.$parent.beginDate "class="form-control"  ng-readonly="true"/>
+                                <div class="input-group-addon">至</div>
+                                <input type='text'   ng-required="true" name="endDate" id="endDate"
+                                       ng-model="$parent.$parent.endDate "class="form-control" ng-readonly="true" />
+                                <span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.endDate='';$parent.$parent.beginDate=''">
+ 									<span class="glyphicon glyphicon-trash"></span>
+ 								</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" ng-click="searchInterfaceLog()">搜索</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="menusTableData" >
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th>编号</th>
+                            <th>企业名称</th>
+                            <th>日志类型</th>
+                            <th>接口名称</th>
+                            <th>查询类型</th>
+                            <th>查询次数</th>
+                            <th  style="text-align:center;" >查询时间</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="interfaceLog in interfaceLogs" class="editable-row">
+                            <td>{{$index+1}}</td>
+                            <td>{{interfaceLog.companyName}}</td>
+                            <td>
+                                <div ng-if="interfaceLog.ettType == '0000'">成功次数</div>
+                                <div ng-if="interfaceLog.ettType == '9999'">失败次数</div>
+                                <div ng-if="interfaceLog.ettType == '1000'">查的次数</div>
+                                <div ng-if="interfaceLog.ettType == '2001'">日别去重</div>
+                                <div ng-if="interfaceLog.ettType == '2002'">月别去重</div>
+                            </td>
+                            <td>{{interfaceLog.interfaceName}}</td>
+                            <td>{{interfaceLog.searchType}}</td>
+                            <td >&nbsp;&nbsp;&nbsp;&nbsp;{{interfaceLog.total}}</td>
+                            <td style="text-align:center;">{{interfaceLog.baseYMD | date:'yyyy-MM-dd'}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <tm-pagination conf="interfaceLogPaginationConf"></tm-pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(function () {
+        var now = new Date();
+        $('#beginDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            initialDate: new Date(),//初始化当前日期
+            minView: "month",
+            autoclose: true,//选中自动关闭
+            todayBtn: true//显示今日按钮
+        }).on('changeDate',function(e){
+            var startTime = e.date;
+            $('#endDate').datetimepicker('setStartDate',startTime);
+        });
+        $('#endDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            initialDate: new Date(),//初始化当前日期
+            minView: "month",
+            autoclose: true,//选中自动关闭
+            todayBtn: true//显示今日按钮
+        }).on('changeDate',function(e){
+            var endTime = e.date;
+            $('#beginDate').datetimepicker('setEndDate',endTime);
+        });
+
+    });
+</script>
+
+
+
+

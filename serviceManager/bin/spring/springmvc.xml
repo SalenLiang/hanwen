@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+      http://www.springframework.org/schema/context
+      http://www.springframework.org/schema/context/spring-context-4.3.xsd
+      http://www.springframework.org/schema/mvc
+      http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <!--注解驱动-->
+    <mvc:default-servlet-handler/>
+    <mvc:annotation-driven>
+		<mvc:message-converters register-defaults="true">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<constructor-arg value="UTF-8" />
+				<property name="writeAcceptCharset" value="false" />
+			</bean>
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+    <!--扫描指定的controller包-->
+    <context:component-scan base-package="com.fahai.cc.service.*.controller"></context:component-scan>
+    <!--开启视图解析器-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="/"></property>
+        <property name="suffix" value=".html"></property>
+        <property name="cache" value="true" />
+        <property name="contentType" value="text/html;charset=utf-8" />
+    </bean>
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件总大小限制 -->
+        <property name="maxUploadSize" value="10000000"></property>
+    </bean>
+
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/**/*" />
+			<mvc:exclude-mapping path="/**/*.css" />
+			<mvc:exclude-mapping path="/**/*.js" />
+			<mvc:exclude-mapping path="/**/*.png" />
+			<mvc:exclude-mapping path="/**/*.gif" />
+			<mvc:exclude-mapping path="/**/*.jpg" />
+			<mvc:exclude-mapping path="/**/*.jpeg" />
+			<mvc:exclude-mapping path="/**/*login*" />
+			<mvc:exclude-mapping path="/**/*index*" />
+			<mvc:exclude-mapping path="/serviceManager/login/*" />
+			<mvc:exclude-mapping path="/serviceManager/error" />
+
+			<bean class="com.fahai.cc.service.login.LoginInterceptor"></bean>
+			 
+		</mvc:interceptor>
+	</mvc:interceptors>
+
+</beans>

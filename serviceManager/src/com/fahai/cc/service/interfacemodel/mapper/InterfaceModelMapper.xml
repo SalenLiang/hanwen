@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.interfacemodel.mapper.InterfaceModelMapper">
+
+    <sql id="Base_Column_List">
+        modelId,modelName,description,status,lastModifyDate
+    </sql>
+    <!-- 查询列表 -->
+    <select id="getTotalCount" parameterType="java.util.Map" resultType="long">
+        SELECT COUNT(1) from service_manager.interfacemodel
+        <where>
+            <if test="status != null">
+                AND status=#{status}
+            </if>
+            <if test="modelName != null">
+                AND modelName like '%${modelName}%'
+            </if>
+        </where>
+    </select>
+     <select id="findPageIngerfaceModel" parameterType="java.util.Map" resultType="interfaceModel">
+         SELECT 
+			<include refid="Base_Column_List"></include>
+		 from service_manager.interfacemodel
+        <where>
+            <if test="status != null">
+                AND status=#{status}
+            </if>
+            <if test="modelName != null">
+                AND modelName like '%${modelName}%'
+            </if>
+        </where>
+        ORDER BY lastModifyDate desc
+        limit #{start},#{pageSize}
+    </select>
+    <!-- 新增模型 -->
+    <insert id="saveInterfaceModel" parameterType="interfaceModel">
+    	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="modelId">
+            SELECT LAST_INSERT_ID() AS modelId
+        </selectKey>
+    	insert into service_manager.interfacemodel ( modelName,description,status,lastModifyDate)
+		VALUES (#{modelName},#{description},#{status},#{lastModifyDate})
+    </insert>
+    <insert id="saveInterfaceModelDomain" parameterType="java.util.Map">
+    	insert into service_manager.interfacemodeldomain ( modelId,domainId,lastModifyDate)
+		VALUES (#{modelId},#{domainId},#{lastModifyDate})
+    </insert>
+    <insert id="saveInterfaceModelDimension" parameterType="java.util.Map">
+    	insert into service_manager.interfacemodeldimension ( modelId,dimensionId,dimensionCode,targetCluster,targetDimensionCode,lastModifyDate)
+		VALUES (#{modelId},#{dimensionId},#{dimensionCode},#{targetCluster},#{targetDimensionCode},#{lastModifyDate})
+    </insert>
+    
+    <!-- 修改模型 -->
+    <update id="updateInterfaceModel" parameterType="interfaceModel">
+        UPDATE service_manager.interfacemodel SET
+        <trim suffixOverrides=","> 
+            <if test="modelName != null">
+                modelName = #{modelName},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="lastModifyDate != null">
+                lastModifyDate=#{lastModifyDate},
+            </if>
+        </trim>
+        where modelId=#{modelId}
+    </update>
+    <!--获取模型的领域维度信息  -->
+<!--      <select id="getModelDomainDimension" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    	select 
+    		T1.domainId,T1.domainName,T1.selectYN domainSelectYN,T1.status,
+    		T2.dimensionId,T2.dimensionName,T2.domainId dimensiondomainId,T2.selectYN dimensionSelectYN,
+    		T2.status,T2.dimensionCode,T2.targetDimensionCode,T2.targetCluster
+    	from 
+    		(select a.domainId ,a.domainName ,if(b.modelId=#{modelId},1,0) selectYN ,a.status
+    			from domain a 
+    			LEFT JOIN interfacemodeldomain b 
+    			on a.domainId=b.domainId and b.modelId =#{modelId} ) T1 
+    	LEFT JOIN
+			(select a.dimensionId ,a.dimensionName,a.domainId ,if(b.modelId=#{modelId},1,0) selectYN ,a.status,a.dimensionCode,b.targetDimensionCode,b.targetCluster
+				from dimension a 
+				LEFT JOIN interfacemodeldimension b 
+				on a.dimensionId=b.dimensionId and b.modelId =#{modelId}  ) T2 on T1.domainId = T2.domainId where T1.status = 0 and T2.status = 0
+	</select> -->
+     <select id="getModelDomainDimension" parameterType="java.lang.Integer" resultType="dimension">
+    	select T1.dimensionId,T1.targetDimensionCode,T1.dimensionCode,T1.targetCluster,T1.dimensionName,T1.domainId ,T2.domainName from 
+			(select a.dimensionId,a.targetDimensionCode,a.dimensionCode,a.targetCluster,b.dimensionName,b.domainId from service_manager.interfacemodeldimension a 
+					LEFT JOIN service_manager.dimension b on a.dimensionId = b.dimensionId where a.modelId = #{modelId} ) T1
+		LEFT JOIN 
+			service_manager.domain T2 on T1.domainId = T2.domainId
+	</select>
+	
+	<resultMap id="BaseResultMap" type="com.fahai.cc.service.domain.entity.Domain" >
+	    <id column="domainId" property="domainId" jdbcType="INTEGER" />
+	    <result column="domainName" property="domainName" jdbcType="VARCHAR" />
+	    <result property="selectYN" column="domainSelectYN"/>
+	    <collection property="dimensionList" ofType="com.fahai.cc.service.dimension.entity.Dimension">
+              <id property="dimensionId" column="dimensionId"/> 
+              <result property="dimensionName" column="dimensionName"/>
+              <result property="domainId" column="dimensiondomainId"/>
+              <result property="selectYN" column="dimensionSelectYN"/>
+              <result property="dimensionCode" column="dimensionCode"/>
+              <result property="targetDimensionCode" column="targetDimensionCode"/>
+              <result property="targetCluster" column="targetCluster"/>
+        </collection>
+  	</resultMap>
+  	
+  	<delete id="deleteDomain" parameterType="java.lang.Integer">
+  		delete from service_manager.interfacemodeldomain where modelId = #{modelId}; 
+  	</delete>
+  	<delete id="deleteDimension" parameterType="java.lang.Integer">
+  		delete from service_manager.interfacemodeldimension where modelId = #{modelId};
+  	</delete>
+  	<!--查询所有可用的模型  -->
+  	<select id="findAll" resultType="interfaceModel">
+  		select 
+  			<include refid="Base_Column_List"></include>
+  		from 
+  			service_manager.interfacemodel where status=0
+  	</select>
+	<!--根据参数查找存在的模型的个数  -->
+	<select id="findModelByParam" parameterType="java.util.Map" resultType="java.lang.Long">
+		select count(1) from service_manager.interfacemodel 
+		<where>
+			<if test="modelName !=null">
+				and modelName = #{modelName}
+			</if>
+			<if test="modelId !=null and modelId != ''">
+				and modelId != #{modelId}
+			</if>
+		</where>
+	</select>
+	<!-- 查询是否modelid和domainid的数据条数 -->
+	<select id="getCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		select count(1) from service_manager.interfacemodeldomain 
+		<where>
+			<if test="modelId != null">
+				and modelId = #{modelId}
+			</if>
+			<if test="domainId != null">
+				and domainId = #{domainId}
+			</if>
+		</where>
+	</select>
+	
+	<select id="domainYN" parameterType="java.lang.Integer" resultType="java.lang.Long" >
+		SELECT count(1) 
+			from (SELECT a.domainId , b.modelId , b.status 
+					from service_manager.interfacemodeldomain a 
+					LEFT JOIN service_manager.interfacemodel b 
+					ON a.modelId = b.modelId where b.`status` = 0) T1 
+			where T1.domainId = #{domainId}
+	</select>
+	<select id="dimensionYN" parameterType="java.lang.Integer" resultType="java.lang.Long" >
+		SELECT count(1) 
+			from (SELECT a.dimensionId , b.modelId , b.status 
+					from service_manager.interfacemodeldimension a 
+					LEFT JOIN service_manager.interfacemodel b 
+					ON a.modelId = b.modelId where b.`status` = 0) T1 
+			where T1.dimensionId = #{dimensionId}
+	</select>
+	<insert id="saveInterfaceModelLog" parameterType="interfaceModel">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
+            SELECT LAST_INSERT_ID() AS logId
+        </selectKey>
+    	insert into service_manager.interfacemodelLog (modelId, modelName,description,status,createDate,actionUserId,actionType)
+		VALUES (#{modelId},#{modelName},#{description},#{status},#{lastModifyDate},#{actionUserId},#{actionType})
+	</insert>
+	<insert id="saveInterfaceModelDimensionLog" parameterType="java.util.Map" >
+		insert into service_manager.interfacemodeldimensionLog (logId, modelId,domainId,dimensionId,dimensionCode,targetCluster,targetDimensionCode,createDate,actionUserId,actionType)
+		VALUES (#{logId},#{modelId},#{domainId},#{dimensionId},#{dimensionCode},#{targetCluster},#{targetDimensionCode},#{lastModifyDate},#{actionUserId},#{actionType})
+	</insert>
+</mapper>

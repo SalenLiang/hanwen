@@ -1,0 +1,16 @@
+<div class="page-top clearfix" scroll-position="scrolled" max-height="50" ng-class="{'scrolled': scrolled}">
+  <a href="#/dashboard" class="al-logo clearfix"><span>法海风控</span></a>
+  <a href class="collapse-menu-link ion-navicon" ba-sidebar-toggle-menu></a>
+
+  <div class="user-profile clearfix" ng-controller="componentsCtrl">
+    <div class="al-user-profile" uib-dropdown style="width:300px;text-align:right;padding-top:12px;font-size:18px;">
+      <a uib-dropdown-toggle class="profile-toggle-link" >
+        {{currentUserName}}
+      </a>
+      <ul  class="top-dropdown-menu profile-dropdown" uib-dropdown-menu>
+        <li ><a href class="signout" ng-click="settingPSW()"><i class="ion-gear-b"></i>修改密码</a></li>
+        <li ><a href class="signout" ng-click="loginOut()"><i class="fa fa-power-off"></i>退出</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

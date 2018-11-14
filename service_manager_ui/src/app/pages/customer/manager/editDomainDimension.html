@@ -1,0 +1,42 @@
+<div class="horizontal-scroll " >
+    <div class="add-row-editable-table">
+        &nbsp;&nbsp;&nbsp;<button class="btn btn-primary" data-toggle="modal"
+                                  ng-click="selSettingTemplet('edit')">模板选择</button>
+    </div>
+    <div class="horizontal-scroll ">
+        <table class="table table-bordered" >
+            <thead>
+                <tr>
+                    <th style="text-align: center">领域</th>
+                    <th style="text-align: center">维度</th>
+                </tr>
+            </thead>
+            <tbody>
+                <input type="hidden" ng-model="restoreDomainDimensionLists" />
+                <tr ng-repeat="domainDimension in editDomainDimensionLists">
+                    <td style="text-align:center;vertical-align: middle;" >
+                        <div class="checkbox">
+                            <div class="col-md-2">
+                                <label class="custom-checkbox">
+                                    <input type="checkbox" ng-model="domainDimension.selectYN">
+                                    <span>{{domainDimension.domainName}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="align-left"  style="word-break: break-all;word-wrap: break-word;"  >
+                        <div class="checkbox"  >
+                            <div class="col-md-6" ng-repeat="dimension in domainDimension.dimensionList">
+                                <label class="custom-checkbox" ng-if="dimension.dimensionName != null">
+                                    <input type="checkbox" ng-model="dimension.selectYN"  ng-click="linkage(domainDimension,dimension)">
+                                    <span>{{dimension.dimensionName}}</span>
+                                </label>
+                                <span ng-click="editCheckField($event,dimension.fieldList,domainDimension,dimension)">&nbsp;&nbsp;&nbsp;<i class="ion-navicon-round" style="cursor:pointer;" ></i></span>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

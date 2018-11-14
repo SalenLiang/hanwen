@@ -1,0 +1,33 @@
+.page-list .pagination {float:left;}
+.page-list .pagination span {cursor: pointer;}
+.page-list .pagination .separate span{cursor: default; border-top:none;border-bottom:none;}
+.page-list .pagination .separate span:hover {background: none;}
+.page-list .page-total {float:left; margin: 25px 20px;}
+.page-list .page-total input, .page-list .page-total select{height: 26px; border: 1px solid #ddd;}
+.page-list .page-total input {width: 40px; padding-left:3px;}
+.page-list .page-total select {width: 50px;}
+
+/** loading动画加载 **/
+.flyover .mask {
+    top: 0;
+    left: 0;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    background: black;
+    z-index: 1049;
+}
+.flyover .alert{
+    /*left: 50%;
+    top: 50%;
+    position: fixed;
+    z-index: 1050;*/
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    rightright: 0px;
+    bottombottom: 0px;
+    margin: auto;
+    z-index: 1050;
+}

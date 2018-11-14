@@ -1,0 +1,91 @@
+<div class="widgets" ng-controller="editSettingTempletCtrl" >
+    <div class="row">
+        <div class="col-md-5" >
+            <div ba-panel ba-panel-title="模板" ba-panel-class="with-scroll" >
+                <form name="form1" ng-submit="editSaveSettingTemplet()" novalidate>
+                    <div class="ng-cloak">
+                        <div class="form-group has-feedback">
+                            <label for="templetName">模板名称：</label>
+                            <input type="text" ng-focus class="form-control" placeholder="请输入模板名称" ng-blur="editCheckTemplet('templetName',editSettingTemplet.templetName,$event)"
+                                   ng-model="editSettingTemplet.templetName" name="templetName" id="templetName"  required ng-minlength="2" ng-maxlength="20" >
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.templetName.$invalid && !form1.templetName.$focused">请输入2-20位合法的模板名称</font>
+                            <!--<span style="color:red" ng-show="form1.dimensionName.$dirty && form1.dimensionName.$invalid">
+                                 <span ng-show="form1.dimensionName.$error.required">必填项</span>
+                            </span>-->
+                            <span ng-show="$parent.$parent.editCheckTempletName&&!form1.templetName.$invalid">
+                                	<span style="color: #a94442;">模板名称已存在</span>
+                            </span>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="divStatus">状态：</label>
+                            <div class="form-group row" id="divStatus">
+                                <div class="col-sm-8">
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="0" name="settingTempletStatus" ng-checked="true"  ng-model="editSettingTemplet.status">
+                                        <span>启用</span>
+                                    </label>
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="1" name="settingTempletStatus" ng-model="editSettingTemplet.status">
+                                        <span>停用</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="description">描述：</label>
+                            <textarea id="description"  class="form-control"   ng-model="editSettingTemplet.description"
+                                      name="description" ng-maxlength="255" placeholder="请输入描述信息"  ></textarea>
+                        </div>
+                    </div>
+                    <div class="add-row-editable-table align-center">
+                        <button class="btn btn-primary" type="submit" ng-disabled="form1.$invalid || editCheckTempletName">保存</button>&nbsp;
+                        <button class="btn btn-default" type="button" onclick="history.go(-1);">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-7" >
+            <div ba-panel ba-panel-title="配置选择" ba-panel-class="with-scroll middle-large-panel">
+                <div class="horizontal-scroll ">
+                    <table class="table table-bordered ">
+                        <thead>
+                        <tr>
+                            <th style="text-align: center">领域</th>
+                            <th style="text-align: center">维度</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <input type="hidden" ng-model="restoreDomainDimensionLists" />
+                        <tr ng-repeat="domainDimension in editTempletDomainDimensionLists">
+                            <td style="text-align:center;vertical-align: middle;" >
+                                <div class="checkbox">
+                                    <div class="col-md-2">
+                                        <label class="custom-checkbox">
+                                            <input type="checkbox" ng-model="domainDimension.selectYN">
+                                            <span>{{domainDimension.domainName}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="align-left"  style="word-break: break-all;word-wrap: break-word;"  >
+                                <div class="checkbox"  >
+                                    <div class="col-md-6" ng-repeat="dimension in domainDimension.dimensionList">
+                                        <label class="custom-checkbox" ng-if="dimension.dimensionName != null">
+                                            <input type="checkbox" ng-model="dimension.selectYN" ng-click="linkage(domainDimension,dimension)"  >
+                                            <span>{{dimension.dimensionName}}</span>
+
+                                        </label>
+                                        <span ng-click="editSelectField($event,dimension.fieldList,domainDimension,dimension)">&nbsp;&nbsp;&nbsp;<i class="ion-navicon-round" style="cursor:pointer;"></i></span>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

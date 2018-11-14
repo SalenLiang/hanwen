@@ -1,0 +1,113 @@
+<div class="widgets" ng-controller="addSystemUserController">
+    <div class="row">
+        <div class="col-md-6" >
+            <div ba-panel ba-panel-title="增加新用户" ba-panel-class="with-scroll" >
+                <form name="userForm" ng-submit="saveUser(userForm)" novalidate>
+                    <div class="ng-cloak">
+                        <div class="form-group has-feedback">
+                            <label for="name">登录名(必填)：</label>
+                            <input type="text" ng-focus class="form-control" placeholder="请输入登录名"
+                                   ng-blur="checkAdminUser('name',$event)"
+                                   ng-model="$parent.$parent.adminUser.name" name="name" id="name"   required   ng-maxlength="20" >
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="userForm.name.$invalid && !userForm.name.$focused">请输入正确的登录名</font>
+                            <!--<span style="color:red" ng-show="userForm.name.$dirty && userForm.name.$invalid">
+                                 <span ng-show="userForm.name.$error.required">必填项</span>
+                                 <span ng-show="userForm.name.$invalid && !userForm.name.$focused">请输入正确的用户名</span>
+                            </span>-->
+                            <span ng-show="$parent.$parent.checkAdminUserNameResult && !userForm.name.$invalid">
+                                <span style="color: #a94442;">登录名已存在</span>
+                            </span>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="realName">用户姓名(必填)：</label>
+                            <input type="text" ng-focus class="form-control" placeholder="请输入用户姓名"
+                                   ng-model="$parent.$parent.adminUser.realName" name="realName" id="realName"   required   ng-maxlength="10" >
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="userForm.realName.$invalid && !userForm.realName.$focused">请输入正确的用户姓名</font>
+                           <!-- <span style="color:red" ng-show="userForm.realName.$dirty && userForm.realName.$invalid">
+                                 <span ng-show="userForm.realName.$error.required">必填项</span>
+                                 <span ng-show="userForm.realName.$invalid && !userForm.realName.$focused">请输入正确的用户姓名</span>
+                            </span>-->
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="email">电子邮箱(必填)：</label>
+                            <input type="text" ng-focus class="form-control" placeholder="请输入电子邮箱"
+                                   ng-model="$parent.$parent.adminUser.email" name="email" id="email"   required   ng-pattern="/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/"  >
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="userForm.email.$invalid && !userForm.email.$focused">请输入正确格式的电子邮箱</font>
+                            <!--<span style="color:red" ng-show="userForm.email.$dirty && userForm.email.$invalid">
+                                 <span ng-show="userForm.email.$error.required">必填项</span>
+                                 <span ng-show="userForm.email.$invalid && !userForm.email.$focused">请输入正确格式的电子邮箱</span>
+                            </span>-->
+                            <span ng-show="$parent.$parent.checkAdminUserEmailResult && !userForm.email.$invalid">
+                                <span style="color: #a94442;">电子邮箱已存在</span>
+                            </span>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="mobile">手机号(必填)：</label>
+                            <input type="text" ng-focus class="form-control" placeholder="请输入11位手机号"
+                                   ng-model="$parent.$parent.adminUser.mobile" name="mobile" id="mobile"
+                                   required  ng-minlength="11" ng-maxlength="11"  ng-pattern="/^1[3|4|5|7|8]\d{9}$/">
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="userForm.mobile.$invalid && !userForm.mobile.$focused">请输入正确的手机号</font>
+                            <!--<span style="color:red" ng-show="userForm.mobile.$dirty && userForm.mobile.$invalid">
+                                 <span ng-show="userForm.mobile.$error.required">必填项</span>
+                                 <span ng-show="userForm.mobile.$invalid && !userForm.mobile.$focused">请输入正确的手机号</span>
+                            </span>-->
+                           <!-- <span ng-show="$parent.$parent.checkAdminUserMobileResult&&!userForm.mobile.$invalid">
+                                <span style="color: #a94442;">手机号已存在</span>
+                            </span>-->
+                        </div>
+                        <div class="form-group row">
+                            <div class="col-md-10 has-feedback">
+                                <label for="flag">是否选择区域：</label>
+                                <div id="flag">
+                                    <ba-switcher switcher-style="primary" switcher-value="$parent.$parent.adminUser.regionYN"></ba-switcher>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group row" ng-show="$parent.$parent.adminUser.regionYN">
+                            <div class="col-md-10 has-feedback">
+                                <label for="area">区域：</label>
+                                <div id="area" ng-repeat="area in regions">
+                                    <input type="checkbox" value="{{area.regionCode}}"  name="areaCode">{{area.regionName}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-row-editable-table align-center">
+                        <button class="btn btn-primary"  type="submit" ng-disabled="userForm.$invalid || checkAdminUserNameResult || checkAdminUserEmailResult || checkAdminUserMobileResult">保存</button>&nbsp;
+                        <button class="btn btn-default" type="button" onclick="history.go(-1);">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-6" >
+            <div ba-panel ba-panel-title="角色列表" ba-panel-class="with-scroll" >
+                <div class="add-row-editable-table">
+                </div>
+                <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="columnsTableData">
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th width="5%" style="text-align:center;"></th>
+                            <th>角色名</th>
+                            <th>角色描述</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="no-top-border" ng-repeat="role in roles">
+                            <td>
+                                <input type="checkbox" name="roleId" value="{{role.roleId}}">
+                            </td>
+                            <td>{{role.roleName}}</td>
+                            <td>{{role.describe}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

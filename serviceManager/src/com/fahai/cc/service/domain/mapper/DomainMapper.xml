@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.domain.mapper.DomainMapper">
+
+    <sql id="Base_Column_List">
+        domainId,domainCode,domainName,status,description
+    </sql>
+    <insert id="saveDomain" parameterType="domain">
+    	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="domainId">
+            SELECT LAST_INSERT_ID() AS domainId
+        </selectKey>
+      INSERT INTO service_manager.domain (domainCode,domainName,status,description,lastModifyDate)
+      VALUES (#{domainCode},#{domainName},#{status},#{description},#{lastModifyDate})
+    </insert>
+
+    <update id="updateDomain" parameterType="domain">
+        UPDATE service_manager.domain SET
+        <trim suffixOverrides=",">
+            <if test="domainName != null">
+                domainName=#{domainName},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+            <if test="lastModifyDate != null">
+                lastModifyDate=#{lastModifyDate},
+            </if>
+        </trim>
+        WHERE domainId=#{domainId}
+    </update>
+
+    <select id="getTotalCount" parameterType="java.util.Map" resultType="long">
+      SELECT COUNT(1) from service_manager.domain
+        <where>
+            <if test="status != null">
+                AND status=#{status}
+            </if>
+            <if test="domainCode != null">
+                AND domainCode like '%${domainCode}%'
+            </if>
+            <if test="domainName != null">
+                AND domainName LIKE '%${domainName}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="findPageDomain" parameterType="java.util.Map" resultType="domain">
+        SELECT <include refid="Base_Column_List"/> from service_manager.domain
+        <where>
+            <if test="status != null">
+                AND status=#{status}
+            </if>
+            <if test="domainCode != null">
+                AND domainCode like '%${domainCode}%'
+            </if>
+            <if test="domainName != null">
+                AND domainName LIKE '%${domainName}%'
+            </if>
+        </where>
+        ORDER BY lastModifyDate desc
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="findCount" parameterType="java.util.HashMap" resultType="long">
+        SELECT COUNT(1) FROM service_manager.domain
+         <where>
+             <if test="domainCode != null">
+                 domainCode = #{domainCode}
+             </if>
+         </where>
+    </select>
+
+    <select id="getAllDomain" parameterType="java.util.HashMap" resultType="domain">
+        SELECT <include refid="Base_Column_List"/> from service_manager.domain
+        <where>
+            <if test="status != null">
+                AND status=#{status}
+            </if>
+            <if test="domainCode != null">
+                AND domainCode like '%${domainCode}%'
+            </if>
+            <if test="domainName != null">
+                AND domainName LIKE '%${domainName}%'
+            </if>
+        </where>
+        ORDER BY domainId
+    </select>
+    <!-- 查询所有可用的领域 维度 字段 -->
+	<select id="findAllDomain" resultType="domain" resultMap="BaseResultMap">
+		select a.domainId,a.domainName,a.domainCode,b.dimensionId,b.domainId  dimensiondomainId,b.dimensionCode,b.dimensionName,c.fieldId,c.dimensionId fielddimensionId,c.fieldName,c.fieldCode,c.description,c.defaultListShowYN,c.defaultDetailShowYN from service_manager.domain a LEFT JOIN service_manager.dimension b on a.domainId = b.domainId  
+		LEFT JOIN service_manager.field c on b.dimensionId = c.dimensionId where a.`status`=0 and b.`status` = 0 and  c.`status` = 0 ORDER BY c.fieldCode ,b.dimensionCode,a.domainCode
+	</select>
+	
+	<resultMap id="BaseResultMap" type="com.fahai.cc.service.domain.entity.Domain" >
+	    <id column="domainId" property="domainId" jdbcType="INTEGER" />
+	    <result column="domainName" property="domainName" jdbcType="VARCHAR" />
+	    <result column="domainCode" property="domainCode" jdbcType="VARCHAR" />
+	    <collection property="dimensionList" ofType="com.fahai.cc.service.dimension.entity.Dimension">
+              <id property="dimensionId" column="dimensionId"/> 
+              <result property="dimensionName" column="dimensionName"/>
+              <result property="dimensionCode" column="dimensionCode"/>
+              <result property="domainId" column="dimensiondomainId"/>
+              <collection property="fieldList" ofType="com.fahai.cc.service.field.entity.Field">
+		             <id property="fieldId" column="fieldId"/> 
+		             <result property="dimensionId" column="fielddimensionId"/>
+		             <result property="fieldName" column="fieldName"/>
+		             <result property="fieldCode" column="fieldCode"/>
+		             <result property="description" column="description"/>  
+		             <result property="defaultListShowYN" column="defaultListShowYN"/>
+		             <result property="defaultDetailShowYN" column="defaultDetailShowYN"/>
+		       </collection>
+        </collection>
+  	</resultMap>
+  	
+  	<!--查询所有的领域维度  -->
+	<select id="findAllDomainDimension" resultType="domain" resultMap="SimpleResultMap">
+		select a.domainId,a.domainName,b.dimensionId,b.domainId  dimensiondomainId,b.dimensionName,b.dimensionCode from service_manager.domain a LEFT JOIN service_manager.dimension b on a.domainId = b.domainId  
+		where a.`status`=0 and b.`status` = 0
+	</select>
+  	<resultMap id="SimpleResultMap" type="com.fahai.cc.service.domain.entity.Domain" >
+	    <id column="domainId" property="domainId" jdbcType="INTEGER" />
+	    <result column="domainName" property="domainName" jdbcType="VARCHAR" />
+	    <collection property="dimensionList" ofType="com.fahai.cc.service.dimension.entity.Dimension">
+              <id property="dimensionId" column="dimensionId"/> 
+              <result property="dimensionName" column="dimensionName"/>
+              <result property="dimensionCode" column="dimensionCode"/>
+              <result property="domainId" column="dimensiondomainId"/>
+        </collection>
+  	</resultMap>
+  	
+  	<insert id="saveDomainLog" parameterType="domain">
+  		insert into service_manager.domainLog (domainId,domainCode,domainName,status,description,createDate,actionUserId,actionType)
+      VALUES (#{domainId},#{domainCode},#{domainName},#{status},#{description},#{lastModifyDate},#{actionUserId},#{actionType})
+  	</insert>
+</mapper>

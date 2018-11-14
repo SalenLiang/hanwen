@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.settingTemplet.mapper.SettingTempletMapper">
+
+
+    <insert id="saveSettingTemplet" parameterType="com.fahai.cc.service.settingTemplet.entity.SettingTemplet">
+    	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="templetId">
+            SELECT LAST_INSERT_ID() AS templetId
+        </selectKey>
+        INSERT INTO service_manager.settingtemplet(templetName,status,description,createDate,lastModifyDate,createAdminUserId )
+        VALUES (#{templetName},#{status},#{description},#{createDate},#{lastModifyDate},#{actionUserId})
+    </insert>
+    <insert id="saveSettingTempletLog" parameterType="com.fahai.cc.service.settingTemplet.entity.SettingTemplet">
+    	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
+            SELECT LAST_INSERT_ID() AS logId
+        </selectKey>
+        INSERT INTO service_manager.settingtempletlog(templetId,templetName,status,description,createDate,actionUserId,actionType )
+        VALUES (#{templetId},#{templetName},#{status},#{description},#{createDate},#{actionUserId},#{actionType})
+    </insert>
+    <insert id="saveTempletField" parameterType="java.util.Map">
+    	INSERT INTO service_manager.settingtempletdetail(templetId,domainId,dimensionId,fieldId,listShowYN,detailShowYN,createDate,createAdminUserId )
+        VALUES (#{templetId},#{domainId},#{dimensionId},#{fieldId},#{listShowYN},#{detailShowYN},#{createDate},#{createAdminUserId})
+    </insert>
+    <insert id="saveTempletFieldLog" parameterType="java.util.Map">
+    	INSERT INTO service_manager.settingtempletdetaillog(logId,templetId,domainId,dimensionId,fieldId,listShowYN,detailShowYN,createDate,actionUserId,actionType )
+        VALUES (#{logId},#{templetId},#{domainId},#{dimensionId},#{fieldId},#{listShowYN},#{detailShowYN},#{createDate},#{actionUserId},#{actionType})
+    </insert>
+
+    <select id="findCountByParam" parameterType="hashMap" resultType="long">
+        SELECT COUNT(1) FROM service_manager.settingtemplet
+        <where>
+            <if test="templetName != null">
+                and templetName = #{templetName}
+            </if>
+            <if test="templetId != null">
+                and templetId != #{templetId}
+            </if>
+        </where>
+    </select>
+    
+    <select id="getTotalCount" parameterType="java.util.Map" resultType="java.lang.Long">
+    	select count(1) from service_manager.settingtemplet 
+    	<where>
+    		<if test="templetName!=null">
+    			and templetName like '%${templetName}%'
+    		</if>
+    		<if test="status!=null">
+    			and status = #{status}
+    		</if>
+    	</where>
+    </select>
+    <select id="findPageSettingTemplet" parameterType="java.util.Map" resultType="com.fahai.cc.service.settingTemplet.entity.SettingTemplet">
+    	select templetId,templetName,status,description,createDate,lastModifyDate from service_manager.settingtemplet
+    	<where>
+    		<if test="templetName!=null">
+    			and templetName like '%${templetName}%'
+    		</if>
+    		<if test="status!=null">
+    			and status = #{status}
+    		</if>
+    	</where>
+    	order by lastModifyDate desc
+    	limit #{start},#{pageSize}
+    </select>
+    
+    
+    
+<!--      <select id="getSettingTempletDetail" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    	select
+    		T1.domainId,T1.domainName,T1.selectYN domainSelectYN,T1.domainCode,
+    		T2.dimensionId,T2.dimensionName,T2.domainId dimensiondomainId,T2.selectYN dimensionSelectYN,T2.dimensionCode,
+    		T3.fieldId,T3.fieldName,T3.fieldCode,T3.description,T3.dimensionId fielddimensionId,
+				if(T2.selectYN=1,T3.listShowYN,T3.defaultListShowYN) listShowYN ,
+				if(T2.selectYN=1,T3.detailShowYN ,T3.defaultDetailShowYN ) detailShowYN   
+    	from 
+    		(select a.domainId ,a.domainName ,a.domainCode,a.status,if(b.templetId=#{templetId},1,0) selectYN 
+    			from service_manager.domain a 
+    			LEFT JOIN service_manager.settingtempletdetail b 
+    			on a.domainId=b.domainId and b.templetId =#{templetId} where a.status = 0 group by a.domainId) T1 
+    	LEFT JOIN
+			(select a.dimensionId ,a.dimensionName,a.dimensionCode,a.domainId,a.status,if(b.templetId=#{templetId},1,0) selectYN 
+				from service_manager.dimension a 
+				LEFT JOIN service_manager.settingtempletdetail b 
+				on a.dimensionId=b.dimensionId and b.templetId =#{templetId}  where a.status = 0 group by a.dimensionId) T2 on T1.domainId = T2.domainId 
+		LEFT JOIN
+			(select a.fieldId ,a.fieldName,a.fieldCode,a.description,a.status,a.dimensionId ,b.listShowYN,b.detailShowYN,a.defaultListShowYN,a.defaultDetailShowYN
+				from service_manager.field a LEFT JOIN service_manager.settingtempletdetail b 
+				on a.fieldId=b.fieldId and b.templetId =#{templetId}  where a.status = 0) T3 on T2.dimensionId = T3.dimensionId
+		where T1.status=0 and T2.status=0 and T3.status=0 ORDER BY T3.fieldCode,T2.dimensionCode,T1.domainCode
+	</select> -->
+     <select id="getSettingTempletDetail" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    	select
+    		T1.domainId,T1.domainName,T1.selectYN domainSelectYN,T1.domainCode,
+    		T2.dimensionId,T2.dimensionName,T2.domainId dimensiondomainId,T2.selectYN dimensionSelectYN,T2.dimensionCode,
+    		T3.fieldId,T3.fieldName,T3.fieldCode,T3.description,T3.dimensionId fielddimensionId,
+				if(T2.selectYN=1,T3.listShowYN,T3.defaultListShowYN) listShowYN ,
+				if(T2.selectYN=1,T3.detailShowYN ,T3.defaultDetailShowYN ) detailShowYN   
+    	from 
+    		(select a.domainId ,a.domainName ,a.domainCode,a.status,if(b.templetId=#{templetId},1,0) selectYN 
+    			from service_manager.domain a 
+    			LEFT JOIN (select templetId,domainId from service_manager.settingtempletdetail where templetId=#{templetId} GROUP BY templetId,domainId ORDER BY null) b 
+    			on a.domainId=b.domainId where a.status = 0 ) T1 
+    	LEFT JOIN
+			(select a.dimensionId ,a.dimensionName,a.dimensionCode,a.domainId,a.status,if(b.templetId=#{templetId},1,0) selectYN 
+				from service_manager.dimension a 
+				LEFT JOIN (select templetId,dimensionId from service_manager.settingtempletdetail where templetId=#{templetId}  GROUP BY templetId,dimensionId ORDER BY null) b 
+				on a.dimensionId=b.dimensionId  where a.status = 0 ) T2 on T1.domainId = T2.domainId 
+		LEFT JOIN
+			(select a.fieldId ,a.fieldName,a.fieldCode,a.description,a.status,a.dimensionId ,b.listShowYN,b.detailShowYN,a.defaultListShowYN,a.defaultDetailShowYN
+				from service_manager.field a LEFT JOIN (select templetId,fieldId,listShowYN,detailShowYN from service_manager.settingtempletdetail where templetId=#{templetId}  GROUP BY templetId,fieldId ORDER BY null) b 
+				on a.fieldId=b.fieldId where a.status = 0) T3 on T2.dimensionId = T3.dimensionId
+		where T1.status=0 and T2.status=0 and T3.status=0 ORDER BY T3.fieldCode,T2.dimensionCode,T1.domainCode
+	</select>
+    <resultMap id="BaseResultMap" type="com.fahai.cc.service.domain.entity.Domain" >
+	    <id column="domainId" property="domainId" jdbcType="INTEGER" />
+	    <result column="domainName" property="domainName" jdbcType="VARCHAR" />
+	    <result column="domainCode" property="domainCode" jdbcType="VARCHAR" />
+	    <result property="selectYN" column="domainSelectYN"/>
+	    <collection property="dimensionList" ofType="com.fahai.cc.service.dimension.entity.Dimension">
+              <id property="dimensionId" column="dimensionId"/> 
+              <result property="dimensionName" column="dimensionName"/>
+              <result property="dimensionCode" column="dimensionCode"/>
+              <result property="domainId" column="dimensiondomainId"/>
+              <result property="selectYN" column="dimensionSelectYN"/>
+              <collection property="fieldList" ofType="com.fahai.cc.service.field.entity.Field">
+		             <id property="fieldId" column="fieldId"/> 
+		             <result property="dimensionId" column="fielddimensionId"/>
+		             <result property="fieldName" column="fieldName"/>
+		             <result property="fieldCode" column="fieldCode"/>
+		             <result property="description" column="description"/>  
+		             <result property="defaultListShowYN" column="listShowYN"/>
+		             <result property="defaultDetailShowYN" column="detailShowYN"/>
+		       </collection>
+        </collection>
+  	</resultMap>
+	
+	<update id="updateSettingTemplet" parameterType="com.fahai.cc.service.settingTemplet.entity.SettingTemplet">
+		update service_manager.settingtemplet set
+		 <trim suffixOverrides=",">
+            <if test="templetName != null">
+                templetName=#{templetName},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+            <if test="lastModifyDate != null">
+                lastModifyDate=#{lastModifyDate},
+            </if>
+        </trim>
+        where templetId=#{templetId}
+	</update>
+	<delete id="deleteTempletField" parameterType="java.lang.Integer">
+		delete from service_manager.settingtempletdetail where templetId = #{templetId}
+	</delete>
+	<select id="findAllSettingTemplet" resultType="com.fahai.cc.service.settingTemplet.entity.SettingTemplet">
+		select templetId,templetName,status,description from service_manager.settingtemplet where status = 0
+	</select>
+	
+	<select id="getSettingTempletDetailById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+		select b.domainId,b.domainName,1 domainSelectYN,b.domainCode,
+			 c.dimensionId,c.dimensionName,c.domainId dimensiondomainId,1 dimensionSelectYN,c.dimensionCode,
+			 d.fieldId,d.fieldName,d.fieldCode,d.description,d.dimensionId fielddimensionId,a.listShowYN,a.detailShowYN 
+		from settingtempletdetail a LEFT JOIN 
+			domain b ON a.domainId=b.domainId LEFT JOIN
+			dimension c ON a.dimensionId=c.dimensionId LEFT JOIN
+			field d ON a.fieldId=d.fieldId where a.templetId = #{templetId}
+	</select>
+</mapper>

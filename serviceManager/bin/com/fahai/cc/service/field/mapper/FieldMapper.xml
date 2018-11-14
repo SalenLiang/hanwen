@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.field.mapper.FieldMapper">
+	
+    <insert id="saveField" parameterType="field">
+      INSERT INTO service_manager.field(dimensionId,fieldCode,fieldName,fieldType,defaultListShowYN,defaultDetailShowYN,searchYN,status,description,lastModifyDate)
+      VALUES (#{dimensionId},#{fieldCode},#{fieldName},#{fieldType},#{defaultListShowYN},#{defaultDetailShowYN},#{searchYN},#{listShowYN},#{defaultYN},#{status},#{description},#{lastModifyDate})
+    </insert>
+
+    <update id="updateField" parameterType="field">
+        UPDATE service_manager.field SET
+        <trim suffixOverrides=",">
+            <if test="fieldName != null">
+                fieldName=#{fieldName},
+            </if>
+            <if test="fieldType != null">
+                fieldType=#{fieldType},
+            </if>
+            <if test="defaultListShowYN != null">
+                defaultListShowYN=#{defaultListShowYN},
+            </if>
+            <if test="defaultDetailShowYN != null">
+                defaultDetailShowYN=#{defaultDetailShowYN},
+            </if>
+            <if test="searchYN != null">
+                searchYN=#{searchYN},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="description != null">
+                description=#{description},
+            </if>
+            <if test="lastModifyDate != null">
+                lastModifyDate=#{lastModifyDate},
+            </if>
+        </trim>
+        WHERE fieldId=#{fieldId}
+    </update>
+    
+    <delete id="deleteField" parameterType="java.lang.Integer">
+    	delete from service_manager.field where fieldId = #{fieldId}; 
+    </delete>
+
+    <select id="findFieldList" parameterType="map" resultType="field">
+        SELECT fieldId,dimensionId,fieldCode,fieldName,fieldType,defaultListShowYN,defaultDetailShowYN,searchYN,status,description,lastModifyDate
+        FROM service_manager.field
+        <where>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="dimensionId != null">
+                and dimensionId = #{dimensionId}
+            </if>
+        </where>
+        ORDER BY fieldId
+    </select>
+
+    <insert id="batchSaveField" parameterType="list" useGeneratedKeys="true" keyProperty="fieldId">
+        INSERT INTO service_manager.field(dimensionId,fieldCode,fieldName,fieldType,defaultListShowYN,defaultDetailShowYN,searchYN,status,description,lastModifyDate)VALUES
+        <foreach collection="list" item="field" index="index" separator=",">
+            (#{field.dimensionId},#{field.fieldCode},
+            #{field.fieldName},#{field.fieldType},#{field.defaultListShowYN},
+            #{field.defaultDetailShowYN},#{field.searchYN},#{field.status},
+            #{field.description},#{field.lastModifyDate})
+        </foreach>
+    </insert>
+
+    <select id="findByDimensionId" parameterType="java.lang.Integer" resultType="field">
+        SELECT fieldId,dimensionId,fieldCode,fieldName,fieldType,defaultListShowYN,defaultDetailShowYN,searchYN,status,description,lastModifyDate
+        FROM service_manager.field
+        WHERE dimensionId=#{dimensionId} and status = 0
+        ORDER BY fieldId
+    </select>
+
+    <update id="batchUpdateField" parameterType="java.util.List">
+      <foreach collection="list" item="field" index="index" open="" close="" separator=";">
+          UPDATE service_manager.field SET
+          <trim suffixOverrides=",">
+              <if test="field.fieldName != null">fieldName=#{field.fieldName},</if>
+              <if test="field.status != null">status=#{field.status},</if>
+              <if test="field.description != null">description=#{field.description},</if>
+              <if test="field.lastModifyDate != null">lastModifyDate=#{field.lastModifyDate},</if>
+          </trim>
+          WHERE fieldId=#{field.fieldId}
+      </foreach>
+
+    </update>
+<!-- 
+    <insert id="batchSaveOrUpdateField" parameterType="java.util.List" useGeneratedKeys="true" keyProperty="fieldId" >
+        <foreach collection="list" item="field" index="index" open="" close="" separator=";">
+            <if test="field.fieldId != null">
+                UPDATE service_manager.field SET
+                <trim suffixOverrides=",">
+                    <if test="field.fieldName != null">fieldName=#{field.fieldName},</if>
+                    <if test="field.fieldType != null">fieldType=#{field.fieldType},</if>
+                    <if test="field.defaultListShowYN != null">defaultListShowYN=#{field.defaultListShowYN},</if>
+                    <if test="field.defaultDetailShowYN != null">defaultDetailShowYN=#{field.defaultDetailShowYN},</if>
+                    <if test="field.searchYN != null">searchYN=#{field.searchYN},</if>
+                    <if test="field.status != null">status=#{field.status},</if>
+                    <if test="field.description != null">description=#{field.description},</if>
+                    <if test="field.lastModifyDate != null">lastModifyDate=#{field.lastModifyDate},</if>
+                </trim>
+                WHERE fieldId=#{field.fieldId}
+            </if>
+            <if test="field.fieldId == null">
+            	INSERT INTO service_manager.field(dimensionId,fieldCode,fieldName,fieldType,defaultListShowYN,defaultDetailShowYN,searchYN,status,description,lastModifyDate)VALUES
+                    (#{field.dimensionId},#{field.fieldCode},#{field.fieldName},
+                    #{field.fieldType},#{field.defaultListShowYN},#{field.defaultDetailShowYN},
+                    #{field.searchYN},#{field.status},
+                    #{field.description},#{field.lastModifyDate})
+            </if>
+        </foreach>
+    </insert> -->
+    
+    <insert id="batchSaveOrUpdateField" parameterType="java.util.List" >
+        <foreach collection="list" item="field" index="index" open="" close="" separator=";">
+            <if test="field.fieldId != null">
+                UPDATE service_manager.field SET
+                <trim suffixOverrides=",">
+                    <if test="field.fieldName != null">fieldName=#{field.fieldName},</if>
+                    <if test="field.fieldType != null">fieldType=#{field.fieldType},</if>
+                    <if test="field.defaultListShowYN != null">defaultListShowYN=#{field.defaultListShowYN},</if>
+                    <if test="field.defaultDetailShowYN != null">defaultDetailShowYN=#{field.defaultDetailShowYN},</if>
+                    <if test="field.searchYN != null">searchYN=#{field.searchYN},</if>
+                    <if test="field.status != null">status=#{field.status},</if>
+                    <if test="field.description != null">description=#{field.description},</if>
+                    <if test="field.lastModifyDate != null">lastModifyDate=#{field.lastModifyDate},</if>
+                </trim>
+                WHERE fieldId=#{field.fieldId}
+            </if>
+        </foreach>
+    </insert>
+    
+    <delete id="deleteFieldBydimensionId" parameterType="java.lang.Integer">
+    	delete from service_manager.field where dimensionId = #{dimensionId};
+    </delete>
+    <resultMap id="baseDimensionFieldMap" type="com.fahai.cc.interf.mysql.entity.Field" >
+		<result column="dimensionCode" property="dimensionCode"/>
+		<result column="fieldCode" property="fieldCode"/>
+		<result column="fieldName" property="fieldName"/>
+		<result column="fieldType" property="fieldType"/>
+	</resultMap>
+	
+	<select id="getDimensionField"  parameterType="int"  resultMap="baseDimensionFieldMap">
+		select fieldCode,fieldName,fieldType from service_manager.field where dimensionId =#{dimensionId} and status = 0
+	</select>
+	
+	
+	 <insert id="batchSaveFieldLog" parameterType="list" >
+        INSERT INTO service_manager.fieldLog(logId,fieldId,dimensionId,fieldCode,fieldName,fieldType,defaultListShowYN,
+        defaultDetailShowYN,searchYN,status,description,createDate,actionUserId,actionType)VALUES
+        <foreach collection="list" item="field" index="index" separator=",">
+            (#{field.logId},#{field.fieldId},#{field.dimensionId},#{field.fieldCode},
+            #{field.fieldName},#{field.fieldType},#{field.defaultListShowYN},
+            #{field.defaultDetailShowYN},#{field.searchYN},#{field.status},
+            #{field.description},#{field.lastModifyDate},#{field.actionUserId},#{field.actionType})
+        </foreach>
+    </insert>
+
+</mapper>

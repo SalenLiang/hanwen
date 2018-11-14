@@ -1,0 +1,42 @@
+<div class="modal-content" ng-controller="regionEditCtrl"  >
+    <form name="regionForm"  ng-submit="updateRegion()" novalidate>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title">编辑区域</h4>
+        </div>
+        <div class="modal-body" >
+            <div class="ng-cloak">
+                <div class="form-group has-feedback">
+                    <div ng-hide="true" ng-init="checkRegionCodeResult = true"></div>
+                    <label for="regionCode">区域代码(必填):</label>
+                    <input type="text" class="form-control" placeholder="请输入区域代码"
+                           name="regionCode" id="regionCode" ng-model="editRegion.regionCode"
+                           ng-focuss required  ng-minlength="4" ng-maxlength="4" ng-readonly="true" >
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="regionName">区域名称(必填):</label>
+                    <input type="text" class="form-control" placeholder="请输入区域名称" name="regionName" id="regionName" ng-model="editRegion.regionName"
+                           ng-focuss required ng-minlength="2" ng-maxlength="20" >
+                    <span ng-show="regionForm.regionName.$dirty && regionForm.regionName.$invalid" aria-hidden="true">
+                         <span ng-show="regionForm.regionName.$invalid && !regionForm.regionName.$focused">
+                             <p style="color: #a94442;">请输入2-20位长度的区域名称</p>
+                         </span>
+                    </span>
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="chargePersonId">负责人 :</label>
+                    <select class="form-control" style="overflow:scroll;" id="chargePersonId"
+                            ng-model="editRegion.adminUserId"
+                            ng-options="item.adminUserId as item.realName for item in unChargePersonList">
+                        <option value="">-- 请选择 --</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="regionForm.$invalid" >保存</button>
+        </div>
+    </form>
+</div>

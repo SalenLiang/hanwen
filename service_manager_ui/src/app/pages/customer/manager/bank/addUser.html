@@ -1,0 +1,125 @@
+<div class="widgets" ng-controller="bankManagerCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group has-feedback">
+                <label>用户功能：</label>
+                <div class="checkbox-demo-row">
+                    <div class="input-demo checkbox-demo row">
+                        <div class="col-sm-2">
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                                <input type="checkbox" id="inlineCheckbox01" ng-model="bank.riskQeury" value="option1">
+                                <span>风险信息查询</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                                <input type="checkbox" id="inlineCheckbox02" ng-model="bank.monitor" value="option2">
+                                <span>风险监控台</span>
+                            </label>
+                        </div>
+                        <div class="col-sm-2">
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                                <input type="checkbox" id="inlineCheckbox03" ng-model="bank.riskReport" value="option3">
+                                <span>风险报告</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <hr>
+        </div>
+        <!--<div style="margin-bottom: 6px" class="col-sm-12">
+            <span style="color:red">注：限制查询量时子用户查询时使用自身的查询量，不限制时和主用户共享查询量！</span>
+        </div>-->
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <form>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div class="form-group">
+                        <label style="height:28px;vertical-align:middle;font-size: 16px">自定义bank&nbsp:&nbsp&nbsp</label>
+                        <ba-switcher switcher-style="info" switcher-value="bank.self"></ba-switcher>
+                    </div>
+                </div>
+
+
+                <div ng-show="bank.self" class="col-sm-12 col-md-12 col-lg-12">
+                    <div ba-panel ba-panel-title="自定义bank" ba-panel-class="col-eq-height light-text">
+                        <div class="form-group">
+                            <label>系统名称：</label>
+                            <input class="form-control" name="" ng-model="bank.netName">
+                        </div>
+                        <div class="form-group">
+                            <label>网址：</label>
+                            <input class="form-control" name="" ng-model="bank.netAddress">
+                        </div>
+                        <div class="form-group">
+                            <label>欢迎语：</label>
+                            <input class="form-control" name="" ng-model="bank.welcomeSay">
+                        </div>
+                        <div class="form-group">
+                            <label>Logo：</label>
+                            <!--<div class="col-sm-12">-->
+                            <!--</div>-->
+                            <div class="col-sm-12">
+                                <div class="col-sm-7">
+                                    <input type="text" style="color:black" class="form-control" id="logoName" readonly ng-model="logoName" placeholder="请选择需要导入的Logo图片" >
+                                </div>
+                                <div class="col-sm-5">
+                                    <button type="button" class="btn btn-primary" ng-click="uploadFile()">选择文件</button>
+                                    <input type="file" ng-show="false" id="uploadFile" ng-file-select="onFileSelect($files)">
+                                </div>
+                                <small style="margin-left: 15px;color: red">请使用200×200，1M以下，格式为.png .jpg的图片</small>
+                            </div>
+                        </div>
+                        <div class="form-group" style="margin-top: 60px">
+                            <label>风格：</label>
+                            <input class="form-control" name="" ng-model="bank.showStyle">
+                        </div>
+                    </div>
+                </div>
+                <div  ng-show="bank.riskQeury" class="col-sm-12 col-md-12 col-lg-12">
+                    <div ba-panel ba-panel-title="风险信息查询量限制" ba-panel-class="col-eq-height light-text">
+                        <div class="form-group">
+                            <label>关键词查询总量：</label>
+                            <input class="form-control" name="">
+                        </div>
+                        <div class="form-group">
+                            <label>详情查询总量：</label>
+                            <input class="form-control" name="" ng-model="bank.detailAllAmount">
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="bank.monitor" class="col-sm-12 col-md-12 col-lg-12">
+                    <div ba-panel ba-panel-title="风险监控企业数量限制" ba-panel-class="col-eq-height light-text">
+                        <div class="form-group">
+                            <label>风险监控企业数量：</label>
+                            <input class="form-control" name="">
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="bank.riskReport" class="col-sm-12 col-md-12 col-lg-12">
+                    <div ba-panel ba-panel-title="风险报告查询量限制" ba-panel-class="col-eq-height light-text">
+                        <div ng-repeat="report in reportLimitList">
+                            <div class="form-group">
+                                <label>{{report.reportName}}查询总量：</label>
+                                <input class="form-control" name=""  id ={{report.reportType}}>
+                            </div>
+                        </div>
+                        <!--<div ng-show="bank.reportR2" class="form-group">
+                            <label>关联关系报告查询总量：</label>
+                            <input class="form-control" name="" ng-model="bank.glgxLimit">
+                        </div>
+                        <div ng-show="bank.reportR3" class="form-group">
+                            <label>企业风险报告查询总量：</label>
+                            <input class="form-control" name="" ng-model="bank.qyfxLimit">
+                        </div>-->
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>

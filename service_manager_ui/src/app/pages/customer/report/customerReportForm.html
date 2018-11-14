@@ -1,0 +1,18 @@
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-class="with-scroll ">
+                <uib-tabset active="$tabSetStatus.activeTab">
+
+                    <uib-tab heading="月别统计">
+                        <div ng-include="'app/pages/customer/report/monthCount.html'"></div>
+                    </uib-tab>
+
+                    <uib-tab heading="日别统计">
+                        <div ng-include="'app/pages/customer/report/dailyCount.html'"></div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,27 @@
+<div class="modal-content" ng-controller="modelParamsCtrl" >
+    <form name="fieldForm"  ng-submit="addModelParams()" novalidate>
+        <div class="modal-header">
+            	<button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">配置参数</h4>
+        </div>
+        <div class="modal-body">
+        	 <input type="hidden" ng-model="selectDimension" />
+            <div class="form-group has-feedback">
+                <label for="targetCluster">目标集群：</label>
+                <input type="text" ng-focus class="form-control" placeholder="请输入目标集群"
+                       ng-model="$parent.$parent.dimension.targetCluster" name="targetCluster" id="targetCluster"  >
+            </div>
+            <div class="form-group has-feedback">
+                <label for="targetDimensionCode">目标维度：</label>
+                <select class="form-control" style="overflow:scroll;" ng-model="$parent.$parent.dimension.targetDimensionCode" name="targetDimensionCode" 
+                	ng-options="x.dimensionCode as x.dimensionName for x in domainDimension.dimensionList"  id="targetDimensionCode">
+                </select>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="fieldForm.$invalid" >确定</button>
+        </div>
+    </form>
+</div>

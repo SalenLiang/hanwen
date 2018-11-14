@@ -1,0 +1,33 @@
+<div class="horizontal-scroll " ng-controller="modelCtrl">
+     <form name="fieldForm"  ng-submit="addModel()" novalidate>
+        <div class="modal-header">
+            	<button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">高级配置</h4>
+        </div>
+         <div class="modal-body">
+             <div class="form-group has-feedback">
+                 <label for="customRange">自定义每页条数：</label>
+                 <input type="number" ng-focus class="form-control" placeholder="请输入自定义每页条数"
+                        ng-model="selectInterface.customRange"
+                        name="customRange" id="customRange"  ng-blur="checkCustomRange()" >
+                <span style="color:red" id="checkResult" ng-show="checkResult" >
+                    请输入1-20的数字
+                </span>
+             </div>
+         </div>
+        <div class="modal-body">
+            <div class="form-group has-feedback">
+		    	<input type="hidden" ng-model="serviceInterface" />
+		        <label for="customerModel">业务模型：</label>
+		        <select class="form-control" style="overflow:scroll;" ng-model="selectInterface.modelId"  name="targetDimensionCode"  id="customerModel"
+		        	ng-options="x.modelId as x.modelName for x in interfaceModelList"  id="targetDimensionCode">
+		        </select>
+		    </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="checkResult" >确定</button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.dashboard.mapper.DashboardMapper">
+	
+	<!--dashboard Top5  -->
+	<select id="getDayQSTotal" resultType="java.lang.Long">
+		SELECT IFNULL(SUM(total),0)  FROM interface_log.searchLogYMD WHERE TO_DAYS(NOW())-TO_DAYS(DATE_FORMAT(baseYMD,'%Y-%m-%d')) = 1 AND ettType = '0000'
+	</select>
+	
+	<select id="getDayTop5"  resultType="com.fahai.cc.service.dashboard.entity.DashboardTop5Dto">
+		
+		SELECT a.baseYMD,a.ettType,a.customerId,a.companyName,a.dayAmount,FORMAT(a.dayAmount/(select SUM(b.allNum) from (
+			SELECT SUM(total) allNum
+			FROM interface_log.searchLogYMD  
+				WHERE 
+			TO_DAYS(NOW())-TO_DAYS(DATE_FORMAT(baseYMD,'%Y-%m-%d')) = 1 AND ettType = '0000'
+			GROUP BY customerId 
+			ORDER BY allNum DESC 
+			LIMIT 0,5) b),4) scoreValue 
+		FROM
+			(SELECT baseYMD,ettType,T2.customerId,T2.companyName,SUM(T1.total) dayAmount 
+			 FROM interface_log.searchLogYMD T1 
+			 LEFT JOIN service_manager.customer T2 
+			 ON T1.customerId = T2.customerId 
+		     WHERE 
+			 TO_DAYS(NOW())-TO_DAYS(DATE_FORMAT(baseYMD,'%Y-%m-%d')) = 1 AND ettType = '0000'
+			 GROUP BY customerId 
+			 ORDER BY dayAmount DESC 
+			 LIMIT 0,5) a 
+	</select>
+	
+	<!-- dashboard interface 预警  -->
+	
+	<select id="getInterfaceCountData" resultType="com.fahai.cc.service.dashboard.entity.DashboardInterfaceCountDto" >
+		select a.interfaceId, a.interfaceName,IFNULL(b.qsAmount,0) qsAmount from service_manager.interface a LEFT JOIN
+			(select interfaceCode,SUM(total) qsAmount from interface_log.searchLogYMD 
+ 			 where ettType = '0000' and TO_DAYS(NOW())-TO_DAYS(DATE_FORMAT(baseYMD,'%Y-%m-%d')) = 1 GROUP BY interfaceCode) b
+		ON a.interfaceCode = b.interfaceCode where a.status = 0
+	</select>
+	
+	<select id="findAllValid" resultType="com.fahai.cc.service.dashboard.entity.DashboardInterfaceCountDto" >
+		select interfaceId,interfaceURL from service_manager.interface where status = 0
+	</select>
+</mapper>

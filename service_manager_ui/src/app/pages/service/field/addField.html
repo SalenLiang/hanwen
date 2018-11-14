@@ -1,0 +1,100 @@
+<div class="modal-content" ng-controller="fieldManagerCtrl">
+	<form name="fieldForm"  ng-submit="saveField(fieldForm)" novalidate>
+		<div class="modal-header">
+			<button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+				<em class="ion-ios-close-empty sn-link-close"></em>
+			</button>
+			<h4 class="modal-title" id="myModalLabel">新增字段</h4>
+		</div>
+	    <div class="modal-body">
+	        <div class="ng-cloak">
+			<div class="col-sm-12">
+	            <div class="form-group has-feedback">
+	                <label for="fieldName">字段名称(必填):</label>
+	                <input type="text" class="form-control"  placeholder="请输入字段编码" name="fieldName" id="fieldName" ng-model="field.fieldName"
+	                	ng-focus ng-blur="checkFielddOnly('fieldName',$event)" required ng-minlength="2" ng-maxlength="20" >
+					<i class="form-control-feedback" aria-hidden="true"></i>
+					<font class="text-danger" ng-show="fieldForm.fieldName.$invalid && !fieldForm.fieldName.$focused">请输入2-20位合法的字段名称</font>
+					<span ng-show="checkFieldNameResult && !fieldForm.fieldName.$invalid">
+						<span style="color: #a94442;">字段名称已存在</span>
+					</span>
+					<!--<span  ng-show="fieldForm.fieldName.$dirty && fieldForm.fieldName.$invalid">
+						 <span style="color:red" ng-show="fieldForm.fieldName.$error.required">字段名称是必填项</span>
+						 <span style="color:red" ng-show="fieldForm.fieldName.$invalid && !fieldForm.fieldName.$focused">请输入2-20位长度的字段名称</span>
+					</span>-->
+	            </div>
+			</div>
+				<div class="col-sm-12">
+	            <div class="form-group has-feedback">
+	                <label for="fieldCode">字段代码(必填):</label>
+	                <input type="text" class="form-control" placeholder="请输入字段编码" name="fieldCode" id="fieldCode" ng-model="field.fieldCode"
+	                	ng-focus ng-blur="checkFielddOnly('fieldCode',$event)" required  ng-pattern="/^[a-zA-z0-9]{2,20}$/" >
+					<i class="form-control-feedback" aria-hidden="true"></i>
+					<font class="text-danger" ng-show="fieldForm.fieldCode.$invalid && !fieldForm.fieldCode.$focused">请输入2-20位合法的字段代码 ls:abcde，adb2d</font>
+					<span ng-show="checkFieldCodeResult && !fieldForm.fieldCode.$invalid">
+						<span style="color: #a94442;">字段代码已存在</span>
+					</span>
+					<!--<span ng-show="fieldForm.fieldCode.$dirty && fieldForm.fieldCode.$invalid">
+						 <span style="color:red"  ng-show="fieldForm.fieldCode.$error.required">必填项</span>
+						 <span style="color:red"  ng-show="fieldForm.fieldCode.$invalid && !fieldForm.fieldCode.$focused">请输入2-20位长度的字段代码</span>
+					</span>-->
+	            </div>
+				</div>
+				<div class="col-sm-12">
+	            <div class="form-group has-feedback">
+	                <label for="fieldCode">字段类型(必填):</label>
+	                <input type="text" class="form-control" placeholder="请输入字段类型" name="fieldType" id="fieldType" ng-model="field.fieldType"
+	                	ng-focus required ng-pattern="/^[a-zA-z]{2,20}$/" >
+					<i class="form-control-feedback" aria-hidden="true"></i>
+					<font class="text-danger" ng-show="fieldForm.fieldType.$invalid && !fieldForm.fieldType.$focused">请输入2-20位合法的字段类型</font>
+					<!--<span ng-show="fieldForm.fieldType.$dirty && fieldForm.fieldType.$invalid">
+						 <span style="color:red"  ng-show="fieldForm.fieldType.$error.required">必填项</span>
+						 <span style="color:red"  ng-show="fieldForm.fieldType.$invalid && !fieldForm.fieldType.$focused">请输入2-20位长度的字段代码</span>
+					</span>-->
+	            </div>
+	            </div>
+	            <div class="form-group has-feedback">
+					<div class="col-sm-4">
+						<label class="align-left">是否可搜索:</label>
+						<div class="form-group row">
+							<div class="col-sm-4">
+								<ba-switcher switcher-style="primary" switcher-value="field.searchYN"></ba-switcher>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<label >列表默认选中:</label>
+						<div class="form-group row" >
+							<div class="col-sm-4">
+								<ba-switcher switcher-style="primary" switcher-value="field.defaultListShowYN"></ba-switcher>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<label >详细默认选中:</label>
+						<div class="form-group row" >
+							<div class="col-sm-4">
+								<ba-switcher switcher-style="primary" switcher-value="field.defaultDetailShowYN"></ba-switcher>
+							</div>
+						</div>
+					</div>
+				</div>
+			<div class="col-sm-12">
+	            <div class="form-group has-feedback">
+	                <label for="description">描述 :</label>
+					<textarea class="form-control" placeholder="请输入最长255字的描述信息" name="description" id="description" ng-model="field.description"
+							    ng-maxlength="255" ></textarea>
+					<!--<i class="form-control-feedback" aria-hidden="true"></i>
+					<font class="text-danger" ng-show="fieldForm.description.$invalid && !fieldForm.description.$focused">请输入最长255位的字段描述</font>-->
+					<!--<span ng-show="fieldForm.description.$dirty && fieldForm.description.$invalid">
+						 <span style="color:red"  ng-show="fieldForm.description.$invalid && !fieldForm.description.$focused">最长512</span>
+					</span>-->
+	            </div>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="modal-footer">
+	        <button type="submit" class="btn btn-primary" ng-disabled="fieldForm.$invalid || checkFieldNameResult || checkFieldCodeResult" >保存</button>
+	    </div>
+    </form>
+</div>

@@ -1,0 +1,31 @@
+<!--<div class="horizontal-scroll "  ng-controller="interfaceListCtrl">-->
+<div class="horizontal-scroll " >
+   <!-- <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title" id="myModalLabel"> <button class="btn btn-primary" ng-click="addInterface()">确定</button></h4>
+    </div>-->
+    <div class="horizontal-scroll">
+        <table class="table table-bordered" st-table="menusTableData" >
+            <thead>
+            <tr class="black-muted-bg">
+                <th></th>
+                <th></th>
+                <th>接口名称</th>
+                <th>接口url</th>
+            </tr>
+            </thead>
+            <tbody>
+            	
+            	<tr ng-repeat="serviceInterface in interfaces" class="editable-row">
+            		<input type="hidden" ng-model="restoreInterfaces" />
+                    <td><input type="checkbox" ng-model="serviceInterface.selectYN" ng-checked="serviceInterface.selectYN" ng-click="selectInterfaceModel($event,serviceInterface)"/></td>
+                    <td>{{$index+1}}</td>
+                    <td>{{serviceInterface.interfaceName}}</td>
+                    <td>{{serviceInterface.interfaceURL}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

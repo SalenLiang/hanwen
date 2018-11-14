@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.dimension.mapper.DimensionMapper">
+    <sql id="Base_Column_List">
+        dimensionId,domainId,dimensionCode,dimensionName,status,description,lastModifyDate
+    </sql>
+
+    <insert id="saveDimension" parameterType="dimension" >
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="dimensionId">
+            SELECT LAST_INSERT_ID() AS dimensionId
+        </selectKey>
+        INSERT INTO service_manager.dimension(domainId,dimensionCode,dimensionName,status,description,lastModifyDate)
+        VALUES (#{domainId},#{dimensionCode},#{dimensionName},#{status},#{description},#{lastModifyDate})
+    </insert>
+
+    <select id="getTotalCount" parameterType="java.util.Map" resultType="long">
+        SELECT COUNT(1) from service_manager.dimension
+        <where>
+            <if test="status != null">
+                AND status=#{status}
+            </if>
+            <if test="dimensionCode != null">
+                AND dimensionCode like '%${dimensionCode}%'
+            </if>
+            <if test="dimensionName != null">
+                AND dimensionName LIKE '%${dimensionName}%'
+            </if>
+        </where>
+    </select>
+
+<!--     <select id="findPageDimension" parameterType="java.util.Map" resultType="dimension">
+        SELECT T1.dimensionId,T1.domainId,T2.domainName,T1.dimensionCode,T1.dimensionName,T1.status,T1.description,T1.lastModifyDate
+        	   from Dimension T1 INNER JOIN domain T2
+			on T1.domainId = T2.domainId
+        <where>
+            <if test="status != null">
+                AND T1.status=#{status}
+            </if>
+            <if test="dimensionCode != null">
+                AND T1.dimensionCode like '%${dimensionCode}%'
+            </if>
+            <if test="dimensionName != null">
+                AND T1.dimensionName LIKE '%${dimensionName}%'
+            </if>
+        </where>
+        ORDER BY T1.dimensionId
+        limit #{start},#{pageSize}
+    </select> -->
+    
+    <resultMap id="dimensionVo" type="com.fahai.cc.service.vo.DimensionFieldVo">
+            <!--维度-->
+            <result column="dimensionId" property="dimension.dimensionId"/>
+            <result column="domainId" property="dimension.domainId"/>
+            <result column="dimensionCode" property="dimension.dimensionCode"/>
+            <result column="dimensionName" property="dimension.dimensionName"/>
+            <result column="status" property="dimension.status"/>
+            <result column="dimension_description" property="dimension.description"/>
+            <!--领域-->
+            <result column="domain_id" property="domain.domainId"/>
+            <result column="domain_domainName" property="domain.domainName"/>
+    </resultMap>
+    <select id="findPageDimension" parameterType="java.util.Map" resultMap="dimensionVo">
+         SELECT T1.dimensionId,T1.domainId,T2.domainId as domain_id,T1.description as dimension_description,T2.domainName,
+        	T2.domainName as domain_domainName,T1.dimensionCode,T1.dimensionName,T1.status,T1.lastModifyDate
+  		 from service_manager.dimension T1 INNER JOIN service_manager.domain T2
+			on T1.domainId = T2.domainId
+        <where>
+            <if test="status != null">
+                AND T1.status=#{status}
+            </if>
+            <if test="dimensionCode != null">
+                AND T1.dimensionCode like '%${dimensionCode}%'
+            </if>
+            <if test="dimensionName != null">
+                AND T1.dimensionName LIKE '%${dimensionName}%'
+            </if>
+        </where>
+        ORDER BY T1.lastModifyDate desc
+        limit #{start},#{pageSize}
+    </select>
+
+    <delete id="deleteDimension" parameterType="dimension">
+        UPDATE service_manager.dimension SET
+        <trim suffixOverrides=",">
+            <if test="dimensionName != null">
+                dimensionName=#{dimensionName},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="dimensionCode != null">
+                dimensionCode=#{dimensionCode},
+            </if>
+            <if test="lastModifyDate != null">
+                lastModifyDate=#{lastModifyDate},
+            </if>
+        </trim>
+        where dimensionId=#{dimensionId}
+    </delete>
+
+    <select id="findDimensionById" parameterType="integer" resultType="dimension">
+        SELECT <include refid="Base_Column_List"/> from service_manager.dimension
+        WHERE dimensionId=#{dimensionId}
+    </select>
+
+    <update id="updateDimension" parameterType="dimension">
+        UPDATE service_manager.dimension SET
+        <trim suffixOverrides=",">
+            <if test="domainId != null">domainId=#{domainId},</if>
+            <if test="dimensionName != null">dimensionName=#{dimensionName},</if>
+            <if test="description != null">description=#{description},</if>
+            <if test="status != null">status=#{status},</if>
+            <if test="lastModifyDate != null">lastModifyDate=#{lastModifyDate},</if>
+        </trim>
+        WHERE dimensionId=#{dimensionId}
+    </update>
+    
+    <select id="checkDimensionById" parameterType="string" resultType="long">
+        SELECT COUNT(1) from service_manager.dimension
+        WHERE dimensionCode=#{dimensionCode}
+    </select>
+
+    <!--这是分割线,下面是维度的包装类查询 -->
+    <resultMap id="dimensionFieldVo" type="com.fahai.cc.service.vo.DimensionFieldVo">
+            <!--维度-->
+            <result column="dimensionId" property="dimension.dimensionId"/>
+            <result column="domainId" property="dimension.domainId"/>
+            <result column="dimensionCode" property="dimension.dimensionCode"/>
+            <result column="dimensionName" property="dimension.dimensionName"/>
+            <result column="status" property="dimension.status"/>
+            <result column="dimension_description" property="dimension.description"/>
+            <!--领域-->
+            <result column="domain_id" property="domain.domainId"/>
+            <result column="domain_domainName" property="domain.domainName"/>
+            <!--配置维度与字段的一对多关系-->
+            <collection property="fields"  ofType="com.fahai.cc.service.field.entity.Field" javaType="java.util.List">
+                <result column="fieldId" property="fieldId"/>
+                <result column="fieldName" property="fieldName"/>
+                <result column="fieldCode" property="fieldCode"/>
+                <result column="dimension_Id" property="dimensionId"/>
+                <result column="defaultListShowYN" property="defaultListShowYN"/>
+                <result column="defaultDetailShowYN" property="defaultDetailShowYN"/>
+                <result column="searchYN" property="searchYN"/>
+                <result column="fieldType" property="fieldType"/>
+                <result column="fieldStatus" property="status"/>
+                <result column="field_description" property="description"/>
+            </collection>
+    </resultMap>
+    <!--VO查询片段-->
+    <sql id="DimensionFieldVoPartSql">
+        SELECT T1.dimensionId,T1.domainId,T2.domainId as domain_id,T1.description as dimension_description,T2.domainName,
+        T2.domainName as domain_domainName,T1.dimensionCode,T1.dimensionName,T1.status,T1.lastModifyDate,
+        T3.fieldId,T3.fieldName,T3.fieldCode,T3.dimensionId as dimension_Id,
+        T3.defaultListShowYN,T3.defaultDetailShowYN,T3.searchYN,T3.fieldType,T3.status fieldStatus,T3.description as field_description
+        from service_manager.dimension T1 INNER JOIN service_manager.domain T2
+        on T1.domainId = T2.domainId
+        left JOIN service_manager.field T3 on T1.dimensionId = T3.dimensionId
+    </sql>
+
+    <select id="findDimensionFieldById" parameterType="java.lang.Integer" resultMap="dimensionFieldVo">
+        <include refid="DimensionFieldVoPartSql"/>
+        WHERE T1.dimensionId=#{dimensionId}  ORDER BY fieldCode
+    </select>
+
+    <select id="findPageDimensionField" parameterType="java.util.Map" resultMap="dimensionFieldVo">
+        <include refid="DimensionFieldVoPartSql"/>
+        <where>
+            <if test="status != null">
+                AND T1.status=#{status}
+            </if>
+            <if test="dimensionCode != null">
+                AND T1.dimensionCode like '%${dimensionCode}%'
+            </if>
+            <if test="dimensionName != null">
+                AND T1.dimensionName LIKE '%${dimensionName}%'
+            </if>
+        </where>
+        ORDER BY T1.dimensionId
+        limit #{start},#{pageSize}
+    </select>
+    
+    <resultMap id="baseDimensionMap" type="com.fahai.cc.interf.mysql.entity.Dimension" >
+		<result column="dimensionId" property="dimensionId"/>
+		<result column="domainId" property="domainId"/>
+		<result column="domainCode" property="domainCode"/>
+		<result column="dimensionName" property="dimensionName"/>
+	</resultMap>
+	
+	<select id="getDimensionList"  resultMap="baseDimensionMap">
+		select t1.dimensionId,t1.dimensionCode,t1.domainId,t2.domainCode,t1.dimensionName from service_manager.dimension t1,service_manager.domain t2
+		where t1.domainId = t2.domainId and t1.status = 0 and t2.status = 0
+	</select>
+	<select id="getDimension" parameterType="java.lang.Integer"  resultMap="baseDimensionMap">
+		select t1.dimensionId,t1.dimensionCode,t1.domainId,t2.domainCode,t1.dimensionName from service_manager.dimension t1,service_manager.domain t2
+		where t1.domainId = t2.domainId and t1.status = 0 and t2.status = 0 and dimensionId = #{dimensionId}
+	</select>
+	
+	<insert id="saveDimensionLog" parameterType="dimension">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
+            SELECT LAST_INSERT_ID() AS logId
+        </selectKey>
+        insert into service_manager.dimensionLog (dimensionId,domainId,dimensionCode,dimensionName,status,description,createDate,actionUserId,actionType)
+		values  (#{dimensionId},#{domainId},#{dimensionCode},#{dimensionName},#{status},#{description},#{lastModifyDate},#{actionUserId},#{actionType})
+	</insert>
+
+</mapper>

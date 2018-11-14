@@ -1,0 +1,68 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-4" ng-controller="roleManagerCtrl">
+            <div ba-panel ba-panel-title="增加角色" ba-panel-class="with-scroll" >
+                <form name="form1" ng-submit="saveRole(form1)" novalidate>
+                    <div class="ng-cloak">
+                        <div class="form-group row">
+                            <div class="col-md-10 has-feedback">
+                                <label for="roleName">角色名称(必填)：</label>
+                                <input type="text" ng-focus class="form-control" placeholder="请输入角色名称"
+                                       ng-model="$parent.$parent.dimension.dimensionCode" name="roleName" id="roleName"   required   ng-maxlength="20" >
+                                <span style="color: #a94442;" ng-show="form1.roleName.$dirty && form1.roleName.$invalid">
+                                     <span ng-show="form1.roleName.$error.required">必填项</span>
+                                     <span ng-show="form1.roleName.$invalid && !form1.roleName.$focused">请输入正确的角色名称</span>
+                                </span>
+                            </div>
+                            <div class="col-md-10 has-feedback">
+                                <label for="description">描述：</label>
+                                <textarea id="description" ng-focus class="form-control"   ng-model="$parent.$parent.dimension.description"
+                                          name="description" ng-maxlength="255" placeholder="请输入角色描述" ></textarea>
+                                <span style="color: #a94442;" ng-show="form1.description.$dirty && form1.description.$invalid">
+                                     <span ng-show="form1.description.$invalid && !form1.description.$focused">描述最长:255</span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-row-editable-table align-center">
+                        <button class="btn btn-primary"  type="submit" ng-disabled="form1.$invalid">保存</button>&nbsp;
+                        <button class="btn btn-default" onclick="history.go(-1);">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-8" >
+            <div ba-panel ba-panel-title="权限列表" ba-panel-class="with-scroll" >
+                <div class="add-row-editable-table">
+                </div>
+                <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="columnsTableData">
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th width="5%" style="text-align:center;">序号</th>
+                            <th>权限名称</th>
+                            <th>权限值</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr class="no-top-border">
+                            <td>
+                                <input type="checkbox" value="">
+                            </td>
+                            <td>authorityName</td>
+                            <td>authorityValue</td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="6" class="text-center">
+                                    <app-page page_data="columnPageData" load="getColumnList(currentPage)" />
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

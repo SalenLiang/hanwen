@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.limitword.mapper.LimitwordMapper">
+	
+	<insert id="saveLimitword" parameterType="limitword">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="limitwordId">
+            SELECT LAST_INSERT_ID() AS limitwordId
+        </selectKey>
+		insert into service_manager.limitword (word,wordType,status,description,createDate,lastModifyDate) values 
+		(#{word},#{wordType},#{status},#{description},#{createDate},#{lastModifyDate})
+	</insert>
+	
+	<select id="getTotalCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		select count(1) from service_manager.limitword 
+		<where>
+			<if test="word!=null">
+				and word like '%${word}%'
+			</if>
+			<if test="wordType!=null">
+				and wordType = #{wordType}
+			</if>
+		</where>
+	</select>
+	
+	<select id="findPageLimitword" parameterType="java.util.Map" resultType="limitword">
+		select limitwordId,word,wordType,status,description,createDate,lastModifyDate from service_manager.limitword
+		<where>
+			<if test="word!=null">
+				and word like '%${word}%'
+			</if>
+			<if test="wordType!=null">
+				and wordType = #{wordType}
+			</if>
+		</where>
+		order by lastModifyDate desc
+		limit #{start},#{pageSize}
+	</select>
+	
+	<update id="updateLimitword" parameterType="limitword">
+		update service_manager.limitword set
+		<trim suffixOverrides=",">
+			<if test="wordType != null">
+				wordType = #{wordType},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="lastModifyDate != null">
+				lastModifyDate = #{lastModifyDate},
+			</if>
+		</trim>
+			where limitwordId = #{limitwordId}
+	</update>
+	
+	
+	<delete id="deleteLimitword" parameterType="java.lang.Integer">
+		delete from service_manager.limitword where limitwordId = #{limitwordId}
+	</delete>
+	
+	<select id="checkLimitword" parameterType="java.lang.String" resultType="java.lang.Long">
+		select count(1) from service_manager.limitword where word = #{word}
+	</select>
+	
+	<select id="getUsableLimitword" parameterType="java.lang.String" resultType="java.lang.String">
+		select word from service_manager.limitword where wordType = #{wordType} and status = 0
+	</select>
+	
+	<select id="getLimitwordById" parameterType="java.lang.Integer" resultType="limitword">
+		select limitwordId,word,wordType,status,description,createDate,lastModifyDate from service_manager.limitword where limitwordId = #{limitwordId}
+	</select>
+	
+	<insert id="saveLimitwordLog" parameterType="limitword">
+		INSERT INTO service_manager.limitwordLog (limitwordId,word,wordType,status,description,createDate,actionUserId,actionType) VALUES
+		(#{limitwordId},#{word},#{wordType},#{status},#{description},#{lastModifyDate},#{actionUserId},#{actionType})
+	</insert>
+	
+</mapper>

@@ -1,0 +1,175 @@
+<div class="widgets" ng-controller="editDimensionController">
+    <div class="row">
+        <div class="col-md-4" >
+            <div ba-panel ba-panel-title="维度" ba-panel-class="with-scroll" >
+                <form name="form1" ng-submit="saveEditDimension(form1)" novalidate>
+                    <div class="ng-cloak">
+                        <div class="form-group has-feedback">
+                            <label for="dimensionCode">维度代码：</label>
+                            <input type="hidden" name="dimensionId" id="dimensionId" ng-model="$parent.$parent.dimension.dimensionId" >
+                            <input type="text" ng-focus class="form-control" placeholder="请输入维度代码"
+                                   ng-model="$parent.$parent.dimension.dimensionCode" name="dimensionCode" id="dimensionCode"   ng-disabled="true">
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="dimensionName">维度名称：</label>
+                            <input type="text" ng-focus class="form-control" placeholder="请输入维度名称"
+                                   ng-model="$parent.$parent.dimension.dimensionName" name="dimensionName" id="dimensionName"  required ng-minlength="2" ng-maxlength="20"   >
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.dimensionName.$invalid && !form1.dimensionName.$focused">请输入2-20位合法的维度名称</font>
+                            <!--<span style="color:red" ng-show="form1.dimensionName.$dirty && form1.dimensionName.$invalid">
+                                 <span ng-show="form1.dimensionName.$error.required">必填项</span>
+                                 <span ng-show="form1.dimensionName.$invalid && !form1.dimensionName.$focused">请输入正确的维度名称</span>
+                            </span>-->
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="domainId">所属领域：</label>
+                            <select class="form-control" style="overflow:scroll;" ng-focus
+                                    ng-model="$parent.$parent.dimension.domainId"
+                                    name="domainId" id="domainId" ng-options="item.domainId as item.domainName for item in domainList" required>
+                            </select>
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.domainId.$invalid && !form1.domainId.$focused">必选</font>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="divStatus">状态：</label>
+                            <div class="form-group row" id="divStatus">
+                                <div class="col-sm-8">
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="0" name="dimensionStatus" ng-model="$parent.$parent.dimension.status">
+                                        <span>启用</span>
+                                    </label>
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="1" name="dimensionStatus" ng-model="$parent.$parent.dimension.status">
+                                        <span>停用</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="description">描述：</label>
+                            <textarea id="description"  class="form-control"   ng-model="$parent.$parent.dimension.description"
+                                      name="description" placeholder="请输入描述信息"  ng-maxlength="255" ng-minlength="0"></textarea>
+                            <!--<i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.description.$invalid && !form1.description.$focused">请输入最长255位的维度描述</font>-->
+                            <span style="color: #a94442;" ng-show="form1.description.$dirty && form1.description.$invalid">
+                                 <span ng-show="form1.description.$invalid && !form1.description.$focused">描述最长:255</span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="add-row-editable-table align-center">
+                        <button class="btn btn-primary" type="submit" ng-disabled="form1.$invalid">保存</button>&nbsp;
+                        <button class="btn btn-default" type="button" onclick="history.go(-1);">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-8" ng-controller="fieldManagerCtrl">
+           <!-- <div ba-panel ba-panel-title="字段列表" ba-panel-class="medium-panel traffic-panel with-scroll table-panel" >-->
+            <div ba-panel ba-panel-title="字段列表" ba-panel-class=" with-scroll middle-large-panel">
+                <div class="add-row-editable-table">
+                    <button class="btn btn-primary" data-toggle="modal"
+                            ng-click="openFieldSetting(fieldList)">增加新字段</button>
+                </div>
+                <div class="vertical-scroll">
+                    <!--<table class="table table-hover" st-table="columnsTableData" >-->
+                    <table class="table table-hover" st-table="columnsTableData">
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <!--<th width="7%" style="text-align:center;">是否列出</th>-->
+                            <th width="7%" style="text-align:center;">序号</th>
+                            <th>字段名称</th>
+                            <th>字段编码</th>
+                            <th>搜索</th>
+                            <th>列表</th>
+                            <th>详细</th>
+                            <th>状态</th>
+                            <th>描述</th>
+                            <th width="15%" style="text-align:center;">操作</th>
+                        </tr>
+                        </thead>
+                    <tbody>
+                    <tr ng-repeat="field in fieldList" class="editable-row">
+                        <!-- <td>
+                             <input type="checkbox" ng-model="field.listShowYN" ng-true-value="0" ng-false-value="1" ng-checked="!field.listShowYN" name="checkField">
+                         </td>-->
+                        <td>
+                            <span>{{$index+1}}</span>
+                        </td>
+                        <td>
+                                    <span >
+                                      {{ field.fieldName || 'empty' }}
+                                    </span>
+                        </td>
+                        <td>
+                                    <span >
+                                      {{ field.fieldCode || 'empty' }}
+                                    </span>
+                        </td>
+                        <td>
+                                    <span editable-select="field.searchYN" e-name="searchYN"  e-form="rowform" e-selectpicker e-required
+                                          e-ng-options="g.defaultYN as g.value for g in fieldDefaultYN">
+                                        {{ showFieldDefaultYN(field.searchYN ) }}
+                                    </span>
+                        </td>
+                        <td>
+                                    <span editable-select="field.defaultListShowYN" e-name="defaultListShowYN"  e-form="rowform" e-selectpicker e-required
+                                          e-ng-options="g.defaultYN as g.value for g in fieldDefaultYN">
+                                        {{ showFieldDefaultYN(field.defaultListShowYN ) }}
+                                    </span>
+                        </td>
+                        <td>
+                                    <span editable-select="field.defaultDetailShowYN" e-name="defaultDetailShowYN"  e-form="rowform" e-selectpicker e-required
+                                          e-ng-options="g.defaultYN as g.value for g in fieldDefaultYN">
+                                        {{ showFieldDefaultYN(field.defaultDetailShowYN ) }}
+                                    </span>
+                        </td>
+                        <td>
+                                    <span ng-show="field.status==0" >
+                                        {{ showFieldStatusValue(field.status) }}
+                                    </span>
+                                    <span ng-show="field.status!=0">
+                                        <span  editable-select="field.status" e-name="status"  e-form="rowform" e-selectpicker e-required
+                                          e-ng-options="g.status as g.value for g in fieldStatus">
+                                            {{ showFieldStatusValue(field.status) }}
+                                        </span>
+                                    </span>
+
+                        </td>
+                        <td>
+                                    <span editable-text="field.description" e-name="description" ng-if="field.description != null" e-form="rowform" e-required>
+                                      {{(field.description | limitTo:10 || 'empty' )+'...'}}
+                                    </span>
+                        </td>
+                        <td>
+                            <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == field">
+                                <!--<button type="button" class="btn btn-primary editable-table-button btn-xs" ng-if="field.status == '0'"
+                                        ng-click="editStatus(field.fieldCode,1)">停用</button>
+                                <button type="button" class="btn btn-primary editable-table-button btn-xs" ng-if="field.status == '1'"
+                                        ng-click="editStatus(field.fieldCode,0)">启用</button>&nbsp;-->
+                                <button type="submit" ng-disabled="rowform.$waiting" class="btn btn-primary editable-table-button btn-xs">
+                                    保存
+                                </button>
+                                <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+                                    取消
+                                </button>
+                            </form>
+                            <div class="buttons" ng-show="!rowform.$visible">
+                                <!--<button type="button" class="btn btn-primary editable-table-button btn-xs" ng-if="field.status == '0'"
+                                        ng-click="editStatus($index,field.fieldCode,1,1)">停用</button>
+                                <button type="button" class="btn btn-primary editable-table-button btn-xs" ng-if="field.status == '1'"
+                                        ng-click="editStatus($index,field.fieldCode,0,1)">启用</button>&nbsp;-->
+                                <button type="button" class="btn btn-primary editable-table-button btn-xs" ng-click="rowform.$show()">编辑</button>
+                                <button class="btn btn-danger editable-table-button btn-xs" ng-click="deleteField($index,field,0)">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

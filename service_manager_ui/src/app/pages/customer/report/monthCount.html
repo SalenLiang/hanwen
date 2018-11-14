@@ -1,0 +1,113 @@
+<div class="row"  ng-controller="monthCountCtrl">
+    <div class="col-md-12">
+        <div class="col-md-2">
+            <div class="add-row-editable-table align-left input-group">
+                <input type="text" class="form-control with-warning-addon" placeholder="请输入搜索企业名称" name="" value="" ng-model="$parent.$parent.monthSearchParam" aria-describedby="basic-addon2">
+                <span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.monthSearchParam=''">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="input-group input-daterange">
+                <input type='text'    ng-required="true" name="monthBeginDate" id="monthBeginDate" onclick="chageStatus('monthBeginDate')"
+                       ng-model="$parent.$parent.monthBeginDate "class="form-control"  ng-readonly="true"/>
+                <div class="input-group-addon">至</div>
+                <input type='text'   ng-required="true" name="monthEndDate" id="monthEndDate" onclick="chageStatus('monthEndDate')"
+                       ng-model="$parent.$parent.monthEndDate "class="form-control" ng-readonly="true" />
+               <!-- <span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.monthEndDate='';$parent.$parent.monthBeginDate=''">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </span>-->
+            </div>
+        </div>
+        <div class="col-md-2" >
+            <button class="btn btn-primary" ng-click="searchMonthCount()">搜索</button>&nbsp;&nbsp;
+        </div>
+        <div class="col-md-5  align-right" >
+            <button class="btn btn-primary" id="monthCountId" ng-disabled="exportMonthReportStatus" ng-click="exportMonthReport()">导出报表</button>
+        </div>
+    </div>
+</div>
+<div class="col-md-12">
+    <div class="horizontal-scroll">
+        <table class="table table-hover" st-table="menusTableData" >
+            <thead>
+            <tr class="black-muted-bg">
+                <th>编号</th>
+                <th>客户名称</th>
+                <th>接口</th>
+                <th>查询类型</th>
+                <th>总量</th>
+                <th>查得</th>
+                <th >去重</th>
+                <!-- <th style="text-align:center;" width="15%">账号有效期限</th>-->
+                <th>失败</th>
+                <th  width="15%">查询时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in customerQueryMonthCounts" class="editable-row">
+                <td>{{$index+1}}</td>
+                <td>{{item.companyName}}</td>
+                <td>{{item.interfaceCode}}</td>
+                <td>{{item.searchType}}</td>
+                <td>{{item.totalSU|currency:'':'0'}}</td>
+                <td>{{item.totalQG|currency:'':'0'}}</td>
+                <td>{{item.totalDI|currency:'':'0'}}</td>
+                <td>{{item.totalFA|currency:'':'0'}}</td>
+                <td  width="15%">{{item.queryTime | date:'yyyy-MM'}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <tm-pagination conf="monthCountPaginationConf"></tm-pagination>
+    </div>
+</div>
+<script>
+    var datestatus = false;
+    $(function () {
+        var now = new Date();
+        $('#monthBeginDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm',//显示格式
+            initialDate: new Date(),//初始化当前日期
+            startView:"year",
+            minView: "year",
+            maxView:"year",
+            endDate:now,
+            autoclose: true,//选中自动关闭
+            todayBtn: true//显示今日按钮
+        }).on('changeDate',function(e){
+            var startTime = e.date;
+            $('#monthEndDate').datetimepicker('setStartDate',startTime);
+        }).on('show',function(){
+            datestatus = true;
+        }).on('changeYear',function(){
+            $('#monthBeginDate').datetimepicker('show');
+        });
+        $('#monthEndDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm',//显示格式
+            initialDate: new Date(),//初始化当前日期
+            startView:"year",
+            minView: "year",
+            maxView:"year",
+            endDate:now,
+            autoclose: true,//选中自动关闭
+            todayBtn: true//显示今日按钮
+        }).on('changeDate',function(e){
+            var endTime = e.date;
+            $('#monthBeginDate').datetimepicker('setEndDate',endTime);
+        }).on('show',function(){
+            datestatus = true;
+        });
+    });
+    function chageStatus(who){
+        if(datestatus){
+            $('#'+who+'').datetimepicker('show');
+            datestatus = false;
+        }else{
+            $('#'+who+'').datetimepicker('hide');
+            datestatus = true;
+        }
+    }
+</script>

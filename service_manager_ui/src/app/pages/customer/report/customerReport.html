@@ -1,0 +1,63 @@
+<div>
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-class="with-scroll ">
+                <uib-tabset active="$tabSetStatus.activeTab">
+                    <uib-tab heading="日别统计">
+                        <p>
+                            您好 ，已为您查询到<span style="color: red">{{dailyCount}}</span>条记录
+                        </p>
+                        <div ng-include="'app/pages/customer/report/dailyStatistics.html'"></div>
+                    </uib-tab>
+                    <uib-tab heading="月别统计">
+                        <p>
+                            您好 ，已为您查询到<span style="color: red">{{monthCount}}</span>条记录
+                        </p>
+                        <div ng-include="'app/pages/customer/report/monthStatistics.html'"></div>
+                    </uib-tab>
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        var now = new Date();
+        $('#datetimepicker1').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            initialDate: new Date(),//初始化当前日期
+            startView:2,
+            minView:2,
+            autoclose: true,//选中自动关闭
+            todayBtn: true,//显示今日按钮
+            endDate:now
+        }).on("click",function(){
+            $("#datetimepicker1").datetimepicker("setEndDate",$("#endDate".val()));
+        });
+        $('#datetimepicker2').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            startView:2,
+            minView:2,
+            todayBtn: true,//显示今日按钮
+            endDate:now
+        }).on("click",function(){
+            $("#datetimepicker2").datetimepicker("setStartDate",$("#startDate".val()));
+        });
+        $('#datetimepicker3').datetimepicker({
+            dateFormat: 'yyyy-MM',
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm',//显示格式
+//            minView: "month",//设置只显示到月份
+            startView:3,
+            minView:3,
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            todayBtn: true,//显示今日按钮
+            endDate:now
+        });
+    });
+</script>

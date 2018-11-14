@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fahai.cc.service.role.mapper.MenuMapper">
+
+    <select id="findMenuList" parameterType="java.lang.Integer" resultType="string">
+          SELECT menuName from service_manager.menumast s1
+          where menuId in (
+            select  menuId from service_manager.rolemenu s2 where roleId in
+            (SELECT roleId from service_manager.userrole where adminUserId = #{adminUserId}))
+    </select>
+
+</mapper>

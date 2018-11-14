@@ -1,0 +1,239 @@
+.breathe-warn {
+	position: relative;
+	width: 60px;
+	height: 15px;
+	line-height: 40px;
+	border: 1px solid red;
+	border-radius: 15px;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+	overflow: hidden;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(red),
+	to(red));
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-name: breathe-btn4;
+	-webkit-animation-duration: 1000ms;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+}
+.breathe-green {
+	position: relative;
+	width: 60px;
+	height: 15px;
+	line-height: 40px;
+	border: 1px solid green;
+	border-radius: 15px;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+	overflow: hidden;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(green),
+	to(green));
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-name: breathe-btn4;
+	-webkit-animation-duration: 1000ms;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+}
+.blur-breathe-btn {
+	position: relative;
+	width: 15px;
+	height: 15px;
+	line-height: 40px;
+	border: 1px solid #209e91;
+	border-radius: 15px;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+	overflow: hidden;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#209e91),
+		to(#209e91));
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-name: blur-breathe;
+	-webkit-animation-duration: 1500ms;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+}
+
+.red-breathe-btn {
+	position: relative;
+	width: 15px;
+	height: 15px;
+	line-height: 40px;
+	border: 1px solid red;
+	border-radius: 15px;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+	overflow: hidden;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(red),
+		to(red));
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-name: red-breathe;
+	-webkit-animation-duration: 500ms;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+}
+
+@-webkit-keyframes blur-breathe {
+    0% { opacity: .2; box-shadow:0 1px 2px #209e91;}
+    100% { opacity: 1; border:1px solid #209e91; box-shadow:0 1px 30px #209e91;}
+}
+@-webkit-keyframes red-breathe {
+    0% { opacity: .2; box-shadow:0 1px 2px red;}
+    100% { opacity: 1; border:1px solid red; box-shadow:0 1px 30px red;}
+}
+
+.breathe-btn1 {
+	position: relative;
+	width: 60px;
+	height: 15px;
+	line-height: 40px;
+	border: 1px solid #209e91;
+	border-radius: 15px;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+	overflow: hidden;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#209e91),
+		to(#209e91));
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-name: breathe-btn1;
+	-webkit-animation-duration: 1000ms;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+}
+
+@-webkit-keyframes breathe-btn1 {
+    0% { opacity: .2; box-shadow:0 1px 2px #209e91;}
+    100% { opacity: 1; border:1px solid #209e91; box-shadow:0 1px 30px #209e91;}
+}
+.breathe-btn2 {
+	position: relative;
+	width: 60px;
+	height: 15px;
+	line-height: 40px;
+	border: 1px solid #90b900;
+	border-radius: 15px;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+	overflow: hidden;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#90b900),
+		to(#90b900));
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-name: breathe-btn2;
+	-webkit-animation-duration: 1000ms;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+}
+
+@-webkit-keyframes breathe-btn2 {
+    0% { opacity: .2; box-shadow:0 1px 2px #90b900;}
+    100% { opacity: 1; border:1px solid #90b900; box-shadow:0 1px 30px #90b900;}
+}
+.breathe-btn3 {
+	position: relative;
+	width: 60px;
+	height: 15px;
+	line-height: 40px;
+	border: 1px solid #2dacd1;
+	border-radius: 15px;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+	overflow: hidden;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#2dacd1),
+		to(#2dacd1));
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-name: breathe-btn3;
+	-webkit-animation-duration: 1000ms;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+}
+
+@-webkit-keyframes breathe-btn3 {
+    0% { opacity: .2; box-shadow:0 1px 2px #2dacd1;}
+    100% { opacity: 1; border:1px solid #2dacd1; box-shadow:0 1px 30px #2dacd1;}
+}
+.breathe-btn4 {
+	position: relative;
+	width: 60px;
+	height: 15px;
+	line-height: 40px;
+	border: 1px solid #dfb81c;
+	border-radius: 15px;
+	color: #fff;
+	font-size: 20px;
+	text-align: center;
+	cursor: pointer;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .3);
+	overflow: hidden;
+	background-image: -webkit-gradient(linear, left top, left bottom, from(#dfb81c),
+		to(#dfb81c));
+	-webkit-animation-timing-function: ease-in-out;
+	-webkit-animation-name: breathe-btn4;
+	-webkit-animation-duration: 1000ms;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-direction: alternate;
+}
+
+@-webkit-keyframes breathe-btn4 {
+    0% { opacity: .2; box-shadow:0 1px 2px #dfb81c;}
+    100% { opacity: 1; border:1px solid #dfb81c; box-shadow:0 1px 30px #dfb81c;}
+}
+
+
+
+.breathe-btn5{
+	border-radius:6px;
+	cursor:pointer;
+	border:1px solid #90b900;
+	box-shadow:0 1px 2px rgba(0,0,0,.3);
+	overflow:hidden;
+	background-image:-webkit-gradient(linear,left top,left bottom,from(#90b900),to(#90b900));
+
+	-webkit-animation-timing-function:ease-in-out;
+
+	-webkit-animation-name:breathe-btn5;
+
+	-webkit-animation-duration:1000ms;
+
+	-webkit-animation-iteration-count:infinite;
+
+	-webkit-animation-direction:alternate;
+}
+@-webkit-keyframes breathe-btn5 {
+	0% {
+		opacity:.4;
+		box-shadow:0 1px 2px rgba(255,255,255,0.1);
+	}
+	100% {
+		opacity:1;
+		border:1px solid #90b900;
+		box-shadow:0 1px 30px #90b900;
+	}
+}
+
+
+table tr td{
+	white-space:nowrap;
+}
+
+.panel.middle-large-panel {
+	height: 742px; }

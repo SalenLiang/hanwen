@@ -1,0 +1,57 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-12" >
+            <div ba-panel ba-panel-title="用户信息" ba-panel-class="with-scroll" >
+                <form name="form1" ng-submit="saveUserSon(form1)" novalidate>
+                    <div class="ng-cloak">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group has-feedback">
+                                    <label for="userName">用户名称：</label>
+                                    <input type="text" ng-focus class="form-control" placeholder="请输入用户名称"
+                                           ng-model="userSon.userName" name="userName" id="userName"  required  ng-minlength="2" ng-maxlength="20"  >
+                                    <i class="form-control-feedback" aria-hidden="true"></i>
+                                    <font class="text-danger" ng-show="form1.userName.$invalid && !form1.userName.$focused">请输入2-20位合法的用户名称</font>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group has-feedback">
+                                    <label for="companyName">企业名称：</label>
+                                    <input type="text" ng-focus class="form-control" placeholder="请输入企业名称"
+                                           ng-model="userSon.companyName" name="companyName" id="companyName"  required  ng-minlength="2" ng-maxlength="20"  >
+                                    <i class="form-control-feedback" aria-hidden="true"></i>
+                                    <font class="text-danger" ng-show="form1.companyName.$invalid && !form1.companyName.$focused">请输入2-20位合法的企业名称</font>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group has-feedback">
+                                    <label for="divStatus">状态：</label>
+                                    <div class="form-group row" id="divStatus">
+                                        <div class="col-sm-8">
+                                            <label class="radio-inline custom-radio nowrap">
+                                                <input type="radio" value="0" name="userStatus" checked="checked"  ng-model="userSon.userStatus">
+                                                <span>启用</span>
+                                            </label>
+                                            <label class="radio-inline custom-radio nowrap">
+                                                <input type="radio" value="1" name="userStatus" ng-model="userSon.userStatus">
+                                                <span>停用</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-row-editable-table align-center">
+                        <button class="btn btn-primary" type="submit" ng-disabled="form1.$invalid">保存</button>&nbsp;
+                        <button class="btn btn-default" type="button" onclick="history.go(-1);">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

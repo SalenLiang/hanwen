@@ -1,0 +1,94 @@
+<div class="widgets" ng-controller="editInterfaceModelController" >
+    <div class="row">
+        <div class="col-md-4" >
+            <div ba-panel ba-panel-title="维度" ba-panel-class="with-scroll" >
+                <form name="form1" ng-submit="saveEditInterfaceModel()" novalidate>
+                    <div class="ng-cloak">
+                        <div class="form-group has-feedback">
+                            <label for="dimensionName">模型名称：</label>
+                            <input type="text" ng-focus class="form-control" placeholder="请输入模型名称" ng-blur="editCheckModel('modelName',editInterfaceModel.modelName,$event)"
+                                   ng-model="$parent.$parent.editInterfaceModel.modelName" name="modelName" id="dimensionName"  required  ng-minlength="2" ng-maxlength="20" >
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.modelName.$invalid && !form1.modelName.$focused">请输入2-20位合法的模型名称</font>
+                            <!--<span style="color:red" ng-show="form1.dimensionName.$dirty && form1.dimensionName.$invalid">
+                                 <span ng-show="form1.dimensionName.$error.required">必填项</span>
+                                 <span ng-show="form1.dimensionName.$invalid && !form1.dimensionName.$focused">请输入正确的维度名称</span>
+                            </span>-->
+                            <span ng-show="$parent.$parent.editCheckModelNameResult&&!form1.modelName.$invalid">
+                                	<span style="color: #a94442;">模型名称已存在</span>
+                            </span>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="divStatus">状态：</label>
+                            <div class="form-group row" id="divStatus">
+                                <div class="col-sm-8">
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="0" name="interfaceModelStatus" ng-checked="true"  ng-model="$parent.$parent.editInterfaceModel.status">
+                                        <span>启用</span>
+                                    </label>
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="1" name="interfaceModelStatus" ng-model="$parent.$parent.editInterfaceModel.status">
+                                        <span>停用</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="description">描述：</label>
+                            <textarea id="description"  class="form-control"   ng-model="$parent.$parent.editInterfaceModel.description"
+                                      name="description" ng-maxlength="255" placeholder="请输入描述信息" ></textarea>
+                            <!--<i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.description.$invalid && !form1.description.$focused">请输入最长255位模型描述</font>-->
+                            <!--<span style="color:red" ng-show="form1.description.$dirty && form1.description.$invalid">
+                                 <span ng-show="form1.description.$invalid && !form1.description.$focused">描述最长:255</span>
+                            </span>-->
+                        </div>
+                    </div>
+                    <div class="add-row-editable-table align-center">
+                        <button class="btn btn-primary" type="submit" ng-disabled="form1.$invalid || editCheckModelNameResult">保存</button>&nbsp;
+                        <button class="btn btn-default" type="button" onclick="history.go(-1);">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-8" >
+
+            <div ba-panel ba-panel-title="服务列表" ba-panel-class="with-scroll middle-large-panel" >
+                <div class="add-row-editable-table">
+                    <button class="btn btn-primary" data-toggle="modal"
+                            ng-click="addModelSetting()">配置模型</button>
+                </div>
+                <div class="horizontal-scroll ">
+                    <div ng-show="modelSettingList.length <= 0">暂无数据</div>
+                    <table class="table table-hover" st-table="columnsTableData" ng-show="modelSettingList.length > 0">
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th width="5%" style="text-align:center;">序号</th>
+                            <th>领域名称</th>
+                            <th>维度名称</th>
+                            <th>目标维度code</th>
+                            <th>目标集群</th>
+                            <th width="15%" style="text-align:center;">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="modelSetting in modelSettingList " class="editable-row">
+                            <td>{{$index+1}}</td>
+                            <td>&nbsp;&nbsp;{{modelSetting.domainName}}</td>
+                            <td>{{modelSetting.dimensionName}}</td>
+                            <td>{{modelSetting.targetDimensionCode}}</td>
+                            <td>{{modelSetting.targetCluster}}</td>
+                            <td>
+                                <div class="buttons" style="text-align:center;" width="15%">
+                                    <button class="btn btn-primary editable-table-button btn-xs" ng-click="editModelSetting($index)">编辑</button>
+                                    <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeModelSetting($index)">删除</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

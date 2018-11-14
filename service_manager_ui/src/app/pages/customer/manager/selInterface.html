@@ -1,0 +1,98 @@
+<div  >
+    <ba-wizard>
+        <ba-wizard-step title="通用配置" >
+            <form  novalidate>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group has-feedback">
+                            <label for="exampleUsername1">账户试用期查询条数: </label>
+                            <input type="text" class="form-control" placeholder="请输入非0数字,-1代表不限制" id="exampleUsername1" name="username" ng-model="customerConfig.trialQuantity" >
+                        </div>
+                        <div class="form-group" >
+                            <label for="exampleInputEmail1">每分钟可查询次数: </label>
+                            <input type="text" class="form-control" placeholder="请输入非0数字,-1代表不限制，默认99" id="exampleInputEmail1" name="email"  ng-model="customerConfig.qpmLimit"  >
+                        </div>
+                        <div class="form-group" ng-show="authCodeCustomer!=null" >
+                            <label for="authCode">客户授权码: </label>
+                            <input type="text" class="form-control" ng-readonly="true" id="authCode" name="password" ng-model="authCodeCustomer.authCode">
+                        </div>
+                        <div class="form-group" >
+                            <label for="ipWhiteList">IP白名单：</label>
+                            <textarea ng-focus class="form-control"
+                                      placeholder="请输入IP地址,该地址用于白名单设置,,多个IP以英文格式逗号分割,eg:192.168.1.1"
+                                      ng-model="customerConfig.ipWhiteList"
+                                      name="ipWhiteList" id="ipWhiteList"
+
+                            ></textarea>
+                           <!-- ng-pattern= "/^(((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))(\n?))+$/"-->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group" >
+                            <label for="exampleInputPassword1">账户总查询条数: </label>
+                            <input type="text" class="form-control" placeholder="请输入非0数字,-1代表不限制" id="exampleInputPassword1" name="password" ng-model="customerConfig.totalSearchQuantity">
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <label for="useCache" style="position: relative;left: -15px;">是否使用缓存:</label>
+                                <div class="form-group row">
+                                    <div id="useCache"  name="useCache"  >
+                                        <ba-switcher switcher-style="primary" switcher-value="customerConfig.cacheStatus"></ba-switcher>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group" >
+                                <label for="useLimitWord" style="position: relative;left: -15px;">是否使用限定词:</label>
+                                <div class="form-group row">
+                                    <div id="useLimitWord"  name="useLimitWord"  >
+                                        <ba-switcher switcher-style="primary" switcher-value="customerConfig.limitWordStatus"></ba-switcher>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </ba-wizard-step>
+        <ba-wizard-step title="接口选择" >
+            <div class="add-row-editable-table">
+                <button class="btn btn-primary" data-toggle="modal"
+                        ng-click="addInterfaceSetting()">接口选择</button>
+            </div>
+            <div class="horizontal-scroll ">
+                <div ng-show="interfaceSettingList.length <= 0">暂无数据</div>
+                <table class="table table-hover" st-table="columnsTableData" ng-show="interfaceSettingList.length > 0">
+                    <thead>
+                    <tr class="black-muted-bg">
+                        <th width="5%" style="text-align:center;">序号</th>
+                        <th>接口名称</th>
+                        <th>模型名称</th>
+                        <th>每页条数</th>
+                        <th>自定义查询</th>
+                        <th width="15%" style="text-align:center;">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="serviceInterface in interfaceSettingList " class="editable-row">
+                        <td>{{$index+1}}</td>
+                        <td>&nbsp;&nbsp;{{serviceInterface.interfaceName}}</td>
+                        <td>{{serviceInterface.modelName}}</td>
+                        <td>{{serviceInterface.customRange}}</td>
+                        <td>{{serviceInterface.customQuery}}</td>
+                        <td>
+                            <div class="buttons" style="text-align:center;" width="15%">
+                                <button class="btn btn-primary editable-table-button btn-xs" ng-click="editInterfaceModel($index)">编辑</button>
+                                <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeInterfaceModel($index)">删除</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </ba-wizard-step>
+    </ba-wizard>
+
+</div>

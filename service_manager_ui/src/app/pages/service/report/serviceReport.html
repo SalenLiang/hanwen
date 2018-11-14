@@ -1,0 +1,66 @@
+<div class="widgets" ng-controller="reportInfoCtrl">
+    <div class="row">
+        <div class="col-md-12" >
+            <div ba-panel ba-panel-title="报告" ba-panel-class="with-scroll">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="add-row-editable-table align-left input-group">
+                                <input type="text" class="form-control with-warning-addon" placeholder="请输入搜索报告名称" name="" value="" ng-model="$parent.$parent.$parent.modelName" aria-describedby="basic-addon2">
+                                <span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.$parent.modelName=''">
+ 									<span class="glyphicon glyphicon-trash"></span>
+ 								</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" style="overflow:scroll;" id="status"
+                                    ng-model="status" ng-options="item.code as item.status for item in typeList">
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" ng-click="searchReport()">搜索</button>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="col-md-6 add-row-editable-table align-right" >
+                        <button class="btn btn-primary" ng-click="addReport()">新增报告</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="horizontal-scroll">
+                        <table class="table table-hover" st-table="menusTableData" >
+                            <thead>
+                            <tr class="black-muted-bg">
+                                <th width="10%">编号</th>
+                                <th  width="30%">报告名称</th>
+                                <th  width="30%">报告描述</th>
+                                <th width="15%">状态</th>
+                                <th style="text-align:center;" width="15%">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="item in reportlList" class="editable-row">
+                                <td>{{$index+1}}</td>
+                                <td>{{item.reportName}}</td>
+                                <td>{{item.reportDesc}}</td>
+                                <td>
+                                    <span ng-if="item.reportStatus == 0">启用</span>
+                                    <span ng-if="item.reportStatus == 1">停用</span>
+                                </td>
+                                <td>
+                                    <div class="buttons" style="text-align:center;" width="15%">
+                                        <button class="btn btn-primary editable-table-button btn-xs" ng-click="updateReport(item)">编辑</button>
+                                        <button class="btn btn-danger editable-table-button btn-xs" ng-show="item.reportStatus == 0" ng-click="removeReport($index,item)">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <div>
+                            <tm-pagination conf="reportPaginationConf"></tm-pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

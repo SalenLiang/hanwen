@@ -1,0 +1,56 @@
+<div class="widgets" ng-controller="fieldManagerCtrl" >
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="字段列表" ba-panel-class="with-scroll">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="add-row-editable-table">
+                            <button class="btn btn-primary">新增字段</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="menusTableData" >
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th>编号</th>
+                            <th>字段代码</th>
+                            <th>字段名称</th>
+                            <th>状态</th>
+                            <th>描述</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="field in fields" class="editable-row">
+                            <td>{{$index+1}}</td>
+                            <td>{{field.fieldCode}}</td>
+                            <td>{{field.fieldName}}</td>
+                            <td>{{field.status}}</td>
+                            <td>{{field.description}}</td>
+                            <td>
+                                <div class="buttons" >
+                                    <button class="btn btn-primary editable-table-button btn-xs" >修改</button>
+                                    <button class="btn btn-danger editable-table-button btn-xs" onclick="confirmDelete()">删除</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tfoot>
+                        <tr>
+                            <td colspan="13" class="text-center">
+                                <!--<app-page page_data="menuPageData" load="customerList(currentPage)" />-->
+                            </td>
+                        </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    function confirmDelete() {
+        confirm("确定要删除该项记录么");
+    }
+</script>

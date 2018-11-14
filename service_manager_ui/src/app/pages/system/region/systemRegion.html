@@ -1,0 +1,62 @@
+<div class="widgets" ng-controller="regionController">
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="区域列表" ba-panel-class="with-scroll">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="add-row-editable-table">
+                            <button class="btn btn-primary" ng-click="openAddRegionPage()">增加区域</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="menusTableData">
+                        <tr class="black-muted-bg">
+                            <td>编号</td>
+                            <td>区域代码</td>
+                            <td>区域名称</td>
+                            <td>负责人</td>
+                            <td style="width: 5%;text-align: center">操作</td>
+                        </tr>
+                        <tr ng-repeat="region in regions" class="editable-row">
+                            <td>
+                                {{$index+1}}
+                            </td>
+                            <td>
+                                <!--<span editable-text="region.regionCode" e-name="regionCode" e-form="rowform" e-required>
+                                  {{ region.regionCode || 'empty' }}
+                                </span>-->
+                                {{ region.regionCode }}
+                            </td>
+                            <td class="select-td">
+                                <span editable-text="region.regionName" e-name="regionName" e-form="rowform" >
+                                  {{ region.regionName}}
+                                </span>
+                            </td>
+                            <td class="select-td">
+                                <span editable-select="region.adminUserId" e-name="adminUserId"  e-form="rowform" e-selectpicker
+                                      e-ng-options="g.adminUserId as g.realName for g in unChargePersonList">
+                                    {{ showManager(region) }}
+                                </span>
+                            </td>
+                            <td style="width: 5%;text-align: center">
+                                <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline" shown="inserted == region">
+                                    <button type="submit" ng-disabled="rowform.$waiting" ng-click="saveEditRegion(region ,rowform)" class="btn btn-primary editable-table-button btn-xs">
+                                        保存
+                                    </button>
+                                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+                                        取消
+                                    </button>
+                                </form>
+                                <div class="buttons" ng-show="!rowform.$visible">
+                                    <button class="btn btn-primary editable-table-button btn-xs" ng-click="editRegion(region)">编辑</button>
+                                    <button class="btn btn-danger editable-table-button btn-xs" ng-click="deleteRegion(region)">删除</button>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,292 @@
+<div class="widgets" ng-controller="addCustomerController">
+    <div class="row">
+        <div class="col-md-5">
+            <div ba-panel ba-panel-title="操作" ba-panel-class="with-scroll" >
+                <form name="form1" ng-submit="saveCustomer(form1)">
+                    <div class="ng-cloak">
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="companyName">企业名称：</label>
+                                <input type="text" ng-focus class="form-control" placeholder="请输入企业名称" ng-blur="checkCustomer('companyName',customer.companyName,$event)"
+                                         ng-model="$parent.$parent.customer.companyName" name="companyName" id="companyName"   required  ng-minlength="2" ng-maxlength="30" >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form1.companyName.$invalid && !form1.companyName.$focused">请输入2-30位合法的企业名称</font>
+                                <span ng-show="$parent.$parent.checkCustomerCompanyNameResult && !form1.companyName.$invalid">
+                                	<span style="color: #a94442;">企业名称已存在</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="contactName">联系人：</label>
+                                <input type="text" ng-focus class="form-control" placeholder="请输入联系人姓名"
+                                        ng-model="$parent.$parent.customer.contactName" name="contactName" id="contactName"  required ng-minlength="2" ng-maxlength="5" >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form1.contactName.$invalid && !form1.contactName.$focused">请输入2-5位联系人名称</font>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="contactTel">联系电话(必填)：</label>
+                                <input type="text" ng-focus class="form-control" placeholder="请输入联系人电话" ng-blur="checkCustomer('contactTel',customer.contactTel,$event)"
+                                       ng-model="$parent.$parent.customer.contactTel" name="contactTel" id="contactTel"  required ng-pattern="/^((\d{3,4}\-)|)\d{7,8}(|([-\u8f6c]{1}\d{1,5}))$/"  >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form1.contactTel.$invalid && !form1.contactTel.$focused">请输入合法的联系电话 ls:010-1234567</font>
+                                        <span ng-show="$parent.$parent.checkCustomerContactTelResult && !form1.contactTel.$invalid">
+                                            <span style="color: #a94442;">联系电话已存在</span>
+                                        </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="contactEmail">联系人邮箱(必填)：</label>
+                                <input type="text" ng-focus class="form-control" placeholder="请输入电子邮箱地址" ng-blur="checkCustomer('contactEmail',customer.contactEmail,$event)"
+                                       ng-model="$parent.$parent.customer.contactEmail" name="contactEmail" id="contactEmail"  required  ng-pattern="/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/" >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form1.contactEmail.$invalid && !form1.contactEmail.$focused">请输入合法的邮箱地址</font>
+                                <span ng-show="$parent.$parent.checkCustomerContactEmailResult && !form1.contactEmail.$invalid">
+                                	<span style="color: #a94442;">联系人邮箱已存在</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="userName">初始管理账号(必填)：</label>
+                                <input type="text" ng-focus class="form-control" placeholder="初始管理账号" ng-blur="checkCustomer('userName',customer.userName,$event)"
+                                        ng-model="$parent.$parent.customer.userName" name="userName" id="userName"   required  ng-minlength="2" ng-maxlength="30" >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form1.userName.$invalid && !form1.userName.$focused">请输入2-30位客户初始管理账号</font>
+                                <span ng-show="$parent.$parent.checkCustomerUserNameResult && !form1.userName.$invalid">
+                                	<span style="color: #a94442;">初始管理账号已存在</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="contactPhone">手机号(必填)：</label>
+                                <input type="number" ng-focus class="form-control" placeholder="请输入11位手机号" ng-blur="checkCustomer('contactPhone',customer.contactPhone,$event)"
+                                       ng-model="$parent.$parent.customer.contactPhone" name="contactPhone" id="contactPhone"
+                                       required  ng-minlength="11" ng-maxlength="11"
+                                        ng-pattern="/^1[3|4|5|7|8]\d{9}$/"
+                                >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form1.contactPhone.$invalid && !form1.contactPhone.$focused">请输入合法的手机号码</font>
+                                <span ng-show="$parent.$parent.checkCustomerContactPhoneResult &&!form1.contactPhone.$invalid">
+                                	<span style="color: #a94442;">手机号已存在</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <label for="ownerId">负责人：</label>
+                                <select class="form-control" style="overflow:scroll;" ng-model="$parent.$parent.customer.ownerId" name="ownerId"
+                                        ng-options="x.adminUserId as x.name for x in adminUsers"  id="ownerId" required>
+                                </select>
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.ownerId.$invalid && !form10.ownerId.$focused">必选</font>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <label for="customerArea">客户所属区域：</label>
+                                <select class="form-control" style="overflow:scroll;" ng-model="$parent.$parent.customer.customerArea" name="customerArea"
+                                	ng-options="x.regionCode as x.regionName for x in areas"  id="customerArea" required>
+                                </select>
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.customerArea.$invalid && !form10.customerArea.$focused">必选</font>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="trialBeginDate">账号试用日期：</label>
+                                <div class="input-group input-daterange input-append date form_datetime">
+                                    <input type='text'   name="trialBeginDate" id="trialBeginDate"  ng-readonly="true" ng-required="true"
+                                           ng-model="$parent.$parent.customer.trialBeginDate "class="form-control" onclick="chageStatus('trialBeginDate')" />
+                                   <span class="input-group-addon input-group-addon-custome  addon-right" ng-click="$parent.$parent.customer.trialBeginDate=''">
+ 									    <span class="glyphicon glyphicon-trash"></span>
+ 								    </span>
+                                    <div class="input-group-addon">至</div>
+                                    <input type='text'    name="trialEndDate" id="trialEndDate"  ng-readonly="true" ng-required="true"
+                                           ng-model="$parent.$parent.customer.trialEndDate "class="form-control" onclick="chageStatus('trialEndDate')" />
+                                    <span class="input-group-addon input-group-addon-custome addon-right" ng-click="$parent.$parent.customer.trialEndDate=''">
+ 									    <span class="glyphicon glyphicon-trash"></span>
+ 								    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="trialBeginDate">账号有效日期：</label>
+                                <div class="input-group input-daterange">
+                                    <input type='text'   name="contractBeginDate" id="contractBeginDate"  ng-readonly="true" ng-required="true"
+                                           ng-model="$parent.$parent.customer.contractBeginDate "class="form-control" onclick="chageStatus('contractBeginDate')" />
+                                    <input type='hidden'  id = "datasss" ng-model="datestatus"class="form-control" />
+                                    <span class="input-group-addon input-group-addon-custome addon-right" ng-click="$parent.$parent.customer.contractBeginDate='' ">
+ 									    <span class="glyphicon glyphicon-trash"></span>
+ 								    </span>
+                                    <div class="input-group-addon">至</div>
+                                    <input type='text'   name="contractEndDate" id="contractEndDate"  ng-readonly="true" ng-required="true"
+                                           ng-model="$parent.$parent.customer.contractEndDate "class="form-control" onclick="chageStatus('contractEndDate')" />
+                                    <span class="input-group-addon input-group-addon-custome addon-right" ng-click="$parent.$parent.customer.contractEndDate=''">
+ 									    <span class="glyphicon glyphicon-trash"></span>
+ 								    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="form-group has-feedback">
+                                <label>提供用户服务：</label>
+                                <div class="checkbox-demo-row">
+                                    <div class="input-demo checkbox-demo row">
+                                        <div class="col-md-3">
+                                            <label class="checkbox-inline custom-checkbox nowrap">
+                                                <input type="checkbox" id="inlineCheckbox01" value="option1">
+                                                 <span>接口</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="checkbox-inline custom-checkbox nowrap">
+                                                <input type="checkbox" ng-click="clickMonitorCheck(this)" id="inlineCheckbox02" ng-model="monitorCheck" value="option2">
+                                                <span>监控</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="checkbox-inline custom-checkbox nowrap">
+                                                <input type="checkbox" id="inlineCheckbox03" ng-click="clickReportCheck(this)" ng-model="reportCheck" value="option3">
+                                                <span>报告</span>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="checkbox-inline custom-checkbox nowrap">
+                                                <input type="checkbox" id="inlineCheckbox04" ng-click="clickBankCheck(this)" ng-model="bankCheck" value="option3">
+                                                <span>Bank</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        </div>
+                    <div class="col-md-6">
+                        <div class="add-row-editable-table align-center">
+                            <!--<button class="btn btn-primary" type="submit" ng-disabled="form1.$invalid || checkCustomerCompanyNameResult || checkCustomerContactTelResult || checkCustomerContactEmailResult || checkCustomerUserNameResult || checkCustomerContactPhoneResult">保存</button>&nbsp;-->
+                            <button class="btn btn-primary" type="submit">保存</button>&nbsp;
+                            <button class="btn btn-default" type="button" ng-click="backCustomer()">返回</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div ba-panel ba-panel-title="服务选择" ba-panel-class="with-scroll middle-large-panel">
+                <uib-tabset  active="$tabSetStatus.activeTab">
+                    <uib-tab heading="领域维度">
+                        <div ng-include="'app/pages/customer/manager/domainDimension.html'"></div>
+                    </uib-tab>
+                    <uib-tab heading="接口选择" index="1">
+                        <div ng-include="'app/pages/customer/manager/selInterface.html'"></div>
+                    </uib-tab>
+
+                    <uib-tab ng-show="monitorPanel" heading="监控" index="2">
+                        <div ng-show="monitorPanel" ng-include="'app/pages/customer/manager/monitor/monitorInfo.html'"></div>
+                    </uib-tab>
+
+                    <uib-tab ng-show="reportPanel" heading="报告" index="3">
+                        <div ng-show="reportPanel" ng-include="'app/pages/customer/manager/riskReport/addReport.html'"></div>
+                    </uib-tab>
+                    <uib-tab ng-show="bankPanel" heading="bank系统" index="4">
+                        <div ng-show="bankPanel" ng-include="'app/pages/customer/manager/bank/addUser.html'"></div>
+                    </uib-tab>
+                </uib-tabset>
+                
+            </div>
+           
+        </div>
+    </div>
+</div>
+<script>
+    var datestatus = false;
+    $(function () {
+        var now = new Date();
+        $('#trialBeginDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            minView: "month",//设置只显示到月份
+            maxView:3,
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            todayBtn: true,//显示今日按钮
+            startDate:now,
+            pickerPosition: "top-right"
+        }).on('changeDate',function(e){
+            var startTime = e.date;
+            $('#trialEndDate').datetimepicker('setStartDate',startTime);
+        }).on('show',function(){
+            datestatus = true;
+        });
+
+        $('#trialEndDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            minView: "month",//设置只显示到月份
+            maxView:3,
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            todayBtn: true,//显示今日按钮
+            startDate:now,
+            pickerPosition: "top-right"
+        }).on('changeDate',function(e){
+            var endTime = e.date;
+            $('#trialBeginDate').datetimepicker('setEndDate',endTime);
+        }).on('show',function(){
+            datestatus = true;
+        });
+
+        $('#contractBeginDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            minView: "month",//设置只显示到月份
+            maxView:3,
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            todayBtn: true,//显示今日按钮
+            startDate:now,
+            pickerPosition: "top-right"
+        }).on('changeDate',function(e){
+            var startTime = e.date;
+            $('#contractEndDate').datetimepicker('setStartDate',startTime);
+        }).on('show',function(){
+            datestatus = true;
+        });
+        $('#contractEndDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            minView: "month",//设置只显示到月份
+            maxView:3,
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            todayBtn: true,//显示今日按钮
+            startDate:now,
+            pickerPosition: "top-right"
+        }).on('changeDate',function(e){
+            var endTime = e.date;
+            $('#contractBeginDate').datetimepicker('setEndDate',endTime);
+        }).on('show',function(){
+            datestatus = true;
+        });
+
+
+    });
+
+    function chageStatus(who){
+        if(datestatus){
+            $('#'+who+'').datetimepicker('show');
+            datestatus = false;
+        }else{
+            $('#'+who+'').datetimepicker('hide');
+            datestatus = true;
+        }
+    }
+
+</script>

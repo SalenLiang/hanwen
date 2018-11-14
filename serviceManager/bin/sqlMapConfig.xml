@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+<settings>
+    <setting name="logImpl" value="STDOUT_LOGGING"/>
+</settings>
+    <!-- 配置实体类别名 -->
+    <typeAliases>
+        <typeAlias type="com.fahai.cc.service.adminUser.entity.AdminUser" alias="adminUser"  />
+        <typeAlias type="com.fahai.cc.service.domain.entity.Domain" alias="domain"  />
+        <typeAlias type="com.fahai.cc.service.field.entity.Field" alias="field"/>
+        <typeAlias type="com.fahai.cc.service.dimension.entity.Dimension" alias="dimension"/>
+        <typeAlias type="com.fahai.cc.service.serviceInterface.entity.ServiceInterface" alias="serviceInterface"/>
+        <typeAlias type="com.fahai.cc.service.role.entity.MenuMast" alias="menuMast"/>
+        <typeAlias type="com.fahai.cc.service.role.entity.Role" alias="role"/>
+        <typeAlias type="com.fahai.cc.service.customer.entity.Customer" alias="customer"/>
+        <typeAlias type="com.fahai.cc.service.interfacemodel.entity.InterfaceModel" alias="interfaceModel"/>
+        <typeAlias type="com.fahai.cc.service.vo.CustomerInterfaceVo" alias="customerInterfaceVo"/>
+        <typeAlias type="com.fahai.cc.service.interfaceLog.entity.InterfaceLog" alias="interfaceLog"/>
+        <typeAlias type="com.fahai.cc.service.limitword.entity.Limitword" alias="limitword"/>
+        <typeAlias type="com.fahai.cc.service.customer.entity.CustomerQueryCount" alias="customerQueryCount"/>
+    </typeAliases>
+</configuration>

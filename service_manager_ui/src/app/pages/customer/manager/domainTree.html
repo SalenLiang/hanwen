@@ -1,0 +1,92 @@
+<script>
+    var setting = {
+        check: {
+            chkStyle:'checkbox',    //勾选框类型(checkbox 或 radio）,默认值："checkbox"
+            enable: true            //设置 zTree 的节点上是否显示 checkbox / radio
+        },
+        data: {
+            simpleData: {
+                enable: true,		//数据是否采用简单 Array 格式，默认false
+                idKey: "id",        //节点数据中保存唯一标识的属性名称。默认值："id" [setting.data.simpleData.enable = true 时生效]
+                pIdKey: "parentId",      //节点数据中保存其父节点唯一标识的属性名称,默认值："pId",[setting.data.simpleData.enable = true 时生效]
+                rootPId: 0          //用于修正根节点父节点数据，即 pIdKey 指定的属性值。默认值：null[setting.data.simpleData.enable = true 时生效]
+            },
+            key:{
+                name: "name"        // zTree 节点数据保存节点名称的属性名称。默认值："name"
+            }
+        },
+        callback: {
+            onCheck: zTreeOnCheck
+        }
+    };
+    //初始化的数据
+    var nodes = [
+        {id: 1, parentId: -1, name: "Big-1",checked:true},
+        {id: 2, parentId: -1, name: "Big-2"},
+        {id: 3, parentId: -1, name: "Big-3"},
+        {id: 4, parentId: -1, name: "Big-4"},
+        {id: 5, parentId: -1, name: "Big-5"},
+        {id: 6, parentId: -1, name: "Big-5"},
+        {id: 7, parentId: -1, name: "Big-5"},
+        {id: 8, parentId: -1, name: "Big-5"},
+        {id: 9, parentId: -1, name: "Big-5"},
+        {id: 10, parentId: -1, name: "Big-5"},
+        {id: 11, parentId: -1, name: "Big-5"},
+        {id: 12, parentId: -1, name: "Big-5"},
+        {id: 13, parentId: -1, name: "Big-5"},
+        {id: 14, parentId: -1, name: "Big-5"},
+        {id: 15, parentId: -1, name: "Big-5"},
+        {id: 16, parentId: -1, name: "Big-5"},
+        {id: 17, parentId: -1, name: "Big-5"},
+        {id: 18, parentId: -1, name: "Big-5"},
+        {id: 11, parentId: 1, name: "Big-11",checked:true},
+        {id: 12, parentId: 1, name: "Big-12",checked:true},
+        {id: 13, parentId: 1, name: "Big-13",checked:true},
+        {id: 14, parentId: 1, name: "Big-14"},
+        {id: 15, parentId: 1, name: "Big-15"},
+        {id: 16, parentId: 1, name: "Big-16"},
+        {id: 21, parentId: 2, name: "Big-21"},
+        {id: 22, parentId: 2, name: "Big-22"},
+        {id: 23, parentId: 2, name: "Big-23"},
+        {id: 24, parentId: 2, name: "Big-24"},
+        {id: 25, parentId: 2, name: "Big-25"},
+        {id: 111, parentId: 11, name: "Big-111",checked:true},
+        {id: 112, parentId: 11, name: "Big-112",checked:true},
+        {id: 113, parentId: 11, name: "Big-113"},
+        {id: 114, parentId: 11, name: "Big-114"}
+    ];
+
+    //选中的事件
+    function zTreeOnCheck(event, treeId, treeNode) {
+        var id = treeNode.id;
+        var checked = treeNode.checked;
+        var checkNodeIds  = $("#checkedNode").val();
+        var checkNodeIdArray = checkNodeIds.split(',');
+        if(checked){
+            //选中了
+            checkNodeIdArray.push(id);
+        }else{
+            for(var i=0 ;i<checkNodeIdArray.length;i++){
+                if(id==checkNodeIdArray[i]){
+                    checkNodeIdArray.splice(i,1);
+                }
+            }
+        }
+        $("#checkedNode").val(checkNodeIdArray.join(","));
+    }
+    
+
+    $(function() {
+        var domainTree = $.fn.zTree.init($("#domainTree"), setting, nodes);
+        //获取被选中的节点
+        var checkNodes=domainTree.getCheckedNodes(true);
+        var checkNodeIds = [];
+        for(var i=0 ; i<checkNodes.length;i++){
+            var id =checkNodes[i].id;
+            checkNodeIds.push(id);
+        }
+        $("#checkedNode").val(checkNodeIds.join(","));
+    });
+</script>
+<ul id="domainTree" class="ztree" style="width:630px; overflow:auto;"></ul>
+<input type="hidden" id="checkedNode" name="checkedNode">

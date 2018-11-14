@@ -1,0 +1,67 @@
+<div class="modal-content" ng-controller="addLimitwordCtrl"  >
+    <form name="form1"  ng-submit="saveLimitword()" >
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title">添加限定词</h4>
+        </div>
+        <div class="modal-body" >
+            <div class="ng-cloak">
+                <div class="form-group has-feedback">
+                    <label for="word">限定词：</label>
+                    <div ng-hide="true" ng-init="checkDomainCodeResult = true"></div>
+                    <input type="text" ng-focus class="form-control" placeholder="请输入限定词"
+                           ng-blur="checkLimitword($event)"
+                           ng-model="$parent.$parent.limitword.word" name="word" id="word"   required >
+                    <i class="form-control-feedback" aria-hidden="true"></i>
+                    <font class="text-danger" ng-show="form1.word.$invalid && !form1.word.$focused">请输入2-20位合法的限定词</font>
+                    <!--<span style="color:red" ng-show="form1.domainCode.$dirty && form1.domainCode.$invalid">
+                         <span ng-show="form1.domainCode.$error.required">必填项</span>
+                         <span ng-show="form1.domainCode.$invalid && !form1.domainCode.$focused">请输入正确的领域代码</span>
+                    </span>-->
+                    <span ng-show="checkLimitwordResult && !form1.word.$invalid">
+                        <span style="color: #a94442;">限定词已存在</span>
+                    </span>
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="wordType">限定词类型：</label>
+                    <select class="form-control" ng-focus style="overflow:scroll;" ng-model="$parent.$parent.limitword.wordType" name="wordType"
+                            ng-options="x.code as x.value for x in limitwordTypes"  id="wordType" required>
+                    </select>
+                    <i class="form-control-feedback" aria-hidden="true"></i>
+                    <font class="text-danger" ng-show="form1.wordType.$invalid && !form1.wordType.$focused">必选</font>
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="divStatus">状态：</label>
+                    <div class="form-group row" id="divStatus">
+                        <div class="col-sm-8">
+                            <label class="radio-inline custom-radio nowrap">
+                                <input type="radio" value="0" name="status" checked="checked"  ng-model="$parent.$parent.limitword.status">
+                                <span>启用</span>
+                            </label>
+                            <label class="radio-inline custom-radio nowrap">
+                                <input type="radio" value="1" name="status" ng-model="$parent.$parent.limitword.status">
+                                <span>停用</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group has-feedback">
+                    <label for="description">描述：</label>
+                            <textarea id="description"  class="form-control"   ng-model="$parent.$parent.limitword.description"
+                                      name="description"  placeholder="请输入描述"   ng-maxlength="255" ></textarea>
+                    <i class="form-control-feedback" aria-hidden="true"></i>
+                    <font class="text-danger" ng-show="form1.description.$invalid ">请输入最长255位的限定词描述</font>
+                    <!--<span style="color:red" ng-show="form1.description.$dirty && form1.description.$invalid">
+                         <span ng-show="form1.description.$invalid && !form1.description.$focused">描述最长:255</span>
+                    </span>-->
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="form1.$invalid " >保存</button>
+        </div>
+    </form>
+</div>
+

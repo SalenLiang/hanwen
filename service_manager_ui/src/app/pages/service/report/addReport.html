@@ -1,0 +1,57 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-12" >
+            <div ba-panel ba-panel-title="报告信息" ba-panel-class="with-scroll" >
+                <form name="form1" ng-submit="saveReport(form1)" novalidate>
+                    <div class="ng-cloak">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group has-feedback">
+                                    <label for="reportName">报告名称：</label>
+                                    <input type="text" ng-focus class="form-control" placeholder="请输入报告名称"
+                                           ng-model="report.reportName" name="reportName" id="reportName"  required  ng-minlength="2" ng-maxlength="20"  >
+                                    <i class="form-control-feedback" aria-hidden="true"></i>
+                                    <font class="text-danger" ng-show="form1.reportName.$invalid && !form1.reportName.$focused">请输入2-20位合法的模板名称</font>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group has-feedback">
+                                    <label for="reportDesc">报告描述：</label>
+                                    <textarea id="reportDesc" class="form-control"   ng-model="report.reportDesc"
+                                              name="reportDesc"  placeholder="请输入描述信息"  ng-maxlength="255"  ></textarea>
+                                    <font class="text-danger" ng-show="form1.reportDesc.$invalid ">请输入最长255位的模板描述</font>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group has-feedback">
+                                    <label for="divStatus">状态：</label>
+                                    <div class="form-group row" id="divStatus">
+                                        <div class="col-sm-8">
+                                            <label class="radio-inline custom-radio nowrap">
+                                                <input type="radio" value="0" name="reportStatus" checked="checked"  ng-model="report.reportStatus">
+                                                <span>启用</span>
+                                            </label>
+                                            <label class="radio-inline custom-radio nowrap">
+                                                <input type="radio" value="1" name="reportStatus" ng-model="report.reportStatus">
+                                                <span>停用</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add-row-editable-table align-center">
+                        <button class="btn btn-primary" type="submit" ng-disabled="form1.$invalid">保存</button>&nbsp;
+                        <button class="btn btn-default" type="button" onclick="history.go(-1);">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+

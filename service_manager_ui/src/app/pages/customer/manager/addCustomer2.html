@@ -1,0 +1,60 @@
+<div class="modal-content" ng-controller="customerManagerCtrl">
+    <form name="form1" ng-submit="saveCustomerByDialog(form1.$valid)" novalidate>
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">新增客户</h4>
+        </div>
+        <div class="modal-body">
+            <div class="ng-cloak">
+                <div class="form-group row">
+                    <div class="col-md-10 has-feedback">
+                        <label for="companyName">企业名称：</label>
+                        <input type="text" ng-focus class="form-control" placeholder="请输入企业名称"
+                               ng-model="$parent.$parent.customer.companyName" name="companyName" id="companyName"  required  ng-minlength="5" ng-maxlength="50" >
+                        <span style="color:red" ng-show="form1.companyName.$dirty && form1.companyName.$invalid">
+                                     <span ng-show="form1.companyName.$error.required">企业名称是必须的</span>
+                                </span>
+                    </div>
+                    <div class="col-md-10 has-feedback">
+                        <label for="email">电子邮箱：</label>
+                        <input type="email" ng-focus class="form-control" placeholder="请输入电子邮箱地址"
+                               ng-model="$parent.$parent.customer.email" name="email" id="email"  required  >
+                        <span style="color:red" ng-show="form1.email.$dirty && form1.email.$invalid">
+                                <span ng-show="form1.email.$error.required">电子邮箱是必须的</span>
+                                    <span ng-show="form1.email.$error.email">非法的电子邮箱</span>
+                                </span>
+                    </div>
+                    <div class="col-md-10 has-feedback">
+                        <label for="contactPerson">联系人：</label>
+                        <input type="text" ng-focus class="form-control" placeholder="请输入联系人姓名"
+                               ng-model="$parent.$parent.customer.contactPerson" name="contactPerson" id="contactPerson"  required ng-minlength="2" ng-maxlength="50" >
+                        <span style="color:red" ng-show="form1.contactPerson.$dirty && form1.contactPerson.$invalid">
+                                     <span ng-show="form1.contactPerson.$error.required">联系人是必须的</span>
+                                </span>
+                    </div>
+                    <div class="col-md-10 has-feedback">
+                        <label for="contactNumber">联系电话：</label>
+                        <input type="number" ng-focus class="form-control" placeholder="请输入联系人电话"
+                               ng-model="$parent.$parent.customer.contactNumber" name="contactNumber" id="contactNumber"  required  >
+                        <span style="color:red" ng-show="form1.contactNumber.$dirty && form1.contactNumber.$invalid">
+                                    <span ng-show="form1.contactNumber.$error.required">联系人电话是必须的</span>
+                                </span>
+                    </div>
+                    <div class="col-md-10 has-feedback">
+                        <label for="authCode">授权码：</label>
+                        <input type="text" ng-focus class="form-control" placeholder="请输入授权码"
+                               ng-model="$parent.$parent.customer.authCode" name="authCode" id="authCode"  required >
+                        <span style="color:red" ng-show="form1.authCode.$dirty && form1.authCode.$invalid">
+                                    <span ng-show="form1.authCode.$error.required">授权码是必须的</span>
+                                </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="form1.$invalid">保存</button>
+        </div>
+    </form>
+</div>

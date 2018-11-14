@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.adminUser.mapper.AdminUserMapper">
+
+    <!--SQL片段-->
+    <sql id="Base_Column_List" >
+        adminUserId, `name` ,realName,email,mobile,regionYN,status
+    </sql>
+
+    <!--定义返回包装类-->
+    <resultMap id="adminRegionVo" type="com.fahai.cc.service.vo.AdminRegionVo">
+        <result column="adminUserId" property="adminUser.adminUserId"/>
+        <result column="name" property="adminUser.name"/>
+        <result column="realName" property="adminUser.realName"/>
+        <result column="email" property="adminUser.email"/>
+        <result column="mobile" property="adminUser.mobile"/>
+        <result column="status" property="adminUser.status"/>
+        <result column="regionYN" property="adminUser.regionYN"/>
+        <collection property="adminUserRegion" ofType="com.fahai.cc.service.region.entity.Region" javaType="java.util.List">
+            <result column="regionCode" property="regionCode"/>
+            <result column="regionName" property="regionName"/>
+        </collection>
+    </resultMap>
+
+    <select id="getTotalCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT count(adminUserId) FROM service_manager.adminuser
+        <where>
+            <if test="status != null and status != '' ">
+                AND status = #{status}
+            </if>
+
+            <if test="name != null and name != '' ">
+                AND realName LIKE '%${name}%'
+            </if>
+        </where>
+    </select>
+
+    <select id="findPageAdminUser" resultType="adminUser" parameterType="java.util.Map">
+        SELECT <include refid="Base_Column_List"/> FROM service_manager.adminuser
+        <where>
+            <if test="status != null and status != '' ">
+                AND status = #{status}
+            </if>
+
+            <if test="name != null and name != '' ">
+                AND realName LIKE '%${name}%'
+            </if>
+        </where>
+        ORDER BY lastModifyDate desc
+        limit #{start},#{pageSize}
+    </select>
+
+    <select id="findAdminUser" resultType="adminUser" parameterType="java.util.Map">
+        SELECT adminUserId, `name`,realName FROM service_manager.adminuser
+        <where>
+            <if test="status != null and status != '' ">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY adminUserId
+    </select>
+
+    <update id="updateStatusById" parameterType="java.util.Map">
+        UPDATE service_manager.adminuser SET status=#{status} where adminUserId=#{adminUserId}
+    </update>
+
+    <update id="updateAdminUser" parameterType="adminUser">
+        UPDATE service_manager.adminuser SET
+        <trim suffixOverrides=",">
+            <if test="name != null">
+                `name`=#{name},
+            </if>
+            <if test="email != null">
+                email=#{email},
+            </if>
+            <if test="passwd != null">
+                passwd=#{passwd},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+            <if test="mobile != null">
+                mobile=#{mobile},
+            </if>
+            <if test="regionYN != null">
+                regionYN=#{regionYN},
+            </if>
+            <if test="lastModifyDate != null">
+                lastModifyDate=#{lastModifyDate},
+            </if>
+            <if test="realName != null">
+                realName=#{realName},
+            </if>
+        </trim>
+        where adminUserId=#{adminUserId}
+    </update>
+
+    <select id="findUnChargeAdminUser" resultType="adminUser" parameterType="java.util.Map">
+        SELECT adminUserId, `name` ,realName FROM service_manager.adminuser 
+        <where>
+            <if test="status != null and status != '' ">
+                AND status = #{status}
+            </if>
+        </where>
+        ORDER BY adminUserId
+    </select>
+
+    <select id="getUserByUserName" resultType="adminUser" parameterType="string">
+        SELECT <include refid="Base_Column_List"/> FROM service_manager.adminuser
+        WHERE `name`=#{userName}
+    </select>
+
+    <select id="findByAdminId" resultMap="adminRegionVo" parameterType="string">
+        select s1.adminUserId,s1.`name`,s1.realName,s1.email,s1.mobile,s1.regionYN,s1.status,s3.regionCode,s3.regionName
+        from service_manager.adminuser s1
+        left join service_manager.adminuserregion s2 on s1.adminUserId=s2.adminUserId and s1.regionYN=0
+        left join service_manager.region s3 on s2.regionCode=s3.regionCode
+        where s1.adminUserId=#{adminUserId}
+    </select>
+
+    <insert id="saveAdminUser" parameterType="adminUser">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="adminUserId">
+            SELECT LAST_INSERT_ID() AS adminUserId
+        </selectKey>
+        INSERT  INTO service_manager.adminuser(`name` ,email,passwd,mobile,regionYN,createDate,lastModifyDate,status,realName)
+        VALUES (#{name},#{email},#{passwd},#{mobile},#{regionYN},#{createDate},#{lastModifyDate},#{status},#{realName})
+    </insert>
+
+    <select id="findCount" parameterType="string" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM service_manager.adminuser where `name`=#{adminUserName}
+    </select>
+
+    <select id="findCountByParam" parameterType="java.util.HashMap" resultType="java.lang.Long">
+        SELECT COUNT(1) FROM service_manager.adminuser
+        <where>
+            <if test="name != null and name !=''">
+                and `name`=#{name}
+            </if>
+            <if test="email != null and email !=''">
+                and email=#{email}
+            </if>
+            <if test="mobile != null and mobile !=''">
+                and mobile=#{mobile}
+            </if>
+            <if test="adminUserId != null and adminUserId !=''">
+                and adminUserId != #{adminUserId}
+            </if>
+        </where>
+    </select>
+
+    <insert id = "insertUserLoginLog"  parameterType="adminUser">
+    INSERT INTO service_manager.adminuserloginlog (adminUserId,loginDate,loginResult,loginIp)
+    VALUES (#{adminUserId} ,SYSDATE(),'0',#{loginIp})
+    </insert>
+
+    <select id="getUserByUserNameAndPassword" resultType="adminUser">
+        SELECT adminUserId, `name` ,passwd,realName,email,mobile,regionYN,status FROM adminuser
+        WHERE `name`=#{userName} and passwd=#{password}
+    </select>
+    
+    <insert id="saveAdminUserLog" parameterType="adminUser">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
+            SELECT LAST_INSERT_ID() AS logId
+        </selectKey>
+        INSERT  INTO service_manager.adminuserLog(adminUserId,`name` ,email,mobile,regionYN,createDate,status,realName,actionUserId,actionType)
+        VALUES (#{adminUserId},#{name},#{email},#{mobile},#{regionYN},#{lastModifyDate},#{status},#{realName},#{actionUserId},#{actionType})
+    </insert>
+    
+    <select id="findRoleIdByAdminUserId" parameterType="java.lang.Integer" resultType="java.lang.String">
+		select roleId from userrole where adminUserId = #{adminUserId}
+	</select>
+
+</mapper>

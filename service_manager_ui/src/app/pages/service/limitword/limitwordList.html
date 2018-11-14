@@ -1,0 +1,89 @@
+<div class="widgets" ng-controller="limitwordCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="限定词列表" ba-panel-class="with-scroll">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="col-md-4">
+                            <div class="add-row-editable-table align-left input-group">
+                                <input type="text" class="form-control with-warning-addon" placeholder="请输入限定词名称" name="" value="" ng-model="$parent.$parent.$parent.word" aria-describedby="basic-addon2">
+ 								<span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.$parent.word=''">
+ 									<span class="glyphicon glyphicon-trash"></span>
+ 								</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" style="overflow:scroll;"
+                                    ng-model="$parent.$parent.wordType" ng-options="item.code as item.value for item in limitwordTypes">
+                                <option value="">【全部】</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" ng-click="searchLimitword()">搜索</button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 add-row-editable-table align-right" >
+                        <button class="btn btn-primary" ng-click="addNewLimitword()">新增限定词</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="menusTableData" >
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th>编号</th>
+                            <th>限定词</th>
+                            <th>类型</th>
+                            <th>状态</th>
+                            <th style="text-align:center;">更新时间</th>
+                            <th style="text-align:center;">创建时间</th>
+                            <th style="text-align:center;"  width="15%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="limitword in limitwords" class="editable-row">
+                            <td>{{$index+1}}</td>
+                            <td>{{limitword.word}}</td>
+                            <td >
+                                <span editable-select="limitword.wordType" e-name="wordType" e-form="rowform" e-selectpicker e-required
+                                      e-ng-options="s.code as s.value for s in limitwordTypes">
+                                  {{ showWordType(limitword.wordType) }}
+                                </span>
+                            </td>
+                            <td >
+                                <span editable-select="limitword.status" e-name="status" e-form="rowform" e-selectpicker e-required
+                                      e-ng-options="s.code as s.value for s in status">
+                                  {{ showStatus(limitword.status) }}
+                                </span>
+                            </td>
+                            <td style="text-align:center;">{{limitword.lastModifyDate | date:'yyyy-MM-dd'}}</td>
+                            <td style="text-align:center;">{{limitword.createDate | date:'yyyy-MM-dd'}}</td>
+                            <td style="text-align:center;"  width="15%">
+                                <form editable-form name="rowform" ng-show="rowform.$visible" class="form-buttons form-inline"
+                                      shown="inserted == limitword">
+                                    <button type="submit" ng-disabled="rowform.$waiting" ng-click="saveEditLimitword(limitword,rowform)" class="btn btn-primary editable-table-button btn-xs">
+                                        保存
+                                    </button>
+                                    <button type="button" ng-disabled="rowform.$waiting" ng-click="rowform.$cancel()" class="btn btn-default editable-table-button btn-xs">
+                                        取消
+                                    </button>
+                                </form>
+                                <div class="buttons" ng-show="!rowform.$visible" >
+                                    <button class="btn btn-primary editable-table-button btn-xs" ng-click="rowform.$show()">编辑</button>
+                                    <button class="btn btn-danger editable-table-button btn-xs" ng-click="delLimitword(limitword,$index)">删除</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <tm-pagination conf="limitwordPaginationConf"></tm-pagination>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

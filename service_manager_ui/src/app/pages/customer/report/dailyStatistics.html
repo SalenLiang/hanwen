@@ -1,0 +1,76 @@
+<div class="row">
+    <div class="col-md-9">
+        <div class="col-md-2">
+            <div class="add-row-editable-table align-left">
+                <input type="text" class="form-control" placeholder="请输入搜索企业名称"  id="searchCompanyName" name="searchCompanyName" >
+            </div>
+        </div>
+        <div class="col-md-2 ">
+            <div class="add-row-editable-table align-left input-group date" id='datetimepicker1'>
+                <input type='text' ng-required="true" name="startDate" id="startDate" class="form-control" placeholder="请选择开始日期"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+            </div>
+        </div>
+        <div class="col-md-2 ">
+            <div id='datetimepicker2' class="add-row-editable-table align-left input-group date">
+                <input type='text' ng-required="true" name="endDate"   id="endDate" class="form-control" placeholder="请选择结束日期"/>
+                <span class="input-group-addon">
+                     <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2" >
+            <div style="display: inline">
+                <button class="btn btn-primary" ng-click="searchDailyReport()">查询</button>&nbsp;&nbsp;
+                <button class="btn btn-primary" ng-click="resetDailySearch()">重置</button>
+            </div>
+        </div>
+    </div>
+    <!--<div class="col-md-2 add-row-editable-table align-left" >
+        <button class="btn btn-primary" ng-click="resetDailySearch()">重置</button>
+    </div>-->
+</div>
+<div class="horizontal-scroll">
+    <table class="table  table-bordered" st-table="menusTableData" >
+        <thead >
+        <tr>
+            <th rowspan="2" style="text-align:center;vertical-align: middle;" width="3%" >编号</th>
+            <th rowspan="2" style="text-align:center;vertical-align: middle;" >客户名称</th>
+            <th rowspan="2" style="text-align:center;vertical-align: middle;" >合计</th>
+            <th colspan="3" style="text-align:center;" >总量</th>
+            <th colspan="3" style="text-align:center;" >去重后数量</th>
+            <th colspan="3" style="text-align:center;" >查得数量</th>
+        </tr>
+        <tr >
+            <th style="text-align:center;" >关键词</th>
+            <th style="text-align:center;" >详情</th>
+            <th style="text-align:center;" >摘要</th>
+            <th style="text-align:center;" >关键词</th>
+            <th style="text-align:center;" >详情</th>
+            <th style="text-align:center;" >摘要</th>
+            <th style="text-align:center;" >关键词</th>
+            <th style="text-align:center;" >详情</th>
+            <th style="text-align:center;" >摘要</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in  dailyStatistics" class="editable-row">
+            <td style="text-align:center;" >{{$index+1}}</td>
+            <td style="text-align:center;" >{{item.companyName}}</td>
+            <td style="text-align:right;" >{{item.amount}}</td>
+            <td style="text-align:right;" >{{item.total.keywordCount}}</td>
+            <td style="text-align:right;" >{{item.total.detailedCount}}</td>
+            <td style="text-align:right;" >{{item.total.summaryCount}}</td>
+            <td style="text-align:right;" >{{item.distinct.keywordCount}}</td>
+            <td style="text-align:right;" >{{item.distinct.detailedCount}}</td>
+            <td style="text-align:right;" >{{item.distinct.summaryCount}}</td>
+            <td style="text-align:right;" >{{item.queryHit.keywordCount}}</td>
+            <td style="text-align:right;" >{{item.queryHit.detailedCount}}</td>
+            <td style="text-align:right;" >{{item.queryHit.summaryCount}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <tm-pagination conf="paginationConf"></tm-pagination>
+</div>

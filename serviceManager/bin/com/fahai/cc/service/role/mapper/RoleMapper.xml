@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.fahai.cc.service.role.mapper.RoleMapper">
+
+    <resultMap id="BaseResultMap" type="role" >
+        <id column="roleId" property="roleId" />
+        <result column="roleName" property="roleName"/>
+        <result column="useYn" property="useYn"/>
+        <result column="registerDate" property="registerDate"/>
+        <result column="registerId" property="registerId"/>
+    </resultMap>
+
+    <sql id="Base_Column_List" >
+        roleId ,roleName ,`describe`
+    </sql>
+
+    <!--查询所有数据-->
+    <select id="findAllRoleList" resultType="role">
+        select
+        <include refid="Base_Column_List" />
+        from service_manager.rolemast
+    </select>
+
+    <insert id="saveUserRole" parameterType="com.fahai.cc.service.role.entity.UserRole">
+        INSERT INTO service_manager.userrole(adminUserId,roleId,useYn,registerDate,registerId)VALUES
+        <foreach collection="list" item="userRole" index="index" separator=",">
+            (#{userRole.adminUserId},#{userRole.roleId},#{userRole.useYn},#{userRole.registerDate},#{userRole.registerId})
+        </foreach>
+    </insert>
+    <delete id="deleteUserRole" parameterType="string">
+        DELETE FROM service_manager.userrole where adminUserId=#{adminUserId}
+    </delete>
+    <select id="findUserRoleList" parameterType="string" resultType="com.fahai.cc.service.role.entity.UserRole">
+        SELECT roleId from service_manager.userrole where adminUserId=#{adminUserId}
+    </select>
+    
+    <insert id="saveUserRoleLog" parameterType="com.fahai.cc.service.role.entity.UserRole">
+        INSERT INTO service_manager.userroleLog(logId,adminUserId,roleId,useYn,registerId,actionType,actionUserId,createDate)VALUES
+        <foreach collection="list" item="userRole" index="index" separator=",">
+            (#{userRole.logId},#{userRole.adminUserId},#{userRole.roleId},#{userRole.useYn},#{userRole.registerId},
+            #{userRole.actionType},#{userRole.actionUserId},#{userRole.createDate})
+        </foreach>
+    </insert>
+</mapper>

@@ -1,0 +1,630 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.customer.mapper.CustomerMapper">
+
+    <!--SQL片段-->
+    <sql id="Base_Column_List" >
+        customerId,authCode,userName,customerArea,companyId,companyName,contactName,contactTel,contactPhone,
+        contactEmail,qpmLimit,ownerId,trialBeginDate,trialEndDate,status,trialQuantity,totalSearchQuantity,contractBeginDate,
+        contractEndDate,regionCode,ipWhiteList,createAdminUserId,createDate,lastModifyDate
+    </sql>
+
+    <select id="getTotalCount" resultType="java.lang.Long" parameterType="java.util.Map">
+        SELECT count(T.customerId) FROM (
+        	SELECT a.customerId,b.authCode,a.userName,a.customerArea,a.companyId,a.companyName,a.contactName,a.contactTel,a.contactPhone,
+	        a.contactEmail,b.qpmLimit,a.ownerId,a.trialBeginDate,a.trialEndDate,a.status,b.trialQuantity,b.totalSearchQuantity,a.contractBeginDate,
+	        a.contractEndDate,a.regionCode,b.ipWhiteList,b.useCache,a.createAdminUserId,a.createDate,a.lastModifyDate FROM service_manager.customer a
+	        LEFT JOIN service_manager.customerinterfaceconfig b ON a.customerId = b.customerId 
+	        <where>
+	            <if test="ownerId != null ">
+	                AND a.ownerId = #{ownerId}
+	            </if>
+	            <if test="regionList != null and regionList.size>0">
+	            	OR a.customerArea in 
+	            		<foreach collection="regionList" item="region"  open="(" separator="," close=")">
+	            			#{region.regionCode}
+	            		</foreach>
+	            </if>
+	        </where>
+	    
+	    ) T
+        <where>
+            <if test="companyName != null ">
+                AND T.companyName LIKE '%${companyName}%'
+            </if>
+            <if test="status != null ">
+                AND T.status = #{status}
+            </if>
+            <if test="authCode != null ">
+                AND T.authCode = #{authCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="findPageCustomer" resultType="customer" parameterType="java.util.Map">
+	    SELECT T.customerId,T.authCode,T.userName,T.customerArea,T.companyId,T.companyName,T.contactName,T.contactTel,T.contactPhone,
+	    T.contactEmail,T.qpmLimit,T.ownerId,T.trialBeginDate,T.trialEndDate,T.status,T.trialQuantity,T.totalSearchQuantity,T.contractBeginDate,
+	    T.contractEndDate,T.regionCode,T.ipWhiteList,T.useCache,T.useLimitWord,T.createAdminUserId,T.createDate,T.lastModifyDate FROM(
+	    	SELECT a.customerId,b.authCode,a.userName,a.customerArea,a.companyId,a.companyName,a.contactName,a.contactTel,a.contactPhone,
+	        a.contactEmail,b.qpmLimit,a.ownerId,a.trialBeginDate,a.trialEndDate,a.status,b.trialQuantity,b.totalSearchQuantity,a.contractBeginDate,
+	        a.contractEndDate,a.regionCode,b.ipWhiteList,b.useCache,b.useLimitWord,a.createAdminUserId,a.createDate,a.lastModifyDate FROM service_manager.customer a
+	        LEFT JOIN service_manager.customerinterfaceconfig b ON a.customerId = b.customerId 
+	        <where>
+	            <if test="ownerId != null ">
+	                AND a.ownerId = #{ownerId}
+	            </if>
+	            <if test="regionList != null and regionList.size>0">
+	            	OR a.customerArea in 
+	            		<foreach collection="regionList" item="region"  open="(" separator="," close=")">
+	            			#{region.regionCode}
+	            		</foreach>
+	            </if>
+	        </where>
+	    
+	    ) T
+	    	<where>
+	    		<if test="companyName != null ">
+	                AND T.companyName LIKE '%${companyName}%'
+	            </if>
+	            <if test="status != null ">
+	                AND T.status = #{status}
+	            </if>
+	            <if test="authCode != null ">
+	                AND T.authCode = #{authCode}
+	            </if>
+	    	</where>
+        ORDER BY T.lastModifyDate desc
+        limit #{start},#{pageSize}
+    </select>
+
+    <update id="updateCustomer" parameterType="customer">
+        UPDATE service_manager.customer SET
+        <trim suffixOverrides=",">
+            <if test="userName != null">
+                userName=#{userName},
+            </if>
+            <if test="customerArea != null">
+                customerArea=#{customerArea},
+            </if>
+            <if test="companyId != null">
+                companyId=#{companyId},
+            </if>
+            <if test="companyName != null">
+                companyName=#{companyName},
+            </if>
+            <if test="contactName != null">
+                contactName=#{contactName},
+            </if>
+            <if test="contactTel != null">
+                contactTel=#{contactTel},
+            </if>
+            <if test="contactPhone != null">
+                contactPhone=#{contactPhone},
+            </if>
+            <if test="contactEmail != null">
+                contactEmail=#{contactEmail},
+            </if>
+            <if test="ownerId != null">
+                ownerId=#{ownerId},
+            </if>
+            <if test="trialBeginDate != null">
+                trialBeginDate=#{trialBeginDate},
+            </if>
+            <if test="trialEndDate != null">
+                trialEndDate=#{trialEndDate},
+            </if>
+            <if test="contractBeginDate != null">
+                contractBeginDate=#{contractBeginDate},
+            </if>
+            <if test="contractEndDate != null">
+                contractEndDate=#{contractEndDate},
+            </if>
+            <if test="regionCode != null">
+                regionCode=#{regionCode},
+            </if>
+            <if test="createDate != null">
+                createDate=#{createDate},
+            </if>
+            <if test="lastModifyDate != null">
+                lastModifyDate=#{lastModifyDate},
+            </if>
+            <if test="status != null">
+                status=#{status},
+            </if>
+        </trim>
+        where customerId=#{customerId}
+    </update>
+    
+    <insert id="saveCustomer" parameterType="customer">
+    	<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="customerId">
+            SELECT LAST_INSERT_ID() AS customerId
+        </selectKey>
+    	insert into service_manager.customer ( customerId,userName,customerArea,companyId,companyName,contactName,contactTel,contactPhone,
+		contactEmail,ownerId,trialBeginDate,trialEndDate,status,contractBeginDate,contractEndDate,regionCode,
+		createDate,lastModifyDate,createAdminUserId)
+		VALUES (#{customerId},#{userName},#{customerArea},#{companyId},#{companyName},
+		#{contactName},#{contactTel},#{contactPhone},#{contactEmail},#{ownerId},#{trialBeginDate},#{trialEndDate},#{status},
+		#{contractBeginDate},#{contractEndDate},#{regionCode},#{createDate},#{lastModifyDate},#{createAdminUserId})
+    </insert>
+    
+    
+     <insert id="saveCustomerConfig" parameterType="customer">
+    	insert into service_manager.customerinterfaceconfig ( customerId,authCode,qpmLimit,status,trialQuantity,totalSearchQuantity,
+		ipWhiteList,useCache,useLimitWord,lastModifyDate,createAdminUserId)
+		VALUES (#{customerId},#{authCode},#{qpmLimit},#{status},
+		#{trialQuantity},#{totalSearchQuantity},#{ipWhiteList},#{useCache},#{useLimitWord},#{lastModifyDate},#{createAdminUserId})
+    </insert>
+    <update id="updateCustomerConfig" parameterType="customer">
+    		update service_manager.customerinterfaceconfig set qpmLimit=#{qpmLimit}, trialQuantity=#{trialQuantity},totalSearchQuantity=#{totalSearchQuantity},ipWhiteList=#{ipWhiteList}
+    	    	,useCache=#{useCache},useLimitWord=#{useLimitWord} where customerId=#{customerId}
+    </update>
+    
+    
+    <insert id="saveCustomerInterface"  parameterType="java.util.Map">
+    	insert into service_manager.customerinterface (customerId,createDate,createAdminUserId,modelId,customRange,customQuery,interfaceId,status) 
+    	values (#{customerId},#{createDate},#{createAdminUserId},#{modelId},#{customRange},#{customQuery},#{interfaceId},#{status})
+    </insert>
+    
+     <insert id="saveCustomerDomain"  parameterType="java.util.Map">
+    	insert into service_manager.customerdomain (customerId,createDate,createAdminUserId,domainId) 
+    	values (#{customerId},#{createDate},#{createAdminUserId},#{domainId})
+    </insert>
+    
+    <insert id="saveCustomerDimension"  parameterType="java.util.Map">
+    	insert into service_manager.customerdimension (customerId,createDate,createAdminUserId,dimensionId,domainId) 
+    	values (#{customerId},#{createDate},#{createAdminUserId},#{dimensionId},#{domainId})
+    </insert>
+    <insert id="saveCustomerField"  parameterType="java.util.Map">
+    	insert into service_manager.customerfield (customerId,createDate,createAdminUserId,fieldId,dimensionId,listShowYN,detailShowYN) 
+    	values (#{customerId},#{createDate},#{createAdminUserId},#{fieldId},#{dimensionId},#{listShowYN},#{detailShowYN})
+    </insert>
+    
+     <select id="findCustomerDomain" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    	select 
+    		T1.domainId,T1.domainName,T1.selectYN domainSelectYN,T1.domainCode,
+    		T2.dimensionId,T2.dimensionName,T2.domainId dimensiondomainId,T2.selectYN dimensionSelectYN,T2.dimensionCode,
+    		T3.fieldId,T3.fieldName,T3.fieldCode,T3.description,T3.dimensionId fielddimensionId,
+				if(T2.selectYN=1,T3.listShowYN,T3.defaultListShowYN) listShowYN ,
+				if(T2.selectYN=1,T3.detailShowYN ,T3.defaultDetailShowYN ) detailShowYN   
+    	from 
+    		(select a.domainId ,a.domainName ,a.domainCode,a.status,if(b.customerId=#{customerId},1,0) selectYN 
+    			from service_manager.domain a 
+    			LEFT JOIN service_manager.customerdomain b 
+    			on a.domainId=b.domainId and b.customerId =#{customerId} where a.status = 0) T1 
+    	LEFT JOIN
+			(select a.dimensionId ,a.dimensionName,a.dimensionCode,a.domainId,a.status,if(b.customerId=#{customerId},1,0) selectYN 
+				from service_manager.dimension a 
+				LEFT JOIN service_manager.customerdimension b 
+				on a.dimensionId=b.dimensionId and b.customerId =#{customerId}  where a.status = 0) T2 on T1.domainId = T2.domainId 
+		LEFT JOIN
+			(select a.fieldId ,a.fieldName,a.fieldCode,a.description,a.status,a.dimensionId ,b.listShowYN,b.detailShowYN,a.defaultListShowYN,a.defaultDetailShowYN
+				from service_manager.field a LEFT JOIN service_manager.customerfield b 
+				on a.fieldId=b.fieldId and b.customerId =#{customerId}  where a.status = 0) T3 on T2.dimensionId = T3.dimensionId
+		where T1.status=0 and T2.status=0 and T3.status=0 ORDER BY T3.fieldCode,T2.dimensionCode,T1.domainCode
+	</select>
+    <resultMap id="BaseResultMap" type="com.fahai.cc.service.domain.entity.Domain" >
+	    <id column="domainId" property="domainId" jdbcType="INTEGER" />
+	    <result column="domainName" property="domainName" jdbcType="VARCHAR" />
+	    <result column="domainCode" property="domainCode" jdbcType="VARCHAR" />
+	    <result property="selectYN" column="domainSelectYN"/>
+	    <collection property="dimensionList" ofType="com.fahai.cc.service.dimension.entity.Dimension">
+              <id property="dimensionId" column="dimensionId"/> 
+              <result property="dimensionName" column="dimensionName"/>
+              <result property="dimensionCode" column="dimensionCode"/>
+              <result property="domainId" column="dimensiondomainId"/>
+              <result property="selectYN" column="dimensionSelectYN"/>
+              <collection property="fieldList" ofType="com.fahai.cc.service.field.entity.Field">
+		             <id property="fieldId" column="fieldId"/> 
+		             <result property="dimensionId" column="fielddimensionId"/>
+		             <result property="fieldName" column="fieldName"/>
+		             <result property="fieldCode" column="fieldCode"/>
+		             <result property="description" column="description"/>  
+		             <result property="defaultListShowYN" column="listShowYN"/>
+		             <result property="defaultDetailShowYN" column="detailShowYN"/>
+		       </collection>
+        </collection>
+  	</resultMap>
+  	
+  	<select id="findCustomerInterface" parameterType="java.lang.Integer" resultType="customerInterfaceVo">
+  		 select a.interfaceId ,b.interfaceName,a.modelId,c.modelName,a.customRange ,a.customQuery
+  		 	from 
+  		 		service_manager.customerinterface a 
+  		 	LEFT JOIN 
+  		 		service_manager.interface b on a.interfaceId = b.interfaceId 
+			LEFT JOIN 
+				service_manager.interfacemodel c on a.modelId = c.modelId 
+			where a.customerId = #{customerId} and a.status = 0
+  	</select>
+  	<delete id="deleteInterfacesByCustomerId" parameterType="java.lang.Integer">
+  		delete from service_manager.customerinterface where customerId = #{customerId} 
+  	</delete>
+  	<delete id="deleteDomainsByCustomerId" parameterType="java.lang.Integer">
+  		delete from service_manager.customerdomain where customerId = #{customerId};
+  		delete from service_manager.customerdimension where customerId = #{customerId};
+  		delete from service_manager.customerfield where customerId = #{customerId}
+  	</delete>
+  	
+  	<select id="findCountByParam" parameterType="java.util.Map" resultType="java.lang.Long">
+  		select count(1) from service_manager.customer 
+  		<where>
+  			<if test="companyName != null and companyName != ''">
+  				and companyName = #{companyName}
+  			</if>
+  			<if test="contactTel != null and contactTel != ''">
+  				and contactTel = #{contactTel}
+  			</if>
+  			<if test="contactPhone != null and contactPhone != ''">
+  				and contactPhone = #{contactPhone}
+  			</if>
+  			<if test="contactEmail != null and contactEmail  != ''">
+  				and contactEmail  = #{contactEmail }
+  			</if>
+  			<if test="userName != null and userName != ''">
+  				and userName = #{userName}
+  			</if>
+  			<if test="customerId != null and customerId != ''">
+  				and customerId != #{customerId}
+  			</if>
+  		</where>
+  	</select>
+  	
+  	<!--根据授权码查找客户  -->
+  	<select id="getCustomerByAuthCode" parameterType="java.lang.String" resultType="customer" >
+  		SELECT a.customerId,b.authCode,a.userName,a.customerArea,a.companyId,a.companyName,a.contactName,a.contactTel,a.contactPhone,
+        a.contactEmail,b.qpmLimit,a.ownerId,a.trialBeginDate,a.trialEndDate,a.status,b.trialQuantity,b.totalSearchQuantity,a.contractBeginDate,
+        a.contractEndDate,a.regionCode,b.ipWhiteList,b.useCache,b.useLimitWord,a.createAdminUserId,a.createDate,a.lastModifyDate FROM service_manager.customerinterfaceconfig b 
+        LEFT JOIN service_manager.customer a ON a.customerId = b.customerId  where b.authCode = #{authCode}
+  	</select>
+  	
+  	<!-- 缓存到redis中客户的信息 -->
+  	<resultMap id="baseResultRedisMap" type="com.fahai.cc.interf.mysql.entity.CustomerInformation" >
+		<result column="customerId" property="customerId"/>
+		<result column="authCode" property="authCode"/>
+		<result column="companyId" property="companyId"/>
+		<result column="companyId" property="companyId"/>
+		<result column="status" property="status"/>
+		<result column="userName" property="username"/>
+		<result column="trialBeginDate" property="trialBeginDate"/>
+		<result column="trialEndDate" property="trialEndDate"/>
+		<result column="contractBeginDate" property="contractBeginDate"/>
+		<result column="contractEndDate" property="contractEndDate"/>
+		<result column="qpmLimit" property="qpmLimit"/>
+		<result column="ipWhiteList" property="ipWhiteList"/>
+		<result column="trialQuantity" property="trialQuantity"/>
+		<result column="totalSearchQuantity" property="totalSearchQuantity"/>
+		<result column="useCache" property="useCache"/>
+		<result column="useLimitWord" property="useLimitWord"/>
+	</resultMap>
+	
+	<resultMap id="listResultMap" type="com.fahai.cc.interf.mysql.entity.CustomerInformation" >
+		<result column="customerId" property="customerId"/>
+		<result column="domainCode" property="domainCode"/>
+		<result column="dimensionCode" property="dimensionCode"/>
+		<result column="indexName" property="indexName"/>
+		<result column="detialfieldCode" property="detialfieldCode"/>
+		<result column="listfieldCode" property="listfieldCode"/>
+		<result column="interfaceCode" property="interfaceCode"/>
+		<result column="interfaceURL" property="interfaceURL"/>
+		<result column="modelId" property="modelId"/>
+		<result column="targetCluster" property="targetCluster"/>
+		<result column="targetDimensionCode" property="targetDimensionCode"/>
+		<result column="customQuery" property="customQuery"/>
+		<result column="customRange" property="customRange"/>
+	</resultMap>
+	<sql id="base_Column_List_redis" >
+	t1.customerId, t2.authCode ,t1.companyId,t1.status,t1.userName,t1.trialBeginDate,t1.trialEndDate,t1.contractBeginDate,t1.contractEndDate,t2.qpmLimit,t2.ipWhiteList,t2.trialQuantity,t2.totalSearchQuantity,t2.useCache,t2.useLimitWord
+	</sql>
+	<select id="getCustomerList" resultMap="baseResultRedisMap">
+		select 
+		<include refid="base_Column_List_redis"></include> 
+		from service_manager.customer t1,service_manager.customerinterfaceconfig t2
+		where t1.customerId = t2.customerId and t1.status = 0
+	</select>
+	<select id="getCustomer" parameterType="java.lang.Integer" resultMap="baseResultRedisMap">
+		select 
+		<include refid="base_Column_List_redis"></include> 
+		from service_manager.customer t1,service_manager.customerinterfaceconfig t2
+		where t1.customerId = t2.customerId and t1.status = 0 and t1.customerId = #{customerId}
+	</select>
+	<select id="getCustomerInformationListByModelId" parameterType="java.lang.Integer" resultMap="baseResultRedisMap">
+		select 
+		 T1.customerId, T3.authCode ,T1.companyId,T1.status,T1.userName
+		from service_manager.customer T1 
+		LEFT JOIN (SELECT DISTINCT customerId from service_manager.customerinterface where modelId = #{modelId} ) T2 
+		ON T1.customerId = T2.customerId 
+		LEFT JOIN service_manager.customerinterfaceconfig T3 
+		ON  T1.customerId = T3.customerId
+		where T1.status=0
+	</select>
+	
+	<select id="getCustomerinfor" parameterType="int" resultMap="listResultMap">
+			SELECT
+					t9.customerId,
+					t9.domainCode,
+					t9.dimensionCode,
+					t9.detialfieldCode,
+					t9.listfieldCode,
+					t9.interfaceCode,
+					t9.interfaceURL,
+					t9.customQuery,
+					t9.customRange,
+					t10.modelId,
+					t10.targetCluster,
+					t10.targetDimensionCode
+				FROM
+					(
+						SELECT
+							t1.customerId,
+							t1.domainId,
+							t5.domainCode,
+							t2.dimensionId,
+							t6.dimensionCode,
+							t4.modelId,
+							t4.customQuery,
+							t4.customRange,
+							t8.interfaceId,
+							t8.interfaceCode,
+							t8.interfaceURL,
+							t7.detialfieldCode,
+							t7.ListfieldCode
+
+						FROM
+							service_manager.customerdomain t1,
+							service_manager.customerdimension t2,
+							service_manager.customerinterface t4,
+							service_manager.domain t5,
+							service_manager.dimension t6,
+							(
+								select t1.customerId,t1.dimensionId,t1.detialfieldCode,t2.ListfieldCode from  (
+								select t1.customerId,t1.dimensionId,group_concat(t2.fieldCode, '') DetialfieldCode from service_manager.customerfield t1, service_manager.field t2
+								where t1.dimensionId = t2.dimensionId
+								and t1.fieldId = t2.fieldId
+								and t1.detailShowYN = 1 
+								and t2.status = 0
+								GROUP BY t1.customerId,t1.dimensionId
+								) t1,(
+
+								select t1.customerId,t1.dimensionId,group_concat(t2.fieldCode, '') ListfieldCode from service_manager.customerfield t1, service_manager.field t2
+								where t1.dimensionId = t2.dimensionId
+								and t1.fieldId = t2.fieldId
+								and t1.listShowYN = 1 
+								and t2.status = 0
+								GROUP BY t1.customerId,t1.dimensionId
+								) t2
+								where t1.customerId = t2.customerId
+								and t1.dimensionId = t2.dimensionId
+							) t7,
+							service_manager.interface t8
+						WHERE
+							t1.customerId = t2.customerId
+						AND t1.customerId = t4.customerId
+						AND t1.customerId = t7.customerId
+						AND t1.domainId = t5.domainId
+						AND t2.domainId = t1.domainId
+						AND t2.dimensionId = t7.dimensionId
+						AND t2.dimensionId = t6.dimensionId
+						AND t2.domainId = t6.domainId
+						AND t4.interfaceId = t8.interfaceId
+						AND t1.customerId = #{customerId}
+						AND t5.status = 0
+						AND t6.status = 0
+						AND t8.status = 0
+				
+					) t9
+				LEFT JOIN (
+					SELECT
+						t1.modelId,
+						t3.dimensionId,
+						t3.targetCluster,
+						t3.targetDimensionCode
+					FROM
+						service_manager.interfacemodel t1,
+						service_manager.interfacemodeldimension t3
+					WHERE
+					 t1.modelId = t3.modelId
+				) t10 ON t9.modelId = t10.modelId
+								and t9.dimensionId = t10.dimensionId
+	</select>
+	
+	
+	
+	<select id="interfaceYN" parameterType="java.lang.Integer" resultType="java.lang.Long">
+		select count(1) 
+			from (select a.interfaceId ,b.customerId,b.`status` 
+					from service_manager.customerinterface a 
+					LEFT JOIN service_manager.customer b 
+					on a.customerId = b.customerId where b.status = 0) T1 
+			where T1.interfaceId = #{interfaceId}
+	</select>
+	
+	<select id="modelYN" parameterType="java.lang.Integer" resultType="java.lang.Long">
+		select count(1) 
+			from (select a.modelId ,b.customerId,b.`status` 
+			from service_manager.customerinterface a 
+			LEFT JOIN service_manager.customer b 
+			on a.customerId = b.customerId where b.status = 0) T1 
+		where T1.modelId = #{modelId}
+	</select>
+	
+	<select id="domainYN" parameterType="java.lang.Integer" resultType="java.lang.Long">
+		select count(1) 
+			from (select a.domainId ,b.customerId,b.`status` 
+			from service_manager.customerdomain a 
+			LEFT JOIN service_manager.customer b 
+			on a.customerId = b.customerId where b.status = 0) T1 
+		where T1.domainId = #{domainId}
+	</select>
+	<select id="dimensionYN" parameterType="java.lang.Integer" resultType="java.lang.Long">
+		select count(1) 
+			from (select a.dimensionId ,b.customerId,b.`status` 
+			from service_manager.customerdimension a 
+			LEFT JOIN service_manager.customer b 
+			on a.customerId = b.customerId where b.status = 0) T1 
+		where T1.dimensionId = #{dimensionId}
+	</select>
+	<select id="fieldYN" parameterType="java.lang.Integer" resultType="java.lang.Long">
+		select count(1) 
+			from (select a.fieldId ,b.customerId,b.`status` 
+					from service_manager.customerfield a 
+					LEFT JOIN service_manager.customer b 
+					on a.customerId = b.customerId where b.status = 0) T1 
+		where T1.fieldId = #{fieldId}
+	</select>
+	
+	<insert id="saveCustomerLog" parameterType="customer">
+		<selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="logId">
+            SELECT LAST_INSERT_ID() AS logId
+        </selectKey>
+    	insert into service_manager.customerLog ( logId,customerId,authCode,userName,customerArea,companyName,contactName,contactTel,contactPhone,
+		contactEmail,qpmLimit,ownerId,trialBeginDate,trialEndDate,status,trialQuantity,totalSearchQuantity,contractBeginDate,contractEndDate,
+		ipWhiteList,createDate,createAdminUserId,actionType,actionUserId)
+		VALUES (#{logId},#{customerId},#{authCode},#{userName},#{customerArea},#{companyName},
+		#{contactName},#{contactTel},#{contactPhone},#{contactEmail},#{qpmLimit},#{ownerId},#{trialBeginDate},#{trialEndDate},#{status},
+		#{trialQuantity},#{totalSearchQuantity},#{contractBeginDate},#{contractEndDate},#{ipWhiteList},#{lastModifyDate},#{createAdminUserId}
+		,#{actionType},#{actionUserId})
+	</insert>
+	
+	 <insert id="saveCustomerFieldLog"  parameterType="java.util.Map">
+    	insert into service_manager.customerfieldLog (logId,customerId,domainId,dimensionId,fieldId,detailShowYN,listShowYN,createDate,actionUserId,actionType) 
+    	values (#{logId},#{customerId},#{domainId},#{dimensionId},#{fieldId},#{detailShowYN},#{listShowYN},#{createDate},#{actionUserId},#{actionType})
+    </insert>
+    
+    <insert id="saveCustomerInterfaceLog"  parameterType="java.util.Map">
+    	insert into service_manager.customerinterfaceLog (logId,customerId,createDate,actionUserId,modelId,customRange,customQuery,interfaceId,status,actionType) 
+    	values (#{logId},#{customerId},#{createDate},#{actionUserId},#{modelId},#{customRange},#{customQuery},#{interfaceId},#{status},#{actionType})
+    </insert>
+    
+    <select id="getInterfaceCodeYearPieData" resultType="com.fahai.cc.service.customer.entity.CustomerYearPieDto">
+    	SELECT interfaceCode name,SUM(total) value from interface_log.searchlogym 
+    	where customerId = #{1} and ettType= '0000' and SUBSTRING(baseYM FROM 1 FOR 4)=#{0} GROUP BY interfaceCode
+    </select>
+    <select id="getSearchTypeYearPieData" resultType="com.fahai.cc.service.customer.entity.CustomerYearPieDto">
+    	SELECT CASE CONCAT(interfaceCode,'.',searchType)
+		when 'query.common' THEN 'query'
+		when 'person.person' THEN 'person'
+		when 'entry.entry' THEN 'entry详情'
+		when 'entry.summary' THEN 'entry摘要'
+		else CONCAT(interfaceCode,'.',searchType) end name,
+		SUM(total) value from interface_log.searchlogym 
+		where customerId = #{1} and ettType= '0000' and SUBSTRING(baseYM FROM 1 FOR 4)= #{0} GROUP BY searchType
+    </select>
+<!--     <sql id="yearCount_customer_sql">
+    	SELECT TA.queryTime,TA.customerId,TA.interfaceCode,TA.searchType,IFNULL(TA.totalQG,0) totalQG,IFNULL(TA.totalDI,0) totalDI,IFNULL(TA.totalFA,0) totalFA,IFNULL(TA.totalSU,0) totalSU,TA.companyName,TA.ownerId FROM (
+			SELECT DATE_FORMAT(CONCAT(SUBSTRING(a.baseYM FROM 1 FOR 4),'0101'),'%Y-%m-%d') queryTime,a.customerId,a.interfaceCode,a.searchType,
+				SUM(case when a.ettType = '1000' then a.total end ) totalQG ,
+				SUM(case when a.ettType = '2001' then a.total end ) totalDI ,
+				SUM(case when a.ettType = '9999' then a.total end ) totalFA ,
+				SUM(case when a.ettType = '0000' then a.total end ) totalSU , 
+				b.companyName,b.ownerId
+			FROM interface_log.searchlogym a LEFT JOIN
+				service_manager.customer b ON a.customerId = b.customerId
+			GROUP BY interfaceCode, searchType, queryTime, customerId ) TA
+
+    </sql> -->
+    <sql id="yearCount_customer_sql">
+		(SELECT DATE_FORMAT(CONCAT(SUBSTRING(baseYM FROM 1 FOR 4),'0101'),'%Y-%m-%d')  queryTime,customerId,interfaceCode,searchType,
+					SUM(case when ettType = '1000' then total end ) totalQG ,
+					SUM(case when ettType = '2001' then total end ) totalDI ,
+					SUM(case when ettType = '9999' then total end ) totalFA ,
+					SUM(case when ettType = '0000' then total end ) totalSU 
+				FROM interface_log.searchlogym   
+				<where>
+					<if test="customerId != null">
+						and customerId = #{customerId}
+					</if>
+					<if test="beginDate != null">
+						and SUBSTRING(baseYM FROM 1 FOR 4) >= #{beginDate} 
+					</if>
+					<if test="endDate != null">
+						and SUBSTRING(baseYM FROM 1 FOR 4) &lt;= #{endDate} 
+					</if>
+				</where>
+		GROUP BY interfaceCode, searchType, SUBSTRING(baseYM FROM 1 FOR 4), customerId ORDER BY null ) T1 
+		LEFT JOIN service_manager.customer T2 ON T1.customerId = T2.customerId
+	</sql>
+    <select id="getTotalYearCount" parameterType="java.util.Map" resultType="java.lang.Long">
+    	select count(1) from <include refid="yearCount_customer_sql"></include>
+    </select>
+    <select id="getYearCountList" parameterType="java.util.Map" resultType="customerQueryCount">
+		SELECT T1.queryTime,T1.customerId,T1.interfaceCode,T1.searchType,IFNULL(T1.totalQG,0) totalQG,IFNULL(T1.totalDI,0) totalDI,IFNULL(T1.totalFA,0) totalFA,IFNULL(T1.totalSU,0) totalSU,
+		T2.companyName FROM <include refid="yearCount_customer_sql"></include> 
+		ORDER BY T1.queryTime desc,T1.searchType
+        limit #{start},#{pageSize}
+	</select>
+    <select id="exportCustomerYearReport" parameterType="java.util.Map" resultType="customerQueryCount">
+		SELECT T1.queryTime,T1.customerId,T1.interfaceCode,T1.searchType,IFNULL(T1.totalQG,0) totalQG,IFNULL(T1.totalDI,0) totalDI,IFNULL(T1.totalFA,0) totalFA,IFNULL(T1.totalSU,0) totalSU,
+		T2.companyName FROM <include refid="yearCount_customer_sql"></include>  
+		ORDER BY T1.queryTime desc,T1.searchType
+	</select>
+    <sql id="monthCount_customer_sql">
+		(SELECT DATE_FORMAT(CONCAT(baseYM,'01'),'%Y-%m-%d') queryTime,customerId,interfaceCode,searchType,
+						SUM(case when ettType = '1000' then total end ) totalQG ,
+						SUM(case when ettType = '2001' then total end ) totalDI ,
+						SUM(case when ettType = '9999' then total end ) totalFA ,
+						SUM(case when ettType = '0000' then total end ) totalSU 
+					FROM interface_log.searchlogym   
+					<where>
+						<if test="customerId != null">
+							and customerId = #{customerId}
+						</if>
+						<if test="beginDate != null">
+							and baseYM >= replace(#{beginDate},'-','')
+						</if>
+						<if test="endDate != null">
+							and baseYM &lt;= replace(#{endDate},'-','')
+						</if>
+					</where>
+			GROUP BY interfaceCode, searchType, baseYM, customerId ORDER BY null ) T1 
+			LEFT JOIN service_manager.customer T2 ON T1.customerId = T2.customerId
+	</sql>
+    
+    <select id="getTotalMonthCount" parameterType="java.util.Map" resultType="java.lang.Long">
+    	select count(1) from <include refid="monthCount_customer_sql"></include>
+    </select>
+    <select id="getMonthCountList" parameterType="java.util.Map" resultType="customerQueryCount">
+		SELECT T1.queryTime,T1.customerId,T1.interfaceCode,T1.searchType,IFNULL(T1.totalQG,0) totalQG,IFNULL(T1.totalDI,0) totalDI,IFNULL(T1.totalFA,0) totalFA,IFNULL(T1.totalSU,0) totalSU,
+		T2.companyName FROM <include refid="monthCount_customer_sql"></include>  
+		ORDER BY T1.queryTime desc,T1.searchType
+        limit #{start},#{pageSize}
+	</select>
+    <select id="exportCustomerMonthReport" parameterType="java.util.Map" resultType="customerQueryCount">
+		SELECT T1.queryTime,T1.customerId,T1.interfaceCode,T1.searchType,IFNULL(T1.totalQG,0) totalQG,IFNULL(T1.totalDI,0) totalDI,IFNULL(T1.totalFA,0) totalFA,IFNULL(T1.totalSU,0) totalSU,
+		T2.companyName FROM <include refid="monthCount_customer_sql"></include>  
+		ORDER BY T1.queryTime desc,T1.searchType
+	</select>
+    <sql id="dailyCount_customer_sql">
+		(SELECT DATE_FORMAT(baseYMD,'%Y-%m-%d') queryTime,customerId,interfaceCode,searchType,
+						SUM(case when ettType = '1000' then total end ) totalQG ,
+						SUM(case when ettType = '2001' then total end ) totalDI ,
+						SUM(case when ettType = '9999' then total end ) totalFA ,
+						SUM(case when ettType = '0000' then total end ) totalSU 
+					FROM interface_log.searchlogymd   
+					<where>
+						<if test="customerId != null">
+							and customerId = #{customerId}
+						</if>
+						<if test="beginDate != null">
+							and baseYMD >= replace(#{beginDate},'-','')
+						</if>
+						<if test="endDate != null">
+							and baseYMD &lt;= replace(#{endDate},'-','')
+						</if>
+					</where>
+			GROUP BY interfaceCode, searchType, baseYMD, customerId ORDER BY null ) T1 
+			LEFT JOIN service_manager.customer T2 ON T1.customerId = T2.customerId
+	</sql>
+    <select id="getTotalDailyCount" parameterType="java.util.Map" resultType="java.lang.Long">
+    	select count(1) from <include refid="dailyCount_customer_sql"></include>
+    </select>
+    <select id="getDailyCountList" parameterType="java.util.Map" resultType="customerQueryCount">
+		SELECT T1.queryTime,T1.customerId,T1.interfaceCode,T1.searchType,IFNULL(T1.totalQG,0) totalQG,IFNULL(T1.totalDI,0) totalDI,IFNULL(T1.totalFA,0) totalFA,IFNULL(T1.totalSU,0) totalSU,
+		T2.companyName FROM <include refid="dailyCount_customer_sql"></include> 
+		ORDER BY T1.queryTime desc,T1.searchType
+        limit #{start},#{pageSize}
+	</select>
+    <select id="exportCustomerDailyReport" parameterType="java.util.Map" resultType="customerQueryCount">
+		SELECT T1.queryTime,T1.customerId,T1.interfaceCode,T1.searchType,IFNULL(T1.totalQG,0) totalQG,IFNULL(T1.totalDI,0) totalDI,IFNULL(T1.totalFA,0) totalFA,IFNULL(T1.totalSU,0) totalSU,
+		T2.companyName FROM <include refid="dailyCount_customer_sql"></include>
+		ORDER BY T1.queryTime desc,T1.searchType
+	</select>
+</mapper>

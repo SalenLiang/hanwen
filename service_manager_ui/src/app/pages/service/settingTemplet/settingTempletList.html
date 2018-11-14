@@ -1,0 +1,78 @@
+<div class="widgets" ng-controller="settingTempletCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="配置模板列表" ba-panel-class="with-scroll">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!--<div class="col-md-3">
+                            <div class="add-row-editable-table align-left">
+                                <input type="text" class="form-control" ng-model="$parent.$parent.$parent.modelName" placeholder="请输入搜索模型名称"   name="searchValue" >
+                            </div>
+                        </div>-->
+                        <div class="col-md-4">
+                            <div class="add-row-editable-table align-left input-group">
+                                <input type="text" class="form-control with-warning-addon" placeholder="请输入搜索模板名称" name="" value="" ng-model="$parent.$parent.$parent.templetName" aria-describedby="basic-addon2">
+ 								<span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.$parent.templetName=''">
+ 									<span class="glyphicon glyphicon-trash"></span>
+ 								</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" style="overflow:scroll;" id="status"
+                                    ng-model="$parent.$parent.$parent.status" ng-options="item.code as item.value for item in typeSettingTempletList" placeholder="请选择状态">
+                                <!--<option value="">&#45;&#45;请选择状态&#45;&#45;</option>-->
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                             <button class="btn btn-primary" ng-click="searchSettingTemplet()">搜索</button>
+                        </div>
+
+                        <!--<div class="add-row-editable-table">
+                            <button class="btn btn-primary" ng-click="open('app/pages/customer/manager/addCustomer2.html', 'md')">新增(dialog)</button>
+                        </div>-->
+                    </div>
+                    <div class="col-md-6 add-row-editable-table align-right" >
+                        <button class="btn btn-primary" ng-click="addNewSettingTemplet()">新增模板</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="menusTableData" >
+                        <thead>
+                            <tr class="black-muted-bg">
+                                <th width="10%">编号</th>
+                                <th  width="30%">模板名称</th>
+                                <th>状态</th>
+                                <th>更新时间</th>
+                                <th style="text-align:center;" width="15%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="settingTemplet in settingTemplets" class="editable-row">
+                                <td>{{$index+1}}</td>
+                                <td>{{settingTemplet.templetName}}</td>
+                                <td >
+                                	<span ng-if="settingTemplet.status == 0">启用</span>
+                                	<span ng-if="settingTemplet.status == 1">停用</span>
+                                </td>
+                                <td  width="20%">{{settingTemplet.lastModifyDate | date:'yyyy-MM-dd'}}</td>
+                                <td>
+                                    <div class="buttons" style="text-align:center;" width="15%">
+                                        <button class="btn btn-primary editable-table-button btn-xs" ng-click="updateSettingTemplet(settingTemplet)" >修改</button>
+                                        <button class="btn btn-danger editable-table-button btn-xs"  ng-click="removeSettingTemplet($index,settingTemplet)">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <tm-pagination conf="settingTempletPaginationConf"></tm-pagination>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

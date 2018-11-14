@@ -1,0 +1,38 @@
+<div class="widgets" ng-controller="riskReportCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <button class="btn btn-primary" ng-click="openReport()">选择报告</button>
+        </div>
+        <div class="col-sm-12">
+            <hr>
+        </div>
+        <div class="col-sm-12">
+            <div ng-show="userReportList.length <= 0">暂无数据</div>
+            <table class="table table-hover" ng-show="userReportList.length > 0">
+                <thead>
+                <tr class="black-muted-bg">
+                    <th width="5%" style="text-align:center;">序号</th>
+                    <th>报告名称</th>
+                    <th>限制条件</th>
+                    <th>报告规格</th>
+                    <th width="15%" style="text-align:center;">操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="userReport in userReportList" class="editable-row">
+                    <td>{{$index+1}}</td>
+                    <td>&nbsp;&nbsp;{{userReport.reportName}}</td>
+                    <td>{{userReport.reportLimit}}</td>
+                    <td>{{userReport.reportStyle}}</td>
+                    <td>
+                        <div class="buttons" style="text-align:center;" width="15%">
+                            <button class="btn btn-primary editable-table-button btn-xs" ng-click="editUserReport(userReport)">编辑</button>
+                            <button class="btn btn-danger editable-table-button btn-xs" ng-click="removeUserReport($index,userReport)">删除</button>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

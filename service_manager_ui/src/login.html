@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>曹操服务平台</title>
+
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="assets/img/favicon-96x96.png">
+    <!-- build:css({.tmp/serve,src}) styles/loginvendor.css -->
+    <!-- bower:css -->
+  <link rel="stylesheet" href="../bower_components/Ionicons/css/ionicons.css" />
+  <link rel="stylesheet" href="../bower_components/angular-toastr/dist/angular-toastr.css" />
+  <link rel="stylesheet" href="../bower_components/animate.css/animate.css" />
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+  <link rel="stylesheet" href="../bower_components/bootstrap-select/dist/css/bootstrap-select.css" />
+  <link rel="stylesheet" href="../bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css" />
+  <link rel="stylesheet" href="../bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.css" />
+  <link rel="stylesheet" href="../bower_components/font-awesome/css/font-awesome.css" />
+  <link rel="stylesheet" href="../bower_components/fullcalendar/dist/fullcalendar.css" />
+  <link rel="stylesheet" href="../bower_components/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="../bower_components/angular-progress-button-styles/dist/angular-progress-button-styles.min.css" />
+  <link rel="stylesheet" href="../bower_components/chartist/dist/chartist.min.css" />
+  <link rel="stylesheet" href="../bower_components/morris.js/morris.css" />
+  <link rel="stylesheet" href="../bower_components/ionrangeslider/css/ion.rangeSlider.css" />
+  <link rel="stylesheet" href="../bower_components/ionrangeslider/css/ion.rangeSlider.skinFlat.css" />
+  <link rel="stylesheet" href="../bower_components/textAngular/dist/textAngular.css" />
+  <link rel="stylesheet" href="../bower_components/angular-xeditable/dist/css/xeditable.css" />
+  <link rel="stylesheet" href="../bower_components/jstree/dist/themes/default/style.css" />
+  <link rel="stylesheet" href="../bower_components/angular-ui-select/dist/select.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css({.tmp/serve,src}) styles/loginapp.css -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="app/auth.css">
+    <!-- endinject -->
+    <!-- endbuild -->
+    <script src="http://js.touclick.com/js.touclick?b=aca3be26-8d80-42cf-952f-dcead942bb7b" ></script>
+    <!-- build:js(src) scripts/loginvendor.js -->
+    <!-- bower:js -->
+	<script src="../bower_components/jquery/dist/jquery.js"></script>
+	<script src="../bower_components/jquery-ui/jquery-ui.js"></script>
+	<script src="../bower_components/jquery.easing/js/jquery.easing.js"></script>
+	<script src="../bower_components/jquery.easy-pie-chart/dist/jquery.easypiechart.js"></script>
+	<script src="../bower_components/chart.js/dist/Chart.js"></script>
+	<script src="../bower_components/angular/angular.js"></script>
+	<script src="../bower_components/angular-route/angular-route.js"></script>
+	<script src="../bower_components/slimScroll/jquery.slimscroll.js"></script>
+	<script src="../bower_components/angular-slimscroll/angular-slimscroll.js"></script>
+	<script src="../bower_components/angular-smart-table/dist/smart-table.js"></script>
+	<script src="../bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+	<script src="../bower_components/angular-touch/angular-touch.js"></script>
+	<script src="../bower_components/angular-ui-sortable/sortable.js"></script>
+	<script src="../bower_components/bootstrap/js/dropdown.js"></script>
+	<script src="../bower_components/bootstrap-select/dist/js/bootstrap-select.js"></script>
+	<script src="../bower_components/bootstrap-switch/dist/js/bootstrap-switch.js"></script>
+	<script src="../bower_components/bootstrap-tagsinput/dist/bootstrap-tagsinput.js"></script>
+	<script src="../bower_components/moment/moment.js"></script>
+	<script src="../bower_components/fullcalendar/dist/fullcalendar.js"></script>
+	<script src="../bower_components/leaflet/dist/leaflet-src.js"></script>
+	<script src="../bower_components/angular-progress-button-styles/dist/angular-progress-button-styles.min.js"></script>
+	<script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+	<script src="../bower_components/angular-chart.js/dist/angular-chart.js"></script>
+	<script src="../bower_components/chartist/dist/chartist.min.js"></script>
+	<script src="../bower_components/angular-chartist.js/dist/angular-chartist.js"></script>
+	<script src="../bower_components/eve-raphael/eve.js"></script>
+	<script src="../bower_components/raphael/raphael.min.js"></script>
+	<script src="../bower_components/mocha/mocha.js"></script>
+	<script src="../bower_components/morris.js/morris.js"></script>
+	<script src="../bower_components/angular-morris-chart/src/angular-morris-chart.min.js"></script>
+	<script src="../bower_components/ionrangeslider/js/ion.rangeSlider.js"></script>
+	<script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+	<script src="../bower_components/angular-animate/angular-animate.js"></script>
+	<script src="../bower_components/rangy/rangy-core.js"></script>
+	<script src="../bower_components/rangy/rangy-classapplier.js"></script>
+	<script src="../bower_components/rangy/rangy-highlighter.js"></script>
+	<script src="../bower_components/rangy/rangy-selectionsaverestore.js"></script>
+	<script src="../bower_components/rangy/rangy-serializer.js"></script>
+	<script src="../bower_components/rangy/rangy-textrange.js"></script>
+	<script src="../bower_components/textAngular/dist/textAngular.js"></script>
+	<script src="../bower_components/textAngular/dist/textAngular-sanitize.js"></script>
+	<script src="../bower_components/textAngular/dist/textAngularSetup.js"></script>
+	<script src="../bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+	<script src="../bower_components/jstree/dist/jstree.js"></script>
+	<script src="../bower_components/ng-js-tree/dist/ngJsTree.js"></script>
+	<script src="../bower_components/angular-ui-select/dist/select.js"></script>
+
+
+    <!-- endbower -->
+    <!-- endbuild -->
+    <!--<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>-->
+
+    <!-- build:js({.tmp/serve,.tmp/partials,src}) scripts/loginapp.js -->
+    <!-- inject:js -->
+	<script src="app/login/login.module.js"></script>
+	<script src="app/login/loginCtrl.js"></script>
+	<script src="app/login/loginService.js"></script>
+	<script src="app/js/app-common.js"></script>
+    <!-- endinject -->
+
+    <!-- endbuild -->
+    <style>
+        .wrap {
+            height: 50px;
+            margin: 4px 0px 10px 0px;
+            text-align: center;
+            line-height: 30px;
+        }
+    </style>
+
+    <script>
+        TouClick.ready(function(){
+            TouClick('captcha-target',{
+                onSuccess : function(obj){
+                    document.getElementById("token").value = obj.token;
+                    document.getElementById("checkAddress").value = obj.checkAddress;
+                    document.getElementById("sid").value = obj.sid;
+                }
+            });
+        });
+    </script>
+</head>
+<body ng-app="BlurAdminLogin" ng-controller="loginCtrl">
+<main class="auth-main">
+  <div class="auth-block">
+    <h1>曹操服务平台</h1>
+    <form class="form-horizontal" id="form">
+      <div class="form-group">
+        <label for="userName" class="col-sm-2 control-label">用户名:</label>
+
+        <div class="col-sm-10">
+          <input type="text" class="form-control" id="userName" ng-model="userName" placeholder="请输入用户名" value="admin">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="password" class="col-sm-2 control-label">密码:</label>
+        <div class="col-sm-10">
+          <input type="password" class="form-control" id="password" ng-model="password" placeholder="请输入密码" value="123456">
+        </div>
+      </div>
+    <div class="form-group">
+        <label class="col-sm-2 control-label"></label>
+        <div class="col-sm-10">
+            <!-- 验证码嵌入位置 -->
+            <div class="wrap" >
+                <div id="captcha-target" style="display: inline-block;width: 386px;"></div>
+                <input type="hidden" name="token"  style="display:none;" id="token"/>
+                <input type="hidden" name="checkAddress"  id="checkAddress"/>
+                <input type="hidden" name="sid"  id="sid"/>
+            </div>
+        </div>
+    </div>
+      <div class="form-group">
+        <div class="col-sm-offset-2 col-sm-10">
+          <button type="submit" ng-click="login()" class="btn btn-default btn-auth">登陆</button>
+          <a href class="forgot-pass" ng-click="resetPwd()">忘记密码?</a>
+        </div>
+      </div>
+    </form>
+
+    <div class="auth-sep"><span><span>&nbsp;&nbsp;&nbsp;法海风控&nbsp;&nbsp;&nbsp;</span></span></div>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<div class="row">
+    <div class="col-md-9">
+        <div class="col-md-2">
+            <div class="add-row-editable-table align-left">
+                <input type="text" class="form-control" placeholder="请输入搜索企业名称"  id="searchMonthCompanyName" name="searchMonthCompanyName" >
+            </div>
+        </div>
+        <div class="col-md-2 ">
+            <div class="add-row-editable-table align-left input-group date" id='datetimepicker3'>
+                <input type='text' ng-required="true" name="month" id="month" class="form-control" placeholder="请选择月份"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-calendar"></span>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div style="display: inline">
+                <button class="btn btn-primary" ng-click="searchMonthReport()">查询</button>&nbsp;&nbsp;
+                <button class="btn btn-primary" ng-click="resetMonthSearch()">重置</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="horizontal-scroll">
+    <table class="table  table-bordered" st-table="menusTableData" >
+        <thead >
+        <tr>
+            <th rowspan="2" style="text-align:center;vertical-align: middle;" width="3%" >编号</th>
+            <th rowspan="2" style="text-align:center;vertical-align: middle;" >客户名称</th>
+            <th rowspan="2" style="text-align:center;vertical-align: middle;" >合计</th>
+            <th colspan="3" style="text-align:center;" >总量</th>
+            <th colspan="3" style="text-align:center;" >去重后数量</th>
+            <th colspan="3" style="text-align:center;" >查得数量</th>
+        </tr>
+        <tr >
+            <th style="text-align:center;" >关键词</th>
+            <th style="text-align:center;" >详情</th>
+            <th style="text-align:center;" >摘要</th>
+            <th style="text-align:center;" >关键词</th>
+            <th style="text-align:center;" >详情</th>
+            <th style="text-align:center;" >摘要</th>
+            <th style="text-align:center;" >关键词</th>
+            <th style="text-align:center;" >详情</th>
+            <th style="text-align:center;" >摘要</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="item in  monthStatistics" class="editable-row">
+            <td style="text-align:center;" >{{$index+1}}</td>
+            <td style="text-align:center;" >{{item.companyName}}</td>
+            <td style="text-align:right;" >{{item.amount}}</td>
+            <td style="text-align:right;" >{{item.total.keywordCount}}</td>
+            <td style="text-align:right;" >{{item.total.detailedCount}}</td>
+            <td style="text-align:right;" >{{item.total.summaryCount}}</td>
+            <td style="text-align:right;" >{{item.distinct.keywordCount}}</td>
+            <td style="text-align:right;" >{{item.distinct.detailedCount}}</td>
+            <td style="text-align:right;" >{{item.distinct.summaryCount}}</td>
+            <td style="text-align:right;" >{{item.queryHit.keywordCount}}</td>
+            <td style="text-align:right;" >{{item.queryHit.detailedCount}}</td>
+            <td style="text-align:right;" >{{item.queryHit.summaryCount}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <tm-pagination conf="paginationConf"></tm-pagination>
+</div>

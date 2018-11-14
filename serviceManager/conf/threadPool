@@ -1,0 +1,2 @@
+#线程池的常用配置
+thread.poolSize=10

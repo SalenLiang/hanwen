@@ -1,0 +1,63 @@
+<div  ng-controller="interfaceSettingCtrl">
+     <form name="fieldForm"  ng-submit="addCustomerInterface()" novalidate>
+        <div class="modal-header">
+            	<button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">接口配置</h4>
+        </div>
+         <div class="modal-body" >
+             <div class="ng-cloak">
+                 <div class="form-group has-feedback">
+                     <input type="hidden" ng-model="createOrEdit" />
+                     <label for="interfaceId">接口选择：</label>
+                     <select class="form-control" style="overflow:scroll;" ng-model="interfaceSetting.interfaceId"  name="interfaceId"
+                             ng-options="x.interfaceId as x.interfaceName for x in interfaces"  id="interfaceId" ng-focus required>
+                     </select>
+                     <i class="form-control-feedback" aria-hidden="true"></i>
+                     <font class="text-danger" ng-show="fieldForm.interfaceId.$invalid && !fieldForm.interfaceId.$focused">必选</font>
+                 </div>
+                 <div class="form-group has-feedback">
+                     <label for="customRange">自定义每页条数：</label>
+                     <input type="number" ng-focuss  class="form-control" placeholder="请输入自定义每页条数"
+                            ng-model="interfaceSetting.customRange"
+                            name="customRange" id="customRange"   ng-change="checkCustomRange()" >
+                     <!--<i class="form-control-feedback" aria-hidden="true"></i>
+                     <input type="hidden" ng-model="fieldForm.customRange.$invalid=checkResult"/>-->
+                     <font class="text-danger" ng-show="checkResult">请输入1-100的数字</font>
+                     <!--<span style="color:red" id="checkResult" ng-show="checkResult" >
+                         请输入1-20的数字
+                     </span>-->
+                 </div>
+                 <div class="form-group has-feedback">
+                     <label for="customQuery">自定义查询：</label>
+                     <select class="form-control" style="overflow:scroll;" ng-model="interfaceSetting.customQuery"  name="customQuery"
+                             ng-options="x.code as x.type for x in queryTypes"  id="customQuery">
+                     </select>
+                 </div>
+                 <div class="form-group has-feedback">
+                     <label for="modelmodel">业务模型：</label>
+                     <select class="form-control" style="overflow:scroll;" ng-model="interfaceSetting.modelId"  name="modelmodel"
+                             ng-options="x.modelId as x.modelName for x in modelLists"   id="modelmodel" ng-focus required>
+                     </select>
+                     <i class="form-control-feedback" aria-hidden="true"></i>
+                     <font class="text-danger" ng-show="fieldForm.modelmodel.$invalid && !fieldForm.modelmodel.$focused">必选</font>
+                 </div>
+                 <!--<div class="form-group row" id="addSelectModel">
+                     <div class="col-sm-2"></div>
+                     <div class="col-sm-7">
+                         <select class="form-control" style="overflow:scroll;" ng-model="interfaceSetting.modelId"  name="targetDimensionCode"  id="customerModel"
+                                 ng-options="x.modelId as x.modelName for x in modelLists" required  id="targetDimensionCode">
+                         </select>
+                     </div>
+                     <div class="col-sm-3">
+                         <button type="button" class="btn btn-info btn-icon ion-plus-round"  ng-disabled="fieldForm.$invalid" ng-click="addModelSelect();"></button>
+                     </div>
+                 </div>-->
+             </div>
+         </div>
+        <div class=" modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="checkResult || fieldForm.$invalid" >确定</button>
+        </div>
+    </form>
+</div>

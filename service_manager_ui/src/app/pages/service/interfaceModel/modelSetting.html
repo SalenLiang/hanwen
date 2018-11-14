@@ -1,0 +1,52 @@
+<div class="horizontal-scroll " ng-controller="modelSettingCtrl">
+     <form name="modelSettingForm"  ng-submit="addDomainDimension()" novalidate>
+        <div class="modal-header">
+            	<button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">模型配置</h4>
+        </div>
+         <div class="ng-cloak" id="targetCodeEL">
+             <div class="form-group row">
+                 <input type="hidden" ng-model="createOrEdit"/>
+                 <label class="col-sm-3 align-right">领域：</label>
+                 <div class="col-sm-6">
+                     <select class="form-control" style="overflow:scroll;"  ng-model="modelSetting.domainId" name="customerArea"
+                             ng-options="x.domainId as x.domainName for x in domainLists"  id="customerArea" ng-change="sureDimensionList()" >
+                     </select>
+                 </div>
+             </div>
+             <div class="form-group row">
+                 <label class="col-sm-3 align-right" for="dimensionId">维度：</label>
+                 <div class="col-sm-6">
+                     <select class="form-control" style="overflow:scroll;" ng-focuss ng-model="modelSetting.dimensionId" name="dimensionId" id="dimensionId"
+                             ng-options="x.dimensionId as x.dimensionName for x in dimensionList"   required>
+                     </select>
+                     <i class="form-control-feedback" aria-hidden="true"></i>
+                     <font class="text-danger" ng-show="modelSettingForm.dimensionId.$invalid && !modelSettingForm.dimensionId.$focused">必选</font>
+                      <!--<span style="color:red" ng-show="modelSettingForm.dimensionId.$dirty && modelSettingForm.dimensionId.$invalid">
+                          <span ng-show="modelSettingForm.dimensionId.$error.required">必选</span>
+                      </span>-->
+                 </div>
+             </div>
+             <div class="form-group row">
+                 <label class="col-sm-3 align-right">目标集群：</label>
+                 <div class="col-sm-6">
+                     <input type="text" class="form-control" placeholder="请输入目标集群" ng-model="modelSetting.targetCluster" >
+                 </div>
+             </div>
+             <div class="form-group row">
+                 <label class="col-sm-3 align-right">目标Code：</label>
+                 <div class="col-sm-6">
+                     <input type="text" class="form-control" placeholder="请输入目标Code" ng-model="targetCodeArr[0]" >
+                 </div>
+                 <div class="col-sm-3">
+                     <button type="button" class="btn btn-info btn-icon ion-plus-round" ng-click="addTargetCode('');"></button>&nbsp;
+                 </div>
+             </div>
+         </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="modelSettingForm.$invalid" >确定</button>
+        </div>
+    </form>
+</div>

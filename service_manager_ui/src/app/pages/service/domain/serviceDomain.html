@@ -1,0 +1,82 @@
+<div class="widgets" ng-controller="domainManagerCtrl" >
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="领域列表" ba-panel-class="with-scroll">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!--<div class="col-md-3">
+                            <div class="add-row-editable-table align-left">
+                                <input type="text" class="form-control" placeholder="请输入领域代码"
+                                       ng-model="$parent.$parent.$parent.domainCode"
+                                       name="searchValue" >
+                            </div>
+                        </div>-->
+                        <!--<div class="col-md-3">
+                            <div class="add-row-editable-table align-left">
+                                <input type="text" class="form-control" placeholder="请输入领域名称"
+                                       ng-model="$parent.$parent.$parent.domainName"
+                                       name="searchValue" >
+                            </div>
+                        </div>-->
+                        <div class="col-md-4">
+                            <div class="add-row-editable-table align-left input-group">
+                                <input type="text" class="form-control with-warning-addon" placeholder="请输入搜索领域名称" name="" value="" ng-model="$parent.$parent.$parent.domainName" aria-describedby="basic-addon2">
+ 								<span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.$parent.domainName=''">
+ 									<span class="glyphicon glyphicon-trash"></span>
+ 								</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" style="overflow:scroll;" id="status"
+                                    ng-model="$parent.$parent.$parent.status" ng-options="item.code as item.status for item in typeDomainList">
+                                <!--<option value="">&#45;&#45;请选择状态&#45;&#45;</option>-->
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" ng-click="searchDomain()">搜索</button>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="col-md-6 add-row-editable-table align-right" >
+                        <button class="btn btn-primary" ng-click="addNewDomain()">新增领域</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="menusTableData" >
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th >编号</th>
+                            <th >领域代码</th>
+                            <th >领域名称</th>
+                            <th style="width: 5%;text-align: center">状态</th>
+                            <th style="width: 40%;text-align: center">描述</th>
+                            <th style="width: 10%;text-align: center">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="domain in domains" class="editable-row">
+                            <td >{{$index+1}}</td>
+                            <td >{{domain.domainCode}}</td>
+                            <td >{{domain.domainName}}</td>
+                            <td style="text-align: center">
+                                <span ng-if="domain.status == 0">启用</span>
+                                <span ng-if="domain.status == 1">停用</span>
+                            <td style="text-align: center">{{domain.description}}</td>
+                            <td style="text-align: center">
+                                <div class="buttons" >
+                                    <button class="btn btn-primary editable-table-button btn-xs" ng-click="updateDomain(domain)" >修改</button>
+                                    <button class="btn btn-danger editable-table-button btn-xs" ng-show="domain.status == 0" ng-click="removeDomain($index,domain)">删除</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <tm-pagination conf="domainPaginationConf"></tm-pagination>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

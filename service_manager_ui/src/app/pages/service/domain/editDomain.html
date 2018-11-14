@@ -1,0 +1,58 @@
+<div class="widgets" ng-controller="editDomainController">
+    <div class="row">
+        <div class="col-md-4" >
+            <div ba-panel ba-panel-title="编辑领域" ba-panel-class="with-scroll" >
+                <form name="form1"  ng-submit="saveEditDomain(form1)"novalidate>
+                    <div class="ng-cloak">
+                        <div class="form-group has-feedback">
+                            <label for="domainCode">领域代码：</label>
+                            <input type="hidden" ng-model="$parent.$parent.domain.domainId" name="domainId" id="domainId">
+                            <input type="text" ng-focus class="form-control" placeholder="请输入领域代码"
+                                   ng-model="$parent.$parent.domain.domainCode" name="domainCode" id="domainCode" ng-readonly="true" >
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="domainName">领域名称：</label>
+                            <input type="text" ng-focus class="form-control" placeholder="请输入领域名称"
+                                   ng-model="$parent.$parent.domain.domainName" name="domainName" id="domainName"  required ng-minlength="2" ng-maxlength="20" >
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.domainName.$invalid && !form1.domainName.$focused">请输入2-20位合法的领域名称</font>
+                            <!--<span style="color:red" ng-show="form1.domainName.$dirty && form1.domainName.$invalid">
+                                 <span ng-show="form1.domainName.$error.required">必填项</span>
+                                 <span ng-show="form1.domainName.$invalid && !form1.domainName.$focused">请输入正确的领域名称</span>
+                            </span>-->
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="divStatus">状态：</label>
+                            <div class="form-group row" id="divStatus">
+                                <div class="col-sm-8">
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="0" name="status" checked="checked"  ng-model="$parent.$parent.domain.status">
+                                        <span>启用</span>
+                                    </label>
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="1" name="status" ng-model="$parent.$parent.domain.status">
+                                        <span>停用</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="description">描述：</label>
+                            <textarea id="description" class="form-control"   ng-model="$parent.$parent.domain.description"
+                                      name="description"  placeholder="请输入描述"  ng-maxlength="255" ></textarea>
+                            <!--<i class="form-control-feedback" aria-hidden="true"></i>-->
+                            <font class="text-danger" ng-show="form1.description.$invalid ">请输入最长255位的领域描述</font>
+                            <!--<span style="color:red" ng-show="form1.description.$dirty && form1.description.$invalid">
+                                 <span ng-show="form1.description.$invalid && !form1.description.$focused">描述最长:255</span>
+                            </span>-->
+                        </div>
+                    </div>
+                    <div class="add-row-editable-table align-center">
+                        <button class="btn btn-primary" type="submit" ng-disabled="form1.$invalid">保存</button>&nbsp;
+                        <button class="btn btn-default" type="button" onclick="history.go(-1);">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

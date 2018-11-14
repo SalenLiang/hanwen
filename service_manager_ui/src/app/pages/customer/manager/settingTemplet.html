@@ -1,0 +1,26 @@
+<div ng-controller="useSettingTempletCtrl">
+     <form name="fieldForm"  ng-submit="useSettingTemplet(who)" novalidate>
+        <div class="modal-header">
+            	<button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">配置模板</h4>
+        </div>
+         <div class="modal-body" >
+             <div class="ng-cloak">
+                 <div class="form-group has-feedback">
+                     <input type="hidden" ng-model="createOrEdit" />
+                     <label for="ownerId">模板选择：</label>
+                     <select class="form-control" style="overflow:scroll;" ng-model="selectTempletId" name="ownerId"
+                             ng-options="x.templetId as x.templetName for x in availableTempletList"  id="ownerId" >
+                     </select>
+                     <i class="form-control-feedback" aria-hidden="true"></i>
+                     <font class="text-danger" ng-show="fieldForm.interfaceId.$invalid && !fieldForm.interfaceId.$focused">必选</font>
+                 </div>
+             </div>
+         </div>
+        <div class=" modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="selectTempletId==''||selectTempletId==null" >确定</button>
+        </div>
+    </form>
+</div>

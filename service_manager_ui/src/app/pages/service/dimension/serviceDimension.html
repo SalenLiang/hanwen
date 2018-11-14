@@ -1,0 +1,92 @@
+<div class="widgets" ng-controller="dimensionManagerCtrl">
+    <div class="row">
+        <div class="col-md-12" >
+            <div ba-panel ba-panel-title="维度列表" ba-panel-class="with-scroll">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!--<div class="col-md-3">
+                            <div class="add-row-editable-table align-left">
+                                <input type="text" class="form-control" placeholder="请输入维度代码"
+                                       ng-model="$parent.$parent.$parent.dimensionCode"
+                                       id="searchValue" name="searchValue" >
+                            </div>
+                        </div>-->
+                        <!--<div class="col-md-3">
+                            <div class="add-row-editable-table align-left">
+                                <input type="text" class="form-control" placeholder="请输入维度名称"
+                                       ng-model="$parent.$parent.$parent.dimensionName"
+                                       id="searchValue2" name="searchValue" >
+                            </div>
+                        </div>-->
+                        <div class="col-md-4">
+                            <div class="add-row-editable-table align-left input-group">
+                                <input type="text" class="form-control with-warning-addon" placeholder="请输入搜索维度名称" name="" value="" ng-model="$parent.$parent.$parent.dimensionName" aria-describedby="basic-addon2">
+ 								<span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.$parent.dimensionName=''">
+ 									<span class="glyphicon glyphicon-trash"></span>
+ 								</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" style="overflow:scroll;" id="status"
+                                    ng-model="$parent.$parent.$parent.status" ng-options="item.code as item.status for item in typeDimensionList">
+                                <!--<option value="">&#45;&#45;请选择状态&#45;&#45;</option>-->
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" ng-click="searchDimension()">搜索</button>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="col-md-6 add-row-editable-table align-right" >
+                        <button class="btn btn-primary" ng-click="addNewDimension()">新增维度</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="menusTableData" >
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th>编号</th>
+                            <th width="20%">维度代码</th>
+                            <th  width="20%">维度名称</th>
+                            <th>所属领域</th>
+                           <!-- <th>包含字段</th>-->
+                            <th>状态</th>
+                            <th>描述</th>
+                            <th style="text-align:center;" width="15%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in dimensions" class="editable-row">
+                            <td>{{$index+1}}</td>
+                            <td>{{item.dimension.dimensionCode}}</td>
+                            <td>{{item.dimension.dimensionName}}</td>
+                            <td>{{item.domain.domainName}}</td>
+                            <!--<td>-->
+                                <!--<div style="display:inline" ng-repeat="field in item.fields">-->
+                                    <!--{{field.fieldName}}-->
+                                <!--</div>-->
+                                <!--{{item.fields | parseFieldName}}-->
+                                <!--{{(item.dimension.fields | limitTo:10)+"..."}}-->
+                            <!--</td>-->
+                            <td>
+                            	<span ng-if="item.dimension.status == 0">启用</span>
+                                <span ng-if="item.dimension.status == 1">停用</span></td>
+                            <td>{{item.dimension.description}}</td>
+                            <td>
+                                <div class="buttons" style="text-align:center;" width="15%">
+                                    <button class="btn btn-primary editable-table-button btn-xs" ng-click="updateDimension(item.dimension.dimensionId)">编辑</button>
+                                    <button class="btn btn-danger editable-table-button btn-xs" ng-show="item.dimension.status == 0" ng-click="removeDimension($index,item.dimension)">删除</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <div>
+                        <tm-pagination conf="dimensionPaginationConf"></tm-pagination>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

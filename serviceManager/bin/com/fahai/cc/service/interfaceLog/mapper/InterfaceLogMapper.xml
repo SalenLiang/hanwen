@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.interfaceLog.mapper.InterfaceLogMapper">
+
+    <select id="getTotalCount" parameterType="java.util.Map" resultType="long">
+      SELECT COUNT(1) from (select  DATE_FORMAT(a.baseYMD,'%Y-%m-%d') baseYMD,a.customerId,a.ettTime,a.ettType,a.interfaceCode,a.searchType,a.total,b.companyName,c.interfaceName
+ 								from interface_log.searchlogymd a LEFT JOIN service_manager.customer b ON a.customerId = b.customerId 
+								LEFT JOIN service_manager.interface c on a.interfaceCode = c.interfaceCode ) T1
+        <where>
+            <if test="companyName != null">
+                AND T1.companyName like '%${companyName}%'
+            </if>
+            <if test="interfaceCode != null">
+                AND T1.interfaceCode = #{interfaceCode}
+            </if>
+            <if test="ettType != null">
+                AND T1.ettType =#{ettType}
+            </if>
+             <if test="beginDate != null">
+                AND T1.baseYMD >= DATE_FORMAT(#{beginDate},'%Y-%m-%d')
+            </if>
+            <if test="endDate != null">
+                 AND T1.baseYMD &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d')
+            </if>
+        </where>
+    </select>
+
+    <select id="fingPageInterfaceLog" parameterType="java.util.Map" resultType="interfaceLog">
+        select  DATE_FORMAT(a.baseYMD,'%Y-%m-%d') baseYMD,a.customerId,a.ettTime,a.ettType,a.interfaceCode,a.searchType,a.total,b.companyName,c.interfaceName
+ 			from interface_log.searchlogymd a LEFT JOIN service_manager.customer b ON a.customerId = b.customerId 
+			LEFT JOIN service_manager.interface c on a.interfaceCode = c.interfaceCode 
+        <where>
+            <if test="companyName != null">
+                AND b.companyName like '%${companyName}%'
+            </if>
+            <if test="interfaceCode != null">
+                AND a.interfaceCode = #{interfaceCode}
+            </if>
+            <if test="ettType != null">
+                AND a.ettType =#{ettType}
+            </if>
+            <if test="beginDate != null">
+                AND DATE_FORMAT(a.baseYMD,'%Y-%m-%d') >= DATE_FORMAT(#{beginDate},'%Y-%m-%d') 
+            </if>
+            <if test="endDate != null">
+                 AND DATE_FORMAT(a.baseYMD,'%Y-%m-%d') &lt;= DATE_FORMAT(#{endDate},'%Y-%m-%d') 
+            </if>
+        </where>
+        ORDER BY DATE_FORMAT(a.baseYMD,'%Y-%m-%d') desc
+        limit #{start},#{pageSize}
+    </select>
+
+</mapper>

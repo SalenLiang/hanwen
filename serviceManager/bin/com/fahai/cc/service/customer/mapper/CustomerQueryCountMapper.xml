@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fahai.cc.service.customer.mapper.CustomerQueryCountMapper">
+	<sql id="base_dailycount_sql">
+		(SELECT DATE_FORMAT(baseYMD,'%Y-%m-%d') queryTime,customerId,interfaceCode,searchType,
+						SUM(case when ettType = '1000' then total end ) totalQG ,
+						SUM(case when ettType = '2001' then total end ) totalDI ,
+						SUM(case when ettType = '9999' then total end ) totalFA ,
+						SUM(case when ettType = '0000' then total end ) totalSU 
+					FROM interface_log.searchlogymd   
+					<where>
+						<if test="beginDate != null">
+							and baseYMD >= replace(#{beginDate},'-','')
+						</if>
+						<if test="endDate != null">
+							and baseYMD &lt;= replace(#{endDate},'-','')
+						</if>
+					</where>
+			GROUP BY interfaceCode, searchType, baseYMD, customerId ORDER BY null ) T1 
+			LEFT JOIN service_manager.customer T2 ON T1.customerId = T2.customerId
+				<where>
+					<if test="ownerId != null ">
+		                AND T2.ownerId = #{ownerId}
+		            </if>
+		            <if test="regionList != null and regionList.size>0">
+		            	OR T2.customerArea in 
+		            		<foreach collection="regionList" item="region"  open="(" separator="," close=")">
+		            			#{region.regionCode}
+		            		</foreach>
+		            </if>
+		            <if test="companyName != null">
+						and T2.companyName like '%${companyName}%'
+					</if>
+				</where>
+	</sql>
+	<select id="getDailyCountList" parameterType="java.util.Map" resultType="customerQueryCount">
+	SELECT T1.queryTime,T1.customerId,T1.interfaceCode,T1.searchType,IFNULL(T1.totalQG,0) totalQG,IFNULL(T1.totalDI,0) totalDI,IFNULL(T1.totalFA,0) totalFA,IFNULL(T1.totalSU,0) totalSU,
+		T2.companyName,T2.ownerId,T2.customerArea FROM  
+			<include refid="base_dailycount_sql"></include>
+		ORDER BY T1.queryTime desc,T2.companyName,T1.searchType
+        limit #{start},#{pageSize}
+	</select>
+	
+	<select id="getTotalDailyCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		select count(1)  FROM <include refid="base_dailycount_sql"></include>
+	</select>
+	<select id="exportDailyReport" parameterType="java.util.Map" resultType="customerQueryCount">
+		SELECT T1.queryTime,T1.customerId,T1.interfaceCode,T1.searchType,IFNULL(T1.totalQG,0) totalQG,IFNULL(T1.totalDI,0) totalDI,IFNULL(T1.totalFA,0) totalFA,IFNULL(T1.totalSU,0) totalSU,
+		T2.companyName,T2.ownerId,T2.customerArea FROM  
+			<include refid="base_dailycount_sql"></include>
+		ORDER BY T1.queryTime desc,T2.companyName,T1.searchType
+	</select>
+	
+	<sql id="base_monthcount_sql">
+		(SELECT DATE_FORMAT(CONCAT(baseYM,'01'),'%Y-%m-%d') queryTime,customerId,interfaceCode,searchType,
+						SUM(case when ettType = '1000' then total end ) totalQG ,
+						SUM(case when ettType = '2001' then total end ) totalDI ,
+						SUM(case when ettType = '9999' then total end ) totalFA ,
+						SUM(case when ettType = '0000' then total end ) totalSU 
+					FROM interface_log.searchlogym   
+					<where>
+						<if test="beginDate != null">
+							and baseYM >= replace(#{beginDate},'-','')
+						</if>
+						<if test="endDate != null">
+							and baseYM &lt;= replace(#{endDate},'-','')
+						</if>
+					</where>
+			GROUP BY interfaceCode, searchType, baseYM, customerId ORDER BY null ) T1 
+			LEFT JOIN service_manager.customer T2 ON T1.customerId = T2.customerId
+				<where>
+					<if test="ownerId != null ">
+		                AND T2.ownerId = #{ownerId}
+		            </if>
+		            <if test="regionList != null and regionList.size>0">
+		            	OR T2.customerArea in 
+		            		<foreach collection="regionList" item="region"  open="(" separator="," close=")">
+		            			#{region.regionCode}
+		            		</foreach>
+		            </if>
+		            <if test="companyName != null">
+						and T2.companyName like '%${companyName}%'
+					</if>
+				</where>
+	</sql>
+	
+	<select id="getTotalMonthCount" parameterType="java.util.Map" resultType="java.lang.Long">
+		select count(1) from <include refid="base_monthcount_sql"></include>
+	</select>
+	
+	<select id="getMonthCountList" parameterType="java.util.Map" resultType="customerQueryCount">
+		SELECT T1.queryTime,T1.customerId,T1.interfaceCode,T1.searchType,IFNULL(T1.totalQG,0) totalQG,IFNULL(T1.totalDI,0) totalDI,IFNULL(T1.totalFA,0) totalFA,IFNULL(T1.totalSU,0) totalSU,
+			T2.companyName,T2.ownerId,T2.customerArea FROM  
+			<include refid="base_monthcount_sql"></include>
+		ORDER BY T1.queryTime desc,T2.companyName,T1.searchType
+        limit #{start},#{pageSize}
+	</select>
+	<select id="exportMonthReport" parameterType="java.util.Map" resultType="customerQueryCount">
+		SELECT T1.queryTime,T1.customerId,T1.interfaceCode,T1.searchType,IFNULL(T1.totalQG,0) totalQG,IFNULL(T1.totalDI,0) totalDI,IFNULL(T1.totalFA,0) totalFA,IFNULL(T1.totalSU,0) totalSU,
+			T2.companyName,T2.ownerId,T2.customerArea FROM  
+			<include refid="base_monthcount_sql"></include>
+		ORDER BY T1.queryTime desc,T2.companyName,T1.searchType
+	</select>
+
+</mapper>

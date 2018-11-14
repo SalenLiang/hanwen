@@ -1,0 +1,124 @@
+<div class="widgets">
+    <div class="row">
+        <div class="col-md-5">
+            <div ba-panel ba-panel-title="" ba-panel-class="with-scroll" >
+                <form name="form1"  ng-submit="saveInterface(form1)" novalidate>
+                    <div class="ng-cloak" >
+                        <div class="form-group has-feedback">
+                            <label for="interfaceName">接口名称：</label>
+                            <input type="text" ng-focus class="form-control" placeholder="请输入接口名称"
+                                   ng-model="$parent.$parent.interface.interfaceName" name="interfaceName" id="interfaceName"   required  ng-minlength="2" ng-maxlength="20" >
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.interfaceName.$invalid && !form1.interfaceName.$focused">请输入2-20位合法的接口名称</font>
+                            <!--<span style="color:red" ng-show="form1.interfaceName.$dirty && form1.interfaceName.$invalid">
+                                 <span ng-show="form1.interfaceName.$error.required">必须填写接口名</span>
+                                 <span ng-show="form1.interfaceName.$invalid && !form1.interfaceName.$focused">请输入2-20位合法的接口名称</span>
+                            </span>-->
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="interfaceCode">接口代码：</label>
+                            <input type="text" ng-focus class="form-control" placeholder="请输入接口代码"
+                                   ng-blur="checkInterfaceCode($event)"
+                                   ng-model="$parent.$parent.interface.interfaceCode" name="interfaceCode" id="interfaceCode"   required   ng-pattern="/^[a-zA-z]{2,20}$/">
+                            <!--<span style="color:red" ng-show="form1.interfaceCode.$dirty && form1.interfaceName.$invalid">
+                                 <span ng-show="form1.interfaceCode.$error.required">必须填写接口代码</span>
+                                 <span ng-show="form1.interfaceCode.$invalid && !form1.interfaceName.$focused">请输入2-16位合法的接口代码</span>
+                            </span>-->
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.interfaceCode.$invalid && !form1.interfaceCode.$focused">请输入合法的接口代码 ls:abcde</font>
+                            <span ng-show="$parent.$parent.checkInterfaceCodeResult && !form1.interfaceCode.$invalid">
+                                    <span style="color: #a94442;">该接口代码已存在</span>
+                                </span>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="interfaceURL">接口URL：</label>
+                            <input type="url" ng-focus class="form-control" placeholder="请输入接口URL"
+                                   ng-model="$parent.$parent.interface.interfaceURL" name="interfaceURL" id="interfaceURL"   required ng-maxlength="255"  ng-pattern="/^http://(.*).fahaicc.com/fhfk/(.*)$/">
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.interfaceURL.$invalid && !form1.interfaceURL.$focused">请输入合法的接口代码 ls: &nbsp; http://api.fahaicc.com/fhfk/query?...</font>
+                            <!--<span style="color:red" ng-show="form1.interfaceURL.$dirty && form1.interfaceURL.$invalid">
+                                 <span ng-show="form1.interfaceURL.$error.required">必须填写接口URL</span>
+                                 <span ng-show="form1.interfaceURL.$invalid && !form1.interfaceName.$focused">请输入合法的url接口</span>
+                            </span>-->
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="divStatus">状态：</label>
+                            <div class="form-group row" id="divStatus">
+                                <div class="col-sm-8">
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="0" name="status" ng-checked="true" ng-model="$parent.$parent.interface.status">
+                                        <span>开放</span>
+                                    </label>
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="1" name="status" ng-model="$parent.$parent.interface.status">
+                                        <span>内测</span>
+                                    </label>
+                                    <label class="radio-inline custom-radio nowrap">
+                                        <input type="radio" value="2" name="status" ng-model="$parent.$parent.interface.status">
+                                        <span>删除</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="manualURL">操作手册url：</label>
+                            <input type="url" ng-focus class="form-control" placeholder="请输入操作手册url地址"
+                                   ng-model="$parent.$parent.interface.manualURL" name="manualURL" id="manualURL"   required ng-maxlength="255" ng-pattern="/^http://(.*).fahaicc.com/fhfk/(.*)$/" >
+                            </input>
+                            <i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.manualURL.$invalid && !form1.manualURL.$focused">请输入合法的接口代码 ls: &nbsp; http://api.fahaicc.com/fhfk/...</font>
+                            <!--<span style="color:red" ng-show="form1.manualURL.$dirty && form1.manualURL.$invalid">
+                                 <span ng-show="form1.manualURL.$error.required">必须填写操作指南URL</span>
+                                 <span ng-show="form1.manualURL.$invalid && !form1.manualURL.$focused">请输入正确的操作指南URL</span>
+                            </span>-->
+                        </div>
+                        <div class="form-group has-feedback">
+                            <label for="description">接口描述：</label>
+                            <textarea type="text" class="form-control" placeholder="请输入接口描述"
+                                      ng-model="$parent.$parent.interface.description" name="description" id="description"    ng-maxlength="255"></textarea>
+                            </input>
+                            <!--<span style="color:red" ng-show="form1.description.$dirty && form1.description.$invalid">
+                                 <span ng-show="form1.description.$invalid && !form1.description.$focused">接口描述最长255字</span>
+                            </span>-->
+                            <!--<i class="form-control-feedback" aria-hidden="true"></i>
+                            <font class="text-danger" ng-show="form1.description.$invalid && !form1.description.$focused">接口描述必填，最长255字</font>-->
+                        </div>
+                    </div>
+                    <div class="add-row-editable-table align-center">
+                        <button class="btn btn-primary"  type="submit" ng-disabled="form1.$invalid " >保存</button>&nbsp;
+                        <button class="btn btn-default"  type="button" onclick="history.go(-1)">返回</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div ba-panel ba-panel-title="接口测试"  ba-panel ba-panel-class="with-scroll middle-large-panel" >
+                <form name="debugForm" novalidate>
+                    <ul class="btn-list clearfix">
+                        <div class="col-md-10">
+                            <div class="add-row-editable-table align-left">
+                                <span class="input-icon">
+                                    <input type="text" ng-model="$parent.$parent.interface.testURL" ng-focus name="testURL"
+                                           class="form-control" id="testURL" placeholder="请输入测试接口url" >
+                                </span>
+                            </div>
+                            <!--<span style="color: #a94442;" ng-show="debugForm.testURL.$dirty && debugForm.testURL.$invalid">
+                                 <span ng-show="debugForm.testURL.$invalid && !debugForm.testURL.$focused">请输入正确的测试URL</span>
+                            </span>-->
+                        </div>
+                        <li>
+                            <!--<button type="button" class="btn btn-danger btn-with-icon" ng-disabled="debugForm.$invalid" ng-click="interfaceDebug()"><i class="ion-gear-b"></i>接口测试</button>-->
+                            <button type="button" class="btn btn-danger btn-with-icon"  ng-click="debugInterface($parent.$parent.interface.testURL,$event)"><i class="ion-gear-b"></i>接口测试</button>
+<!--
+                            <button type="button" class="btn btn-danger btn-with-icon" ng-disabled="true" ng-click="interfaceDebug()"><i class="ion-gear-b"></i>接口测试</button>
+-->
+                        </li>
+                    </ul>
+                </form>
+                <div>
+                    <pre class="result-toastr with-scroll" id='greetings' style="height:600px;"  ng-bind-html = "debugResult"></pre>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

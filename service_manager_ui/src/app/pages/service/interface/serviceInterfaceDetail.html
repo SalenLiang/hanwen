@@ -1,0 +1,47 @@
+<div class="modal-content" >
+        <div class="modal-header">
+            <button type="button" class="close" ng-click="$dismiss()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">接口详情</h4>
+        </div>
+        <div class="modal-body">
+            <div class="ng-cloak">
+                <div class="form-group row">
+                    <div class="form-group has-feedback">
+                        <label for="interfaceName">接口名称：
+                        </label>
+                        <span id="interfaceName">普通接口</span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="interfaceUrl">接口url：
+                        </label>
+                        <span id="interfaceUrl">http://www.baidu.com</span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="status">接口状态：
+                        </label>
+                        <span id="status">
+                                        开放
+                                     </span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="ManaulUrl">接口手册url：
+                        </label>
+                        <span id="ManaulUrl">
+                                        <a target="_blank" href="http://www.baidu.com">http://www.baidu.com</a>
+                                     </span>
+                    </div>
+                    <div class="form-group has-feedback">
+                        <label for="result">测试结果：
+                        </label>
+                        <textarea id="result"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="form1.$invalid">接口测试</button>
+        </div>
+
+</div>

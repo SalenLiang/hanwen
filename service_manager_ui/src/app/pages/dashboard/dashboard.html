@@ -1,0 +1,149 @@
+<!--<dashboard-pie-chart></dashboard-pie-chart>-->
+
+<div class="row">
+  <div class="col-lg-6 col-md-12 col-sm-12"
+       ba-panel
+       ba-panel-title="客户使用量TOP 5"
+       ba-panel-class="medium-panel traffic-panel">
+    <traffic-chart></traffic-chart>
+  </div>
+  <div class="col-lg-6 col-md-12 col-sm-12"
+       ba-panel
+       ba-panel-title="接口预警"
+       ba-panel-class="medium-panel traffic-panel with-scroll table-panel">
+    <!--<dashboard-map></dashboard-map>-->
+    <!--<div ba-panel ba-panel-title="Striped Rows" ba-panel-class="with-scroll table-panel">-->
+      <div ng-controller="dashboardCtrl" class="vertical-scroll">
+        <table class="table table-hover">
+          <thead>
+             <tr class="black-muted-bg">
+                <th style="text-align:center;" width="10%">序号</th>
+                <th style="text-align:center;">接口名称</th>
+                <th style="text-align:center;">使用量(昨日)</th>
+                <th style="text-align:center;" >状态</th>
+              </tr>
+          <thead>
+          <tbody>
+            <tr ng-repeat="item in interfaceCountData"  >
+              <td style="text-align:center;">{{$index+1}}</td>
+              <td style="text-align:center;">{{item.interfaceName}}</td>
+              <td style="text-align:center;">{{item.qsAmount|currency:'':'0'}}</td>
+              <td style="text-align:center;">
+<!--
+                <button type="button" ng-show="interfaceHeart.result == 0||interfaceHeart.result == null" class=" btn-success btn-xs breathe-btn5  "><i class="ion-android-checkmark-circle"></i>接口正常</button>
+                <button type="button" ng-show="interfaceHeart.result != null&&interfaceHeart.result != 0" class="btn btn-danger  btn-xs   "><i class="ion-android-checkmark-circle"></i>接口异常</button>-->
+
+                <button type="button" ng-show="item.heartStatus == 0" class=" btn-success btn-xs breathe-btn5  "><i class="ion-android-checkmark-circle"></i>接口正常</button>
+                <button type="button" ng-show="item.heartStatus == 1" class="btn btn-danger  btn-xs   "><i class="ion-android-checkmark-circle"></i>接口异常</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+  </div>
+
+</div>
+<!--
+<div class="row">
+  <div class="col-xlg-9 col-lg-6 col-md-6 col-sm-12 col-xs-12">
+    <div class="row">
+      <div class="col-xlg-8 col-lg-12 col-md-12 col-sm-7 col-xs-12"
+           ba-panel
+           ba-panel-title="领域数据量"
+           ba-panel-class="medium-panel traffic-panel  with-scroll table-panel">
+        <div ng-controller="dashboardCtrl" class="vertical-scroll">
+          <table class="table table-hover">
+            <thead>
+            <tr class="black-muted-bg">
+              <th style="text-align:center;" width="10%">序号</th>
+              <th style="text-align:center;">领域代码</th>
+              <th style="text-align:center;">领域值</th>
+              <th style="text-align:center;" >数据量</th>
+            </tr>
+            <thead>
+              <tbody>
+                <tr>
+                  <td style="text-align:center;">1</td>
+                  <td style="text-align:center;">DOMAIN_CODE_001</td>
+                  <td style="text-align:center;">领域_001</td>
+                  <td style="text-align:center;">562147582</td>
+                </tr>
+                <tr>
+                  <td style="text-align:center;">2</td>
+                  <td style="text-align:center;">DOMAIN_CODE_002</td>
+                  <td style="text-align:center;">领域_002</td>
+                  <td style="text-align:center;">8951145525</td>
+                </tr>
+                <tr>
+                  <td style="text-align:center;">3</td>
+                  <td style="text-align:center;">DOMAIN_CODE_003</td>
+                  <td style="text-align:center;">领域_003</td>
+                  <td style="text-align:center;">8951145525</td>
+                </tr>
+                <tr>
+                  <td style="text-align:center;">4</td>
+                  <td style="text-align:center;">DOMAIN_CODE_004</td>
+                  <td style="text-align:center;">领域_003</td>
+                  <td style="text-align:center;">8951145525</td>
+                </tr>
+                <tr>
+                  <td style="text-align:center;">5</td>
+                  <td style="text-align:center;">DOMAIN_CODE_005</td>
+                  <td style="text-align:center;">领域_005</td>
+                  <td style="text-align:center;">8951145525</td>
+                </tr>
+                <tr>
+                  <td style="text-align:center;">6</td>
+                  <td style="text-align:center;">DOMAIN_CODE_006</td>
+                  <td style="text-align:center;">领域_006</td>
+                  <td style="text-align:center;">8951145525</td>
+                </tr>
+                <tr>
+                  <td style="text-align:center;">7</td>
+                  <td style="text-align:center;">DOMAIN_CODE_007</td>
+                  <td style="text-align:center;">领域_007</td>
+                  <td style="text-align:center;">89511454525</td>
+                </tr>
+                <tr>
+                  <td style="text-align:center;">8</td>
+                  <td style="text-align:center;">DOMAIN_CODE_008</td>
+                  <td style="text-align:center;">领域_008</td>
+                  <td style="text-align:center;">8951144255525</td>
+                </tr>
+
+              </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>-->
+  <!--<div class="col-xlg-3 col-lg-6 col-md-6 col-sm-12 col-xs-12"
+       ba-panel
+       ba-panel-title="Feed"
+       ba-panel-class="large-panel with-scroll feed-panel">
+    <blur-feed></blur-feed>
+  </div>
+</div>
+
+<div class="row shift-up">
+  <div class="col-xlg-3 col-lg-6 col-md-6 col-xs-12"
+       ba-panel
+       ba-panel-title="To Do List"
+       ba-panel-class="xmedium-panel feed-comply-panel with-scroll todo-panel">
+    <dashboard-todo></dashboard-todo>
+  </div>
+  <div class="col-xlg-6 col-lg-6 col-md-6 col-xs-12"
+       ba-panel
+       ba-panel-title="Calendar"
+       ba-panel-class="xmedium-panel feed-comply-panel with-scroll calendar-panel">
+    <dashboard-calendar></dashboard-calendar>
+  </div>
+</div>
+-->
+<!--<div class="row">
+  <div class="col-lg-4 col-sm-6 col-xs-12">
+    <div ba-panel ba-panel-title="Weather" ba-panel-class="medium-panel with-scroll">
+      <blur-weather forecast="5"></blur-weather>
+    </div>
+  </div>
+</div>-->

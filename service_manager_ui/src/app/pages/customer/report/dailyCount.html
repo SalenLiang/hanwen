@@ -1,0 +1,110 @@
+<div class="row" ng-controller="dailyCountCtrl">
+    <div class="col-md-12">
+        <div class="col-md-2">
+            <div class="add-row-editable-table align-left input-group">
+                <input type="text" class="form-control with-warning-addon" placeholder="请输入搜索企业名称" name="" value="" ng-model="$parent.$parent.searchParam" aria-describedby="basic-addon2">
+                <span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.searchParam=''">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="input-group input-daterange">
+                <input type='text'    ng-required="true" name="beginDate" id="beginDate" onclick="chageStatus('beginDate')"
+                       ng-model="$parent.$parent.beginDate "class="form-control"  ng-readonly="true"/>
+                <div class="input-group-addon">至</div>
+                <input type='text'   ng-required="true" name="endDate" id="endDate" onclick="chageStatus('endDate')"
+                       ng-model="$parent.$parent.endDate "class="form-control" ng-readonly="true" />
+                <!--<span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.endDate='';$parent.$parent.beginDate=''">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </span>-->
+            </div>
+        </div>
+        <div class="col-md-2">
+            <button class="btn btn-primary" ng-click="searchDailyCount()">搜索</button>&nbsp;&nbsp;
+        </div>
+        <div class="col-md-5  align-right" >
+            <button class="btn btn-primary" id="monthCountId" ng-disabled="exportDailyReportStatus" ng-click="exportDailyReport()">导出报表</button>
+        </div>
+    </div>
+
+</div>
+<div class="col-md-12">
+    <div class="horizontal-scroll">
+        <table class="table table-hover" st-table="menusTableData" >
+            <thead>
+            <tr class="black-muted-bg">
+                <th>编号</th>
+                <th>客户名称</th>
+                <th>接口</th>
+                <th>查询类型</th>
+                <th>总量</th>
+                <th>查得</th>
+                <th >去重</th>
+                <!-- <th style="text-align:center;" width="15%">账号有效期限</th>-->
+                <th>失败</th>
+                <th  width="15%">查询时间</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="item in customerQueryCounts" class="editable-row">
+                <td>{{$index+1}}</td>
+                <td>{{item.companyName}}</td>
+                <td>{{item.interfaceCode}}</td>
+                <td>{{item.searchType}}</td>
+                <td>{{item.totalSU|currency:'':'0'}}</td>
+                <td>{{item.totalQG|currency:'':'0'}}</td>
+                <td>{{item.totalDI|currency:'':'0'}}</td>
+                <td>{{item.totalFA|currency:'':'0'}}</td>
+                <td  width="15%">{{item.queryTime | date:'yyyy-MM-dd'}}</td>
+            </tr>
+            </tbody>
+        </table>
+        <tm-pagination conf="dailyCountPaginationConf"></tm-pagination>
+    </div>
+</div>
+<script>
+    var datestatus = false;
+    $(function () {
+        var now = new Date();
+        $('#beginDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            initialDate: new Date(),//初始化当前日期
+            minView: "month",
+            maxView:3,
+            autoclose: true,//选中自动关闭
+            todayBtn: true//显示今日按钮
+        }).on('changeDate',function(e){
+            var startTime = e.date;
+            $('#endDate').datetimepicker('setStartDate',startTime);
+        }).on('show',function(){
+            datestatus = true;
+        }).on('changeYear',function(){
+            $('#beginDate').datetimepicker('show');
+        });
+        $('#endDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            initialDate: new Date(),//初始化当前日期
+            minView: "month",
+            maxView:3,
+            autoclose: true,//选中自动关闭
+            todayBtn: true//显示今日按钮
+        }).on('changeDate',function(e){
+            var endTime = e.date;
+            $('#beginDate').datetimepicker('setEndDate',endTime);
+        }).on('show',function(){
+            datestatus = true;
+        });
+    });
+    function chageStatus(who){
+        if(datestatus){
+            $('#'+who+'').datetimepicker('show');
+            datestatus = false;
+        }else{
+            $('#'+who+'').datetimepicker('hide');
+            datestatus = true;
+        }
+    }
+</script>

@@ -1,0 +1,78 @@
+<div class="widgets" ng-controller="interfaceModelCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="接口模型列表" ba-panel-class="with-scroll">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!--<div class="col-md-3">
+                            <div class="add-row-editable-table align-left">
+                                <input type="text" class="form-control" ng-model="$parent.$parent.$parent.modelName" placeholder="请输入搜索模型名称"   name="searchValue" >
+                            </div>
+                        </div>-->
+                        <div class="col-md-4">
+                            <div class="add-row-editable-table align-left input-group">
+                                <input type="text" class="form-control with-warning-addon" placeholder="请输入搜索模型名称" name="" value="" ng-model="$parent.$parent.$parent.modelName" aria-describedby="basic-addon2">
+ 								<span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.$parent.modelName=''">
+ 									<span class="glyphicon glyphicon-trash"></span>
+ 								</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <select class="form-control" style="overflow:scroll;" id="status"
+                                    ng-model="$parent.$parent.$parent.status" ng-options="item.code as item.status for item in typeInterfaceModelList" placeholder="请选择状态">
+                                <!--<option value="">&#45;&#45;请选择状态&#45;&#45;</option>-->
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                             <button class="btn btn-primary" ng-click="searchInterfaceModel()">搜索</button>
+                        </div>
+
+                        <!--<div class="add-row-editable-table">
+                            <button class="btn btn-primary" ng-click="open('app/pages/customer/manager/addCustomer2.html', 'md')">新增(dialog)</button>
+                        </div>-->
+                    </div>
+                    <div class="col-md-6 add-row-editable-table align-right" >
+                        <button class="btn btn-primary" ng-click="addNewInterfaceModel()">新增模型</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="menusTableData" >
+                        <thead>
+                            <tr class="black-muted-bg">
+                                <th width="10%">编号</th>
+                                <th  width="30%">模型名称</th>
+                                <th>状态</th>
+                                <th>更新时间</th>
+                                <th style="text-align:center;" width="15%">操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="interfaceModel in interfaceModels" class="editable-row">
+                                <td>{{$index+1}}</td>
+                                <td>{{interfaceModel.modelName}}</td>
+                                <td >
+                                	<span ng-if="interfaceModel.status == 0">启用</span>
+                                	<span ng-if="interfaceModel.status == 1">停用</span>
+                                </td>
+                                <td  width="20%">{{interfaceModel.lastModifyDate | date:'yyyy-MM-dd'}}</td>
+                                <td>
+                                    <div class="buttons" style="text-align:center;" width="15%">
+                                        <button class="btn btn-primary editable-table-button btn-xs" ng-click="updateinterfaceModel(interfaceModel)" >修改</button>
+                                        <button class="btn btn-danger editable-table-button btn-xs" ng-show="interfaceModel.status==0" ng-click="removeinterfaceModel($index,interfaceModel)">删除</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                        <tm-pagination conf="interfaceModelPaginationConf"></tm-pagination>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

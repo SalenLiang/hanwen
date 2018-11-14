@@ -1,0 +1,391 @@
+<div class="widgets" ng-controller="editCustomerController">
+    <div class="row">
+        <div class="col-md-5">
+            <div ba-panel ba-panel-title="操作" ba-panel-class="with-scroll" >
+                <form name="form10" ng-submit="saveEditCustomer()" >
+                    <div class="ng-cloak">
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="companyName">企业名称：</label>
+                                <input type="hidden" id="id" name="id" ng-model="$parent.$parent.customer.customerId">
+                                <input type="text" ng-focus class="form-control" placeholder="请输入企业名称" ng-blur="editCheckCustomer('companyName',customer.companyName,$event)"
+                                       ng-model="$parent.$parent.customer.companyName" name="companyName" id="companyName"   required  ng-minlength="2" ng-maxlength="30" >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.companyName.$invalid && !form10.companyName.$focused">请输入2-30位合法的企业名称</font>
+                                <!--<span style="color:red" ng-show="form10.companyName.$dirty && form10.companyName.$invalid">
+                                     <span ng-show="form10.companyName.$error.required">必填</span>
+                                     <span ng-show="form10.companyName.$invalid && !form10.companyName.$focused">请输入2-30位合法的企业名称</span>
+                                </span>-->
+                                 <span ng-show="$parent.$parent.editCheckCustomerCompanyNameResult && !form10.companyName.$invalid">
+                                	<span style="color: #a94442;">企业名称已存在</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="contactName">联系人：</label>
+                                <input type="text" ng-focus class="form-control" placeholder="请输入联系人姓名"
+                                       ng-model="$parent.$parent.customer.contactName" name="contactName" id="contactName"  required ng-minlength="2" ng-maxlength="5" >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.contactName.$invalid && !form10.contactName.$focused">请输入2-5位联系人名称</font>
+                                <!--<span style="color:red" ng-show="form10.contactPerson.$dirty && form10.contactName.$invalid">
+                                     <span ng-show="form10.contactName.$error.required">必填</span>
+                                </span>-->
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="contactTel">联系电话(必填)：</label>
+                                <input type="text" ng-focus class="form-control" placeholder="请输入联系人电话" ng-blur="editCheckCustomer('contactTel',customer.contactTel,$event)"
+                                       ng-model="$parent.$parent.customer.contactTel" name="contactTel" id="contactTel"  required ng-pattern="/^((\d{3,4}\-)|)\d{7,8}(|([-\u8f6c]{1}\d{1,5}))$/"   >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.contactTel.$invalid && !form10.contactTel.$focused">请输入合法的联系电话 ls:010-1234567</font>
+                                <!--<span style="color:red" ng-show="form10.contactTel.$dirty && form10.contactTel.$invalid">
+                                    <span ng-show="form10.contactTel.$error.required">必填</span>
+                                </span>-->
+                                 <span ng-show="$parent.$parent.editCheckCustomerContactTelResult&&!form10.contactTel.$invalid">
+                                	<span style="color: #a94442;">联系电话已存在</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="contactEmail">联系人邮箱(必填)：</label>
+                                <input type="email" ng-focus class="form-control" placeholder="请输入电子邮箱地址" ng-blur="editCheckCustomer('contactEmail',customer.contactEmail,$event)"
+                                       ng-model="$parent.$parent.customer.contactEmail" name="contactEmail" id="contactEmail"  required  ng-pattern="/^\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/" >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.contactEmail.$invalid && !form10.contactEmail.$focused">请输入合法的邮箱地址</font>
+                                <!--<span style="color:red" ng-show="form10.contactEmail.$dirty && form10.contactEmail.$invalid">
+                                <span ng-show="form10.contactEmail.$error.required">必填</span>
+                                    <span ng-show="form10.contactEmail.$error.email">非法的电子邮箱</span>
+                                </span>-->
+                                 <span ng-show="$parent.$parent.editCheckCustomerContactEmailResult && !form10.contactEmail.$invalid">
+                                	<span style="color: #a94442;">联系人邮箱已存在</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="userName">初始管理账号(必填)：</label>
+                                <input type="text" ng-focus class="form-control" placeholder="初始管理账号" ng-blur="editCheckCustomer('userName',customer.userName,$event)"
+                                       ng-model="$parent.$parent.customer.userName" name="userName" id="userName"   required  ng-minlength="2" ng-maxlength="30" >
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.userName.$invalid && !form10.userName.$focused">请输入2-30位客户初始管理账号</font>
+                                <!--<span style="color:red" ng-show="form10.userName.$dirty && form10.userName.$invalid">
+                                     <span ng-show="form10.userName.$error.required">必填</span>
+                                     <span ng-show="form10.userName.$invalid && !form10.userName.$focused">请输入5-30位合法的初始管理账号</span>
+                                </span>-->
+                                 <span ng-show="$parent.$parent.editCheckCustomerUserNameResult&&!form10.userName.$invalid">
+                                	<span style="color: #a94442;">初始管理账号已存在</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="contactPhone">手机号(必填)：</label>
+                                <input type="number" ng-focus class="form-control" placeholder="请输入11位手机号" ng-blur="editCheckCustomer('contactPhone',customer.contactPhone,$event)"
+                                       ng-model="$parent.$parent.customer.contactPhone" name="contactPhone" id="contactPhone"
+                                       required  ng-minlength="11" ng-maxlength="11"
+                                        ng-pattern="/^1[3|4|5|7|8]\d{9}$/"
+                                >
+                               <!--<button type="button" class="btn btn-primary" ng-bind="description"
+                                        ng-disabled="form10.contactPhone.$invalid || canClick "
+                                        ng-click="sendIdentifyingCode()" ng-controller="customerManagerCtrl">发送验证码</button>-->
+                                <!--<span style="color:red" ng-show="form10.contactPhone.$dirty && form10.contactPhone.$invalid">
+                                     <span ng-show="form10.contactPhone.$error.required">必填</span>
+                                     <span ng-show="form10.contactPhone.$invalid && !form10.contactPhone.$focused">请输入合法的手机号</span>
+                                </span>-->
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.contactPhone.$invalid && !form10.contactPhone.$focused">请输入合法的手机号码</font>
+                                <span ng-show="$parent.$parent.editCheckCustomerContactPhoneResult&&!form10.contactPhone.$invalid">
+                                	<span style="color: #a94442;">手机号已存在</span>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <label for="ownerId">负责人：</label>
+                                <select class="form-control" style="overflow:scroll;" ng-model="$parent.$parent.customer.ownerId" name="ownerId"
+                                        ng-options="x.adminUserId as x.name for x in adminUsers"  id="ownerId" required>
+                                </select>
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.ownerId.$invalid && !form10.ownerId.$focused">必选</font>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <label for="customerArea">客户所属区域：</label>
+                                <select class="form-control" style="overflow:scroll;"  ng-model="$parent.$parent.customer.customerArea" name="customerArea"
+                                        ng-focus ng-options="x.regionCode as x.regionName for x in areas"  id="customerArea" required>
+                                </select>
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.customerArea.$invalid && !form10.customerArea.$focused">必选</font>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="trialBeginDate">账号试用日期：</label>
+                                <div class="input-group input-daterange">
+                                    <input type='text'    ng-required="true" name="trialBeginDate" id="trialBeginDate" ng-readonly="true" ng-change="clearOtherYN('trialBeginDate')"
+                                           ng-model="$parent.$parent.customer.trialBeginDate "class="form-control" onclick="chageStatus('trialBeginDate')" />
+                                    <span class="input-group-addon input-group-addon-custome  addon-right" ng-click="$parent.$parent.customer.trialBeginDate=''">
+ 									    <span class="glyphicon glyphicon-trash"></span>
+ 								    </span>
+                                    <div class="input-group-addon">至</div>
+                                    <input type='text'   ng-required="true" name="trialEndDate" id="trialEndDate" ng-readonly="true" ng-change="clearOtherYN('trialEndDate')"
+                                           ng-model="$parent.$parent.customer.trialEndDate "class="form-control" onclick="chageStatus('trialEndDate')" />
+                                    <span class="input-group-addon input-group-addon-custome  addon-right" ng-click="$parent.$parent.customer.trialEndDate=''">
+ 									    <span class="glyphicon glyphicon-trash"></span>
+ 								    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="form-group has-feedback">
+                                <label for="trialBeginDate">账号有效日期：</label>
+                                <div class="input-group input-daterange">
+                                    <input type='text'   ng-required="true" name="contractBeginDate" id="contractBeginDate" ng-readonly="true" ng-change="clearOtherYN('contractBeginDate')"
+                                           ng-model="$parent.$parent.customer.contractBeginDate "class="form-control" onclick="chageStatus('contractBeginDate')" />
+                                    <span class="input-group-addon input-group-addon-custome  addon-right" ng-click="$parent.$parent.customer.contractBeginDate=''">
+ 									    <span class="glyphicon glyphicon-trash"></span>
+ 								    </span>
+                                    <div class="input-group-addon">至</div>
+                                    <input type='text'   ng-required="true" name="contractEndDate" id="contractEndDate" ng-readonly="true" ng-change="clearOtherYN('contractEndDate')"
+                                           ng-model="$parent.$parent.customer.contractEndDate "class="form-control" onclick="chageStatus('contractEndDate')" />
+                                    <span class="input-group-addon input-group-addon-custome  addon-right" ng-click="$parent.$parent.customer.contractEndDate=''">
+ 									    <span class="glyphicon glyphicon-trash"></span>
+ 								    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <label >客户创建时间：</label>
+                                <input type="text"  class="form-control"
+                                       ng-model="$parent.$parent.customer.createDate" ng-readonly="true"
+                                       name="createDate" id="createDate"  required min="0" >
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group has-feedback">
+                                <label>最近更新时间：</label>
+                                <input type="text"  class="form-control"
+                                       ng-model="$parent.$parent.customer.lastModifyDate" ng-readonly="true"
+                                       name="lastModifyDate" id="lastModifyDate"  required min="0" >
+                            </div>
+                        </div>
+                            <!--<div class="form-group has-feedback">
+                                <label for="qpmLimit">每分钟查询次数：</label>
+                                <input type="number" ng-focus class="form-control" placeholder="请输入每分钟查询次数"
+                                       ng-model="$parent.$parent.customer.qpmLimit"
+                                       name="qpmLimit" id="qpmLimit"  required min="0" max="500">
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                            </div>
+                            &lt;!&ndash;<div class="form-group row">
+                                <div class="col-md-10 has-feedback">
+                                    <label for="identifyingCode">验证码(必填)：</label>
+                                    <input type="number" ng-focus class="form-control" placeholder="请输入手机接收到的验证码,长度为4位数"
+                                           name="identifyingCode " id="identifyingCode"
+                                           required  ng-minlength="4" ng-maxlength="4">
+                                </div>
+                            </div>&ndash;&gt;
+                            <div class="form-group has-feedback">
+                                <label for="ipWhiteList">IP白名单：</label>
+                                <textarea ng-focus class="form-control"
+                                          placeholder="请输入接口IP地址,该地址用于白名单设置,*代表不限制,多个IP以换行分割,eg:192.168.1.1"
+                                          ng-model="$parent.$parent.customer.ipWhiteList"
+                                          name="ipWhiteList" id="ipWhiteList"
+                                          ng-pattern= "/^(((?:(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d)))\.){3}(?:25[0-5]|2[0-4]\d|((1\d{2})|([1-9]?\d))))(\n?))+$/"
+                                          ></textarea>
+                                &lt;!&ndash;ng-pattern="(\*)|((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\n{?}){1,}"&ndash;&gt;
+                                &lt;!&ndash;<span style="color:red" ng-show="form10.ipAddress.$dirty && form10.ipAddress.$invalid">
+                                     <span ng-show="form10.ipAddress.$error.required">必填</span>
+                                     <span ng-show="form10.ipAddress.$invalid && !form10.ipAddress.$focused">请输入合法的IP段</span>
+                                </span>&ndash;&gt;
+                                <i class="form-control-feedback" aria-hidden="true"></i>
+                                <font class="text-danger" ng-show="form10.ipWhiteList.$invalid && !form10.ipWhiteList.$focused">请根据提示填写IP</font>
+
+                            </div>-->
+                        </div>
+                    <div class="col-md-12">
+                        <div class="add-row-editable-table align-center">
+                            <button class="btn btn-primary"  type="button" ng-disabled="$parent.$parent.customer.status == 0" ng-click="activationCustomer($parent.$parent.customer)" >激活</button>&nbsp;
+                            <!--<button class="btn btn-primary"  type="button"  ng-click="lookCustomerAuthcode($parent.$parent.customer)" >授权码</button>&nbsp;-->
+                            <button class="btn btn-primary" type="submit" ng-disabled="form10.$invalid || editCheckCustomerCompanyNameResult || editCheckCustomerContactTelResult || editCheckCustomerContactEmailResult || editCheckCustomerUserNameResult || editCheckCustomerContactPhoneResult">保存</button>&nbsp;
+                            <button class="btn btn-default" type="button" ng-click="backCustomer()">返回</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-7" >
+            <div ba-panel ba-panel-title="服务选择" ba-panel-class="with-scroll middle-large-panel">
+                <uib-tabset  active="$tabSetStatus.activeTab">
+                   <!-- <uib-tab heading="账号试用">
+                        &lt;!&ndash;<div ba-panel ba-panel-class="with-scroll">&ndash;&gt;
+                            &lt;!&ndash;<form name="trialForm"  novalidate>&ndash;&gt;
+                                <div class="ng-cloak">
+                                    <div class="form-group row">
+                                        <div class="form-group has-feedback">
+                                            <label for="trialBeginDate">账号试用日期：</label>
+                                            <div class="input-group input-daterange">
+                                                    <input type='text'    ng-required="true" name="trialBeginDate" id="trialBeginDate"
+                                                           ng-model="$parent.$parent.customer.trialBeginDate "class="form-control" />
+                                                    <div class="input-group-addon">至</div>
+                                                    <input type='text'   ng-required="true" name="trialEndDate" id="trialEndDate"
+                                                           ng-model="$parent.$parent.customer.trialEndDate "class="form-control" />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            <label for="trialQuantity">账号试用查询条数：</label>
+                                            <input type="number"  class="form-control" placeholder="账号试用查询条数"
+                                                   ng-model="$parent.$parent.customer.trialQuantity" name="trialQuantity" id="trialQuantity"
+                                                   required min="0"
+                                            >
+                                            &lt;!&ndash;<i class="form-control-feedback" aria-hidden="true"></i>
+                                            <font class="text-danger" ng-show="form10.trialQuantity.$invalid && !form10.trialQuantity.$focused">请输入试用查询条数</font>&ndash;&gt;
+                                        </div>
+                                        <div class="form-group has-feedback">
+                                            <label for="trialBeginDate">账号有效日期：</label>
+                                            <div class="input-group input-daterange">
+                                                <input type='text'   ng-required="true" name="contractBeginDate" id="contractBeginDate"
+                                                       ng-model="$parent.$parent.customer.contractBeginDate "class="form-control" />
+                                                <div class="input-group-addon">至</div>
+                                                <input type='text'   ng-required="true" name="contractEndDate" id="contractEndDate"
+                                                       ng-model="$parent.$parent.customer.contractEndDate "class="form-control" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group has-feedback">
+                                            <label for="totalSearchQuantity">总查询条数：</label>
+                                            <input type="number"  class="form-control" placeholder="请输入总查询条数"
+                                                   ng-model="$parent.$parent.customer.totalSearchQuantity"
+                                                   name="totalSearchQuantity" id="totalSearchQuantity"  required min="0" >
+                                            &lt;!&ndash;<i class="form-control-feedback" aria-hidden="true"></i>
+                                            <font class="text-danger" ng-show="form10.totalSearchQuantity.$invalid && !form10.totalSearchQuantity.$focused">请输入总查询条数</font>&ndash;&gt;
+                                            &lt;!&ndash;<span style="color:red" ng-show="form10.totalSearchQuantity.$dirty && form10.totalSearchQuantity.$invalid">
+                                                <span ng-show="form10.totalSearchQuantity.$error.required">必填</span>
+                                             </span>&ndash;&gt;
+                                        </div>
+                                        <div class="form-group has-feedback">
+                                            <label for="totalSearchQuantity">客户创建时间：</label>
+                                            <input type="text"  class="form-control"
+                                                   ng-model="$parent.$parent.customer.createDate" ng-readonly="true"
+                                                   name="createDate" id="createDate"  required min="0" >
+                                        </div>
+                                        <div class="form-group has-feedback">
+                                            <label for="totalSearchQuantity">最近更新时间：</label>
+                                            <input type="text"  class="form-control"
+                                                   ng-model="$parent.$parent.customer.lastModifyDate" ng-readonly="true"
+                                                   name="lastModifyDate" id="lastModifyDate"  required min="0" >
+                                        </div>
+                                    </div>
+                                &lt;!&ndash;</div>&ndash;&gt;
+                            &lt;!&ndash;</form>&ndash;&gt;
+
+                        </div>
+                        <div class="row accordions-row">
+                            <uib-accordion >
+                                <uib-accordion-group heading="客户授权码"  panel-class="panel-primary bootstrap-panel accordion-panel">
+                                    {{$parent.$parent.customer.authCode}}
+                                </uib-accordion-group>
+                            </uib-accordion>
+                        </div>
+
+                    </uib-tab>-->
+                    <uib-tab heading="领域维度">
+                        <div ng-include="'app/pages/customer/manager/editDomainDimension.html'"></div>
+                    </uib-tab>
+                    <uib-tab heading="接口选择">
+                        <div ng-include="'app/pages/customer/manager/selInterface.html'"></div>
+                    </uib-tab>
+                    <!--<uib-tab heading="接口选择">
+                        <div ng-include="'app/pages/customer/manager/editSelInterface.html'"></div>
+                    </uib-tab>-->
+                   <!-- <uib-tab heading="接口选择">
+                        <div ng-include="'app/pages/customer/manager/interfaceList.html'"></div>
+                    </uib-tab>-->
+                </uib-tabset>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var datestatus = false;
+    $(function () {
+        var now = new Date();
+        $('#trialBeginDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            minView: "month",//设置只显示到月份
+            maxView:3,
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            todayBtn: true,//显示今日按钮
+            startDate:now,
+            pickerPosition: "top-right"
+        }).on('changeDate',function(e){
+            var startTime = e.date;
+            $('#trialEndDate').datetimepicker('setStartDate',startTime);
+        }).on('show',function(){
+            datestatus = true;
+        });
+        $('#trialEndDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            minView: "month",//设置只显示到月份
+            maxView:3,
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            todayBtn: true,//显示今日按钮
+            startDate:now,
+            pickerPosition: "top-right"
+        }).on('changeDate',function(e){
+            var endTime = e.date;
+            $('#trialBeginDate').datetimepicker('setEndDate',endTime);
+        }).on('show',function(){
+            datestatus = true;
+        });
+        $('#contractBeginDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            minView: "month",//设置只显示到月份
+            maxView:3,
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            todayBtn: true,//显示今日按钮
+            startDate:now,
+            pickerPosition: "top-right"
+        }).on('changeDate',function(e){
+            var startTime = e.date;
+            $('#contractEndDate').datetimepicker('setStartDate',startTime);
+        }).on('show',function(){
+            datestatus = true;
+        });
+        $('#contractEndDate').datetimepicker({
+            language: 'zh-CN',//显示中文
+            format: 'yyyy-mm-dd',//显示格式
+            minView: "month",//设置只显示到月份
+            maxView:3,
+            initialDate: new Date(),//初始化当前日期
+            autoclose: true,//选中自动关闭
+            todayBtn: true,//显示今日按钮
+            startDate:now,
+            pickerPosition: "top-right"
+        }).on('changeDate',function(e){
+            var endTime = e.date;
+            $('#contractBeginDate').datetimepicker('setEndDate',endTime);
+        }).on('show',function(){
+            datestatus = true;
+        });
+    });
+    function chageStatus(who){
+        if(datestatus){
+            $('#'+who+'').datetimepicker('show');
+            datestatus = false;
+        }else{
+            $('#'+who+'').datetimepicker('hide');
+            datestatus = true;
+        }
+    }
+</script>

@@ -1,0 +1,77 @@
+<div class="widgets" ng-controller="adminUserCtrl">
+    <div class="row">
+        <div class="col-md-12">
+            <div ba-panel ba-panel-title="用户列表" ba-panel-class="with-scroll">
+                <div class="row">
+                    <div class="col-md-6">
+                        <!--<div class="col-md-3">
+                            <div class="add-row-editable-table align-left">
+                                <input type="text" class="form-control" placeholder="请输入用户姓名"
+                                       ng-model="$parent.$parent.$parent.searchSystemUserName"
+                                       id="searchSystemUserName" name="searchSystemUserName" >
+                            </div>
+                        </div>-->
+                        <div class="col-md-4">
+                            <div class="add-row-editable-table align-left input-group">
+                                <input type="text" class="form-control with-warning-addon" placeholder="请输入用户名称" name="" value="" ng-model="$parent.$parent.$parent.searchSystemUserName" aria-describedby="basic-addon2">
+ 								<span class="input-group-addon input-group-addon-danger addon-right" ng-click="$parent.$parent.$parent.searchSystemUserName=''">
+ 									<span class="glyphicon glyphicon-trash"></span>
+ 								</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <select class="form-control" style="overflow:scroll;" id="status"
+                                    ng-model="$parent.$parent.$parent.status" ng-options="item.code as item.status for item in typeAllList">
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary" ng-click="searchSystemUser()">搜索</button>&nbsp;&nbsp;
+                        </div>
+                    </div>
+                    <div class="col-md-6 add-row-editable-table align-right" >
+                        <button class="btn btn-primary" ng-click="newSystemUser()">新增用户</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="horizontal-scroll">
+                    <table class="table table-hover" st-table="menusTableData" >
+                        <thead>
+                        <tr class="black-muted-bg">
+                            <th>编号</th>
+                            <th>用户名</th>
+                            <th>姓名</th>
+                            <th>电子邮件</th>
+                            <th>手机号</th>
+                            <!--<th>角色</th>-->
+                            <th>状态</th>
+                            <th style="text-align:center;" width="15%">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="user in users" class="editable-row">
+                            <td>{{$index+1}}</td>
+                            <td>{{user.name}}</td>
+                            <td>{{user.realName}}</td>
+                            <td>{{user.email}}</td>
+                            <td>{{user.mobile | phoneDesensitization}}</td>
+                            <!--<td>{{user.roles}}</td>-->
+                            <td>
+                                <div ng-if="user.status==0">正常</div>
+                                <div ng-if="user.status==1">删除</div>
+                            </td>
+                            <td>
+                                <div class="buttons" style="text-align:center;" width="15%">
+                                    <button class="btn btn-primary editable-table-button btn-xs" ng-click="editUser(user.adminUserId)" >编辑</button>
+                                    <button class="btn btn-danger editable-table-button btn-xs" ng-show="user.status == 0" ng-click="removeUser($index,user)">删除</button>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <tm-pagination conf="adminUserPaginationConf"></tm-pagination>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

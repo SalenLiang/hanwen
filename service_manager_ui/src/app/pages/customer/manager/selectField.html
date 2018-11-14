@@ -1,0 +1,55 @@
+<div class="modal-content" ng-controller="fieldListCtrl" >
+    <form name="fieldForm"  ng-submit="addField()" novalidate>
+        <div class="modal-header">
+            	<button type="button" class="close" ng-click="closeFieldList()" aria-label="Close">
+                <em class="ion-ios-close-empty sn-link-close"></em>
+            </button>
+            <h4 class="modal-title" id="myModalLabel">选择字段</h4>
+        </div>
+        <div class="modal-body">
+        	<h4  ng-show="fields.length==0" >暂无数据</h4>
+            <table class="table table-bordered" ng-hide="fields.length<=0" >
+                <thead>
+                    <tr>
+                        <th style="text-align: left;" ><input type="checkbox" ng-checked="allListSelect" ng-click="changeAllStatu('list',$event)"/>列表</th>
+                        <th class="align-center" ><input type="checkbox" ng-checked="allDetailSelect" ng-click="changeAllStatu('detail',$event)" />详细</th>
+                        <th class="align-center">字段代码</th>
+                        <th class="align-center">字段名称</th>
+                        <th class="align-center">描述</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="field in fields" >
+                    	<input type="hidden" ng-model="dimensionS" />
+                    	<input type="hidden" ng-model="domainDimensionS" />
+                    	<input type="hidden" ng-model="ele" />
+                    	<input type="hidden" ng-model="recoverField" />
+                        <td class="align-center" ng-click="changeStatu('list',field)"  >
+                            <input type="checkbox" ng-checked="field.defaultListShowYN==1 ? true:false" >
+                        </td>
+                        <td class="align-center" ng-click="changeStatu('detail',field)">
+                            <input type="checkbox"  ng-checked="field.defaultDetailShowYN==1 ? true:false"   >
+                        </td>
+                        <td class="align-center">
+                        	{{field.fieldCode}}
+                        </td>
+                        <td class="align-center">
+                            {{field.fieldName}}
+                        </td>
+                        <td class="align-center" ng-show="field.description.length>10">
+                            {{(field.description| limitTo:10)+"..."}}
+                        </td>
+                        <td class="align-center" ng-show="field.description.length<=10|| field.description==null">
+                            {{field.description| limitTo:10}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <br/>
+            <div>列表选中&nbsp;<b>{{listNum}}</b>&nbsp;个字段，详情选中&nbsp;<b>{{detailNum}}</b>&nbsp;个字段</div>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" ng-disabled="fieldForm.$invalid" >确定</button>
+        </div>
+    </form>
+</div>
