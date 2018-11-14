@@ -1,0 +1,2 @@
+service_manager_ui为前端angularjs完成的页面；
+serviceManager为后台接口代码；
